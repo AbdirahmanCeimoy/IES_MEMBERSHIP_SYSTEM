@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Enums;
+
+enum ApplicationStage: string
+{
+    case SUBMITTED = 'SUBMITTED';
+    case SCREENING = 'SCREENING';
+    case TECHNICAL_REVIEW = 'TECHNICAL_REVIEW';
+    case GRADE_RECOMMENDED = 'GRADE_RECOMMENDED';
+    case PAYMENT_PENDING = 'PAYMENT_PENDING';
+    case PAYMENT_CONFIRMED = 'PAYMENT_CONFIRMED';
+    case CERTIFICATE_ISSUED = 'CERTIFICATE_ISSUED';
+    case REGISTERED = 'REGISTERED';
+}

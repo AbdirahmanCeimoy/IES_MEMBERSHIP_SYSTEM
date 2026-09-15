@@ -1,0 +1,46 @@
+{
+    "status": "ok",
+    "sourcePath": "C:\\Users\\apdir\\OneDrive\\Documents\\ies\\backend\\prisma\\dev.db",
+    "legacyUploadsDir": "C:\\Users\\apdir\\OneDrive\\Documents\\ies\\backend\\uploads",
+    "targetUploadsDir": "C:\\Users\\apdir\\OneDrive\\Documents\\ies\\backend-laravel\/uploads",
+    "sourceCounts": {
+        "User": 3,
+        "MembershipApplication": 3,
+        "MembershipDocument": 27,
+        "ReviewLog": 5,
+        "Renewal": 0,
+        "DisciplinaryAction": 0,
+        "EmailNotificationLog": 0,
+        "OrganizationApplication": 0,
+        "Announcement": 0
+    },
+    "targetCountsBefore": {
+        "User": 0,
+        "MembershipApplication": 0,
+        "MembershipDocument": 0,
+        "ReviewLog": 0,
+        "Renewal": 0,
+        "DisciplinaryAction": 0,
+        "EmailNotificationLog": 0,
+        "OrganizationApplication": 0,
+        "Announcement": 0
+    },
+    "targetCountsAfter": {
+        "User": 3,
+        "MembershipApplication": 3,
+        "MembershipDocument": 27,
+        "ReviewLog": 5,
+        "Renewal": 0,
+        "DisciplinaryAction": 0,
+        "EmailNotificationLog": 0,
+        "OrganizationApplication": 0,
+        "Announcement": 0
+    },
+    "copiedFiles": 27,
+    "backups": {
+        "directory": "C:\\Users\\apdir\\OneDrive\\Documents\\ies\\backend-laravel\/storage\/app\/migration-backups\/20260323-234320",
+        "sourceCopy": "C:\\Users\\apdir\\OneDrive\\Documents\\ies\\backend-laravel\/storage\/app\/migration-backups\/20260323-234320\/source-dev.db",
+        "targetCountsBefore": "C:\\Users\\apdir\\OneDrive\\Documents\\ies\\backend-laravel\/storage\/app\/migration-backups\/20260323-234320\/target-counts-before.json"
+    },
+    "reportGeneratedAt": "2026-03-23T23:43:21+00:00"
+}

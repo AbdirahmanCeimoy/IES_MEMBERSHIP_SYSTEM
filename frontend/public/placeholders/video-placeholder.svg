@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#071C47"/>
+  <rect x="40" y="40" width="1120" height="720" rx="30" fill="#0C3278" stroke="#66FF00" stroke-width="4" stroke-dasharray="14 12"/>
+  <circle cx="600" cy="410" r="120" fill="#66FF00" opacity="0.22"/>
+  <polygon points="560,345 560,475 680,410" fill="#66FF00"/>
+  <text x="600" y="235" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="56" font-weight="700" text-anchor="middle">IES Gallery Video Placeholder</text>
+  <text x="600" y="565" fill="#D2E3FF" font-family="Arial, sans-serif" font-size="30" font-weight="500" text-anchor="middle">Replace with official IES video content</text>
+</svg>
