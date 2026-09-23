@@ -48,7 +48,7 @@ export default function InfoHubPage() {
         <ContentGrid columns={3} className="mt-6">
           {sections.map((s) => (
             <Card key={s.href} padded interactive>
-              <h3 className="text-sm font-semibold text-[#082B55]">{s.title}</h3>
+              <h3 className="text-sm font-semibold text-[#022D5A]">{s.title}</h3>
               <p className="mt-1 text-sm text-slate-600">{s.body}</p>
               <Button href={s.href} variant="ghost" size="sm" className="mt-2 px-0">Open ›</Button>
             </Card>

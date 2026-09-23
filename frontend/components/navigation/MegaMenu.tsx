@@ -41,10 +41,10 @@ export const MegaMenu = ({ entry, onNavigate, className }: MegaMenuProps) => {
                     <Link
                       href={item.href}
                       onClick={onNavigate}
-                      className="group block rounded-md px-2 py-1.5 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0047AB]"
+                      className="group block rounded-md px-2 py-1.5 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]"
                       role="menuitem"
                     >
-                      <span className="block text-sm font-medium text-slate-800 group-hover:text-[#0047AB]">
+                      <span className="block text-sm font-medium text-slate-800 group-hover:text-[#035CB3]">
                         {item.label}
                       </span>
                       {item.description && (
@@ -65,7 +65,7 @@ export const MegaMenu = ({ entry, onNavigate, className }: MegaMenuProps) => {
           <Link
             href={entry.href}
             onClick={onNavigate}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-[#0047AB] hover:underline"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-[#035CB3] hover:underline"
           >
             View all {entry.label} ›
           </Link>

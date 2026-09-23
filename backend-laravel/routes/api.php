@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Announcements\AnnouncementsController;
+use App\Http\Controllers\Events\EventsController;
 use App\Http\Controllers\Health\HealthController;
 use App\Http\Controllers\Memberships\MembershipsController;
 use App\Http\Controllers\Memberships\MembershipsPublicController;
@@ -75,3 +77,23 @@ Route::prefix('announcements')
         Route::post('', [AnnouncementsController::class, 'create'])->middleware('role:ADMIN');
         Route::get('', [AnnouncementsController::class, 'list'])->middleware('role:MEMBER,REVIEWER,ADMIN');
     });
+
+/**
+ * Admin panel endpoints — every route here requires the caller to hold
+ * the ADMIN role. Actions performed here are logged for audit.
+ */
+Route::prefix('admin')
+    ->middleware(['jwt.auth', 'role:ADMIN'])
+    ->group(function (): void {
+        Route::get('stats', [AdminController::class, 'stats']);
+        Route::get('analytics', [AdminController::class, 'analytics']);
+        Route::get('applications', [AdminController::class, 'applications']);
+        Route::get('reports/{key}', [AdminController::class, 'report']);
+        Route::get('events', [EventsController::class, 'listAdmin']);
+        Route::post('events', [EventsController::class, 'create']);
+    });
+
+// Public events
+Route::get('events', [EventsController::class, 'listPublic']);
+Route::post('events/{id}/register', [EventsController::class, 'register'])
+    ->middleware(['jwt.auth', 'role:MEMBER,ADMIN']);

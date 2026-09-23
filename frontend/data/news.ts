@@ -10,29 +10,33 @@ export const featuredNews: NewsItem[] = [
     date: '18 Dec 2025',
     href: `${routes.infoHub.news}/mou-just`,
     category: 'Partnership',
+    image: '/parterner-jamhuriya-University.jpeg',
   },
   {
-    title: 'IES Signs MoU with Jazeera University',
+    title: 'IES Signs MoU with Jazeera University (JU)',
     excerpt:
       'IES and Jazeera University signed an MoU to enhance cooperation in engineering education, professional development, innovation and knowledge exchange.',
     date: '20 Dec 2025',
     href: `${routes.infoHub.news}/mou-jazeera`,
     category: 'Partnership',
+    image: '/parterner-jazeraUniversity.jpeg',
   },
   {
-    title: 'IES Signs MoU with Salaam University',
+    title: 'IES Signs MoU with Salaam University (SU)',
     excerpt:
       'IES and Salaam University signed an MoU to strengthen cooperation in engineering education, professional development, research and knowledge exchange.',
     date: '31 Dec 2025',
     href: `${routes.infoHub.news}/mou-salaam`,
     category: 'Partnership',
+    image: '/slaaam-University.jpeg',
   },
   {
-    title: 'IES Signs MoU with Benadir University',
+    title: 'IES Signs MoU with Benadir University (BU)',
     excerpt:
       'IES and Benadir University signed an MoU to strengthen cooperation in engineering education, professional training, research, innovation and continuing professional development.',
     date: '01 Jan 2026',
     href: `${routes.infoHub.news}/mou-benadir`,
     category: 'Partnership',
+    image: '/parterner-Banadir-University.jpeg',
   },
 ];

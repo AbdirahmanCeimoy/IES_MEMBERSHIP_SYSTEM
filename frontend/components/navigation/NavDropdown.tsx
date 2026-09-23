@@ -86,9 +86,9 @@ export const NavDropdown = ({ entry, active }: NavDropdownProps) => {
         <Link
           href={entry.href}
           className={cn(
-            'inline-flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-1.5 text-sm font-medium transition-colors',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0047AB]',
-            active ? 'text-[#0047AB]' : 'text-slate-700 hover:text-[#0047AB]',
+            'inline-flex items-center gap-1 whitespace-nowrap rounded-md px-1.5 py-1.5 text-[13px] font-medium transition-colors',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]',
+            active ? 'text-[#035CB3]' : 'text-slate-700 hover:text-[#035CB3]',
           )}
           aria-haspopup="menu"
           aria-expanded={open}
@@ -101,9 +101,9 @@ export const NavDropdown = ({ entry, active }: NavDropdownProps) => {
           type="button"
           onClick={() => setOpen((v) => !v)}
           className={cn(
-            'inline-flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-1.5 text-sm font-medium transition-colors',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0047AB]',
-            active ? 'text-[#0047AB]' : 'text-slate-700 hover:text-[#0047AB]',
+            'inline-flex items-center gap-1 whitespace-nowrap rounded-md px-1.5 py-1.5 text-[13px] font-medium transition-colors',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]',
+            active ? 'text-[#035CB3]' : 'text-slate-700 hover:text-[#035CB3]',
           )}
           aria-haspopup="menu"
           aria-expanded={open}

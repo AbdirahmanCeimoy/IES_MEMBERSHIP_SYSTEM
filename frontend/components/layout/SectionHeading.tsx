@@ -11,7 +11,7 @@ interface SectionHeadingProps {
   as?: 'h1' | 'h2' | 'h3';
 }
 
-export const SectionHeading = ({
+export const SectionHeading = ({ 
   eyebrow,
   title,
   description,
@@ -32,11 +32,11 @@ export const SectionHeading = ({
     >
       <div className={cn('flex flex-col gap-2', isCenter && 'items-center')}>
         {eyebrow && (
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#0047AB]">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#035CB3]">
             {eyebrow}
           </span>
         )}
-        <Tag className="text-2xl font-bold tracking-tight text-[#082B55] sm:text-3xl">
+        <Tag className="text-2xl font-bold tracking-tight text-[#022D5A] sm:text-3xl">
           {title}
         </Tag>
         {description && (

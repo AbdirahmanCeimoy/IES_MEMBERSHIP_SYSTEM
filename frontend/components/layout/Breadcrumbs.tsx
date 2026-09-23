@@ -19,7 +19,7 @@ export const Breadcrumbs = ({ items, className }: BreadcrumbsProps) => (
         return (
           <li key={`${item.label}-${index}`} className="flex items-center gap-1.5">
             {item.href && !isLast ? (
-              <Link href={item.href} className="text-slate-500 hover:text-[#0047AB]">
+              <Link href={item.href} className="text-slate-500 hover:text-[#035CB3]">
                 {item.label}
               </Link>
             ) : (

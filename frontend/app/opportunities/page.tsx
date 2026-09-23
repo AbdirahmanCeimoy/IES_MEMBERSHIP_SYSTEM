@@ -10,10 +10,10 @@ import { routes } from '@/config/routes';
 export const metadata = { title: 'Opportunities' };
 
 const sections = [
-  { title: 'Jobs', body: 'IES careers and partner organization openings.', href: routes.opportunities.jobs },
+  { title: 'Jobs', body: 'IES careers and partner organization openings.', href: routes.opportunities.jobs.root },
   { title: 'Internships', body: 'Internship openings for engineering students and graduates.', href: routes.opportunities.internships },
-  { title: 'Tenders', body: 'Open tenders at IES and partner organizations.', href: routes.opportunities.tenders },
-  { title: 'CV Repository', body: 'Submit your CV or search the IES CV repository.', href: routes.opportunities.cvRepository },
+  { title: 'Tenders', body: 'Open tenders at IES and partner organizations.', href: routes.opportunities.tenders.root },
+  { title: 'CV Repository', body: 'Submit your CV or search the IES CV repository.', href: routes.opportunities.cvRepository.root },
 ];
 
 export default function OpportunitiesPage() {
@@ -30,7 +30,7 @@ export default function OpportunitiesPage() {
         <ContentGrid columns={2} className="mt-6">
           {sections.map((s) => (
             <Card key={s.href} padded interactive>
-              <h3 className="text-sm font-semibold text-[#082B55]">{s.title}</h3>
+              <h3 className="text-sm font-semibold text-[#022D5A]">{s.title}</h3>
               <p className="mt-1 text-sm text-slate-600">{s.body}</p>
               <Button href={s.href} variant="ghost" size="sm" className="mt-3 px-0">Open ›</Button>
             </Card>

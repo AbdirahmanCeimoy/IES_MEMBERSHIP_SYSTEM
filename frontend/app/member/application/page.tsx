@@ -30,7 +30,7 @@ export default function MyApplicationPage() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold text-[#082B55]">My Application</h1>
+        <h1 className="text-2xl font-bold text-[#022D5A]">My Application</h1>
         <p className="text-sm text-slate-600">Track the progress of your membership application.</p>
       </div>
 
@@ -40,7 +40,7 @@ export default function MyApplicationPage() {
             <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
               Application ID
             </p>
-            <p className="mt-1 text-sm font-mono font-semibold text-[#082B55]">- pending -</p>
+            <p className="mt-1 text-sm font-mono font-semibold text-[#022D5A]">- pending -</p>
           </div>
           <Badge tone="warning">Under Review</Badge>
         </div>
@@ -53,9 +53,9 @@ export default function MyApplicationPage() {
                   className={
                     'flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ' +
                     (step.done
-                      ? 'bg-[#66FF00] text-[#082B55]'
+                      ? 'bg-[#48C184] text-[#022D5A]'
                       : step.current
-                        ? 'bg-[#0047AB] text-white ring-4 ring-blue-100'
+                        ? 'bg-[#035CB3] text-white ring-4 ring-blue-100'
                         : 'bg-white text-slate-400 ring-1 ring-slate-200')
                   }
                 >
@@ -64,7 +64,7 @@ export default function MyApplicationPage() {
                 {index < timelineSteps.length - 1 && (
                   <div
                     className={
-                      'mt-1 h-8 w-0.5 ' + (step.done ? 'bg-[#66FF00]' : 'bg-slate-200')
+                      'mt-1 h-8 w-0.5 ' + (step.done ? 'bg-[#48C184]' : 'bg-slate-200')
                     }
                   />
                 )}
@@ -73,7 +73,7 @@ export default function MyApplicationPage() {
                 <p
                   className={
                     'text-sm font-semibold ' +
-                    (step.done || step.current ? 'text-[#082B55]' : 'text-slate-500')
+                    (step.done || step.current ? 'text-[#022D5A]' : 'text-slate-500')
                   }
                 >
                   {step.label}
@@ -88,15 +88,15 @@ export default function MyApplicationPage() {
       <Card padded>
         <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Submitted details</p>
         <div className="mt-3 grid gap-2 text-sm text-slate-700 md:grid-cols-2">
-          <div><span className="font-semibold text-[#082B55]">Applicant:</span> {user?.fullName ?? user?.username ?? '-'}</div>
-          <div><span className="font-semibold text-[#082B55]">Email:</span> {user?.email ?? '-'}</div>
+          <div><span className="font-semibold text-[#022D5A]">Applicant:</span> {user?.fullName ?? user?.username ?? '-'}</div>
+          <div><span className="font-semibold text-[#022D5A]">Email:</span> {user?.email ?? '-'}</div>
         </div>
         <div className="mt-4">
           <EmptyState
             title="Live application data not yet connected"
             description="This page will show your submitted profile and documents once the backend /member/my-applications endpoint is wired to the dashboard."
             action={
-              <Link href="/member" className="text-xs font-semibold text-[#0047AB] hover:underline">
+              <Link href="/member" className="text-xs font-semibold text-[#035CB3] hover:underline">
                 ‹ Back to overview
               </Link>
             }

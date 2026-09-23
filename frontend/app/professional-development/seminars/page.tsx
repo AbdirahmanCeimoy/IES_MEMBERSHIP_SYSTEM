@@ -1,5 +1,4 @@
 import { StubPage } from '@/components/public/StubPage';
-import { routes } from '@/config/routes';
 export const metadata = { title: 'Seminars' };
 export default function SeminarsPage() {
   return (
@@ -9,7 +8,7 @@ export default function SeminarsPage() {
       description="Seminars keeping members informed about the latest advancements in technology, engineering practices and management strategies."
       breadcrumbs={[
         { label: 'Home', href: '/' },
-        { label: 'Professional Development', href: routes.professionalDevelopment.root },
+        { label: 'Professional Development', href: '/professional-development' },
         { label: 'Seminars' },
       ]}
     />

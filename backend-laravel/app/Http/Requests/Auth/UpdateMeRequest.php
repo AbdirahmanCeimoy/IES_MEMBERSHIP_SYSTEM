@@ -13,6 +13,13 @@ class UpdateMeRequest extends BaseNestFormRequest
             'username' => ['sometimes', 'string', 'regex:' . AuthValidation::USERNAME_REGEX],
             'fullName' => ['sometimes', 'string', 'min:2'],
             'email' => ['sometimes', 'email', 'regex:' . AuthValidation::GMAIL_EMAIL_REGEX],
+            'gender' => ['sometimes', 'nullable', 'string', 'in:MALE,FEMALE,OTHER'],
+            'title' => ['sometimes', 'nullable', 'string', 'max:20'],
+            'firstName' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'lastName' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'dateOfBirth' => ['sometimes', 'nullable', 'date'],
+            'discipline' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'grade' => ['sometimes', 'nullable', 'string', 'in:STUDENT,GRADUATE,ASSOCIATE,CORPORATE,SENIOR,FELLOW'],
         ];
     }
 

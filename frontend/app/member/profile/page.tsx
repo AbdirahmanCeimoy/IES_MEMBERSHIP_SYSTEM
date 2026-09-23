@@ -46,7 +46,7 @@ export default function MyProfilePage() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold text-[#082B55]">Profile</h1>
+        <h1 className="text-2xl font-bold text-[#022D5A]">Profile</h1>
         <p className="text-sm text-slate-600">
           Keep your contact and profile information current. Some fields can only be updated once every 2 months.
         </p>
@@ -55,40 +55,40 @@ export default function MyProfilePage() {
       <Card padded className="max-w-2xl">
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <div className="grid gap-3 sm:grid-cols-2">
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Full name
               <input
                 type="text"
                 value={form.fullName}
                 onChange={handleChange('fullName')}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Email
               <input
                 type="email"
                 value={form.email}
                 onChange={handleChange('email')}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Phone
               <input
                 type="tel"
                 value={form.phone}
                 onChange={handleChange('phone')}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Organization
               <input
                 type="text"
                 value={form.organization}
                 onChange={handleChange('organization')}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
           </div>
@@ -100,7 +100,7 @@ export default function MyProfilePage() {
           <div>
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-lg bg-[#66FF00] px-6 py-2 text-sm font-semibold text-[#082B55] transition-colors hover:bg-[#5be000]"
+              className="inline-flex items-center justify-center rounded-lg bg-[#48C184] px-6 py-2 text-sm font-semibold text-[#022D5A] transition-colors hover:bg-[#3AA870]"
             >
               Save changes
             </button>

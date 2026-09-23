@@ -26,7 +26,7 @@ export const CTASection = ({
     <div className="flex flex-col items-start gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-col gap-2">
         {eyebrow && (
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#66FF00]">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#48C184]">
             {eyebrow}
           </span>
         )}

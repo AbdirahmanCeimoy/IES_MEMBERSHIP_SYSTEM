@@ -7,15 +7,15 @@ type ButtonSize = 'sm' | 'md' | 'lg';
 
 const base =
   'inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold rounded-lg transition-colors ' +
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0047AB] ' +
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#035CB3] ' +
   'disabled:opacity-50 disabled:pointer-events-none';
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-[#0047AB] text-white hover:bg-[#082B55]',
-  secondary: 'bg-white text-[#0047AB] border border-[#0047AB] hover:bg-blue-50',
-  ghost: 'text-[#0047AB] hover:bg-slate-100',
-  accent: 'bg-[#66FF00] text-[#082B55] hover:bg-[#5be000]',
-  outline: 'border border-slate-300 text-slate-700 bg-white hover:border-[#0047AB] hover:text-[#0047AB]',
+  primary: 'bg-[#035CB3] text-white hover:bg-[#022D5A]',
+  secondary: 'bg-white text-[#035CB3] border border-[#035CB3] hover:bg-blue-50',
+  ghost: 'text-[#035CB3] hover:bg-slate-100',
+  accent: 'bg-[#48C184] text-[#022D5A] hover:bg-[#3AA870]',
+  outline: 'border border-slate-300 text-slate-700 bg-white hover:border-[#035CB3] hover:text-[#035CB3]',
 };
 
 const sizes: Record<ButtonSize, string> = {

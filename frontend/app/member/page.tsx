@@ -33,7 +33,7 @@ export default function MemberOverviewPage() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold text-[#082B55]">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-[#022D5A]">Dashboard</h1>
         <p className="text-sm text-slate-600">
           Welcome{user?.fullName ? `, ${user.fullName}` : ''}. Here&apos;s an overview of your membership.
         </p>
@@ -42,12 +42,12 @@ export default function MemberOverviewPage() {
       <div className="grid gap-4 md:grid-cols-3">
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Membership status</p>
-          <p className="mt-2 text-lg font-semibold text-[#082B55]">Under Review</p>
+          <p className="mt-2 text-lg font-semibold text-[#022D5A]">Under Review</p>
           <Badge tone="warning" className="mt-2">Pending IES review</Badge>
         </Card>
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Applied grade</p>
-          <p className="mt-2 text-lg font-semibold text-[#082B55]">
+          <p className="mt-2 text-lg font-semibold text-[#022D5A]">
             {user?.gradeLabel ?? '-'}
           </p>
           <p className="mt-1 text-xs text-slate-500">
@@ -56,7 +56,7 @@ export default function MemberOverviewPage() {
         </Card>
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">CPD hours (2026)</p>
-          <p className="mt-2 text-lg font-semibold text-[#082B55]">0</p>
+          <p className="mt-2 text-lg font-semibold text-[#022D5A]">0</p>
           <p className="mt-1 text-xs text-slate-500">Log your first activity</p>
         </Card>
       </div>
@@ -67,9 +67,9 @@ export default function MemberOverviewPage() {
           {quickLinks.map((link) => (
             <Card key={link.href} padded interactive>
               <Link href={link.href}>
-                <h3 className="text-sm font-semibold text-[#082B55]">{link.title}</h3>
+                <h3 className="text-sm font-semibold text-[#022D5A]">{link.title}</h3>
                 <p className="mt-1 text-xs text-slate-600">{link.body}</p>
-                <p className="mt-3 text-xs font-semibold text-[#0047AB]">Open ›</p>
+                <p className="mt-3 text-xs font-semibold text-[#035CB3]">Open ›</p>
               </Link>
             </Card>
           ))}
@@ -79,9 +79,9 @@ export default function MemberOverviewPage() {
       <Card padded>
         <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Account</p>
         <div className="mt-3 grid gap-2 text-sm text-slate-700 md:grid-cols-2">
-          <div><span className="font-semibold text-[#082B55]">Username:</span> {user?.username ?? '-'}</div>
-          <div><span className="font-semibold text-[#082B55]">Email:</span> {user?.email ?? '-'}</div>
-          <div><span className="font-semibold text-[#082B55]">Role:</span> {user?.role ?? 'MEMBER'}</div>
+          <div><span className="font-semibold text-[#022D5A]">Username:</span> {user?.username ?? '-'}</div>
+          <div><span className="font-semibold text-[#022D5A]">Email:</span> {user?.email ?? '-'}</div>
+          <div><span className="font-semibold text-[#022D5A]">Role:</span> {user?.role ?? 'MEMBER'}</div>
         </div>
       </Card>
     </div>

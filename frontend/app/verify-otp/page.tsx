@@ -77,7 +77,7 @@ function OtpVerifyInner() {
       <div className="mx-auto w-full max-w-5xl">
         <Link
           href={routes.home}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#0047AB]"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#035CB3]"
         >
           <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M12 5l-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -90,14 +90,14 @@ function OtpVerifyInner() {
           <div className="relative h-10 w-10">
             <Image src={site.logo} alt="" fill className="object-contain" />
           </div>
-          <span className="text-base font-bold text-[#082B55]">{site.shortName}omalia</span>
+          <span className="text-base font-bold text-[#022D5A]">{site.shortName}omalia</span>
         </Link>
 
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-5 text-center">
-            <h1 className="text-lg font-bold text-[#082B55]">Verify OTP code</h1>
+            <h1 className="text-lg font-bold text-[#022D5A]">Verify OTP code</h1>
             <p className="mt-1 text-xs text-slate-500">
-              An OTP was sent to <span className="font-semibold text-[#0047AB]">{contact}</span>. Enter the 6-digit code below.
+              An OTP was sent to <span className="font-semibold text-[#035CB3]">{contact}</span>. Enter the 6-digit code below.
             </p>
           </div>
 
@@ -114,7 +114,7 @@ function OtpVerifyInner() {
                 onChange={(event) => handleDigit(index, event.target.value)}
                 onKeyDown={handleKeyDown(index)}
                 onPaste={handlePaste}
-                className="h-12 w-10 rounded-lg border border-slate-300 bg-white text-center text-lg font-semibold text-[#082B55] focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB] sm:h-14 sm:w-12"
+                className="h-12 w-10 rounded-lg border border-slate-300 bg-white text-center text-lg font-semibold text-[#022D5A] focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3] sm:h-14 sm:w-12"
               />
             ))}
           </div>
@@ -128,7 +128,7 @@ function OtpVerifyInner() {
           <div className="mt-5 flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
             <button
               type="button"
-              className="text-xs font-semibold text-slate-500 hover:text-[#0047AB]"
+              className="text-xs font-semibold text-slate-500 hover:text-[#035CB3]"
               onClick={() => {
                 setDigits(Array(OTP_LENGTH).fill(''));
                 inputsRef.current[0]?.focus();
@@ -140,7 +140,7 @@ function OtpVerifyInner() {
               type="button"
               onClick={handleVerify}
               disabled={!complete || loading}
-              className="inline-flex items-center gap-2 rounded-lg bg-[#66FF00] px-6 py-2.5 text-sm font-semibold text-[#082B55] transition-colors hover:bg-[#5be000] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
+              className="inline-flex items-center gap-2 rounded-lg bg-[#48C184] px-6 py-2.5 text-sm font-semibold text-[#022D5A] transition-colors hover:bg-[#3AA870] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
             >
               {loading ? 'Verifying…' : 'Verify OTP'}
               <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -151,7 +151,7 @@ function OtpVerifyInner() {
 
           <p className="mt-4 text-center text-xs text-slate-500">
             Wrong details?{' '}
-            <Link href={routes.auth.login} className="font-semibold text-[#0047AB] hover:underline">
+            <Link href={routes.auth.login} className="font-semibold text-[#035CB3] hover:underline">
               Back to login
             </Link>
           </p>

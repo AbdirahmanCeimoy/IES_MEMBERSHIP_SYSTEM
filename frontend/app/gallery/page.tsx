@@ -20,12 +20,12 @@ export default function GalleryPage() {
       <Section>
         <ContentGrid columns={2}>
           <Card padded interactive>
-            <h2 className="text-base font-semibold text-[#082B55]">Photos</h2>
+            <h2 className="text-base font-semibold text-[#022D5A]">Photos</h2>
             <p className="mt-1 text-sm text-slate-600">Official event and activity photography.</p>
             <Button href={routes.gallery.photos} variant="secondary" size="sm" className="mt-3">Browse photos ›</Button>
           </Card>
           <Card padded interactive>
-            <h2 className="text-base font-semibold text-[#082B55]">Videos</h2>
+            <h2 className="text-base font-semibold text-[#022D5A]">Videos</h2>
             <p className="mt-1 text-sm text-slate-600">IES video library and event coverage.</p>
             <Button href={routes.gallery.videos} variant="secondary" size="sm" className="mt-3">Browse videos ›</Button>
           </Card>

@@ -9,7 +9,13 @@ import { NavDropdown } from './NavDropdown';
 const collectHrefs = (entry: NavigationEntry): string[] => {
   const hrefs: string[] = [];
   if (entry.href) hrefs.push(entry.href);
-  entry.children?.forEach((c) => c.href && hrefs.push(c.href));
+  const walk = (items?: { href?: string; children?: typeof items }[]) => {
+    items?.forEach((c) => {
+      if (c.href) hrefs.push(c.href);
+      walk(c.children);
+    });
+  };
+  walk(entry.children);
   entry.groups?.forEach((g) => g.items.forEach((i) => i.href && hrefs.push(i.href)));
   return hrefs;
 };
@@ -27,7 +33,7 @@ export const DesktopNavigation = () => {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Primary" className="hidden items-center gap-0.5 lg:flex">
+    <nav aria-label="Primary" className="hidden items-center gap-0.5 xl:flex">
       {publicNavigation.map((entry) => {
         const active = isEntryActive(pathname, entry);
         const hasSubmenu =

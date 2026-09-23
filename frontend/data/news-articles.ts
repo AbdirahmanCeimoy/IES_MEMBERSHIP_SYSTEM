@@ -32,7 +32,7 @@ export const newsArticles: NewsArticle[] = [
   },
   {
     slug: 'mou-jazeera',
-    title: 'IES Signs MoU with Jazeera University',
+    title: 'IES Signs MoU with Jazeera University (JU)',
     date: '20 December 2025',
     author: { name: 'Eng. Omar Abdi Arab', role: 'President, IES' },
     hashtags: ['IES', 'JazeeraUniversity', 'MoUSigning', 'StrategicPartnership', 'EngineeringEducation'],
@@ -52,7 +52,7 @@ export const newsArticles: NewsArticle[] = [
   },
   {
     slug: 'mou-salaam',
-    title: 'IES Signs MoU with Salaam University',
+    title: 'IES Signs MoU with Salaam University (SU)',
     date: '31 December 2025',
     author: { name: 'Eng. Mohamed Hussein Hassan', role: 'Honorary Secretary, IES' },
     hashtags: ['IES', 'SalaamUniversity', 'MoUSigning', 'StrategicPartnership', 'EngineeringEducation'],

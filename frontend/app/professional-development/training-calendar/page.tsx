@@ -1,5 +1,4 @@
 import { StubPage } from '@/components/public/StubPage';
-import { routes } from '@/config/routes';
 export const metadata = { title: 'Training Calendar' };
 export default function TrainingCalendarPage() {
   return (
@@ -9,7 +8,7 @@ export default function TrainingCalendarPage() {
       description="Structured training programmes offered by IES throughout the year."
       breadcrumbs={[
         { label: 'Home', href: '/' },
-        { label: 'Professional Development', href: routes.professionalDevelopment.root },
+        { label: 'Professional Development', href: '/professional-development' },
         { label: 'Training Calendar' },
       ]}
     />

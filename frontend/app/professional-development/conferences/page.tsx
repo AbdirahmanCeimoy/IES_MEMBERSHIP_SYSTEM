@@ -1,5 +1,4 @@
 import { StubPage } from '@/components/public/StubPage';
-import { routes } from '@/config/routes';
 export const metadata = { title: 'Conferences' };
 export default function ConferencesPage() {
   return (
@@ -9,7 +8,7 @@ export default function ConferencesPage() {
       description="National and international engineering conferences hosted or supported by IES."
       breadcrumbs={[
         { label: 'Home', href: '/' },
-        { label: 'Professional Development', href: routes.professionalDevelopment.root },
+        { label: 'Professional Development', href: '/professional-development' },
         { label: 'Conferences' },
       ]}
     />

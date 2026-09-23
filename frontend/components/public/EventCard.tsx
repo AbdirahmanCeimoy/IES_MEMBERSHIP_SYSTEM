@@ -17,7 +17,7 @@ export const EventCard = ({ event }: { event: EventItem }) => (
       {event.type && <Badge tone="accent">{event.type}</Badge>}
       <span className="text-[11px] text-slate-500">{event.date}</span>
     </div>
-    <Link href={event.href} className="text-sm font-semibold text-[#082B55] hover:text-[#0047AB]">
+    <Link href={event.href} className="text-sm font-semibold text-[#022D5A] hover:text-[#035CB3]">
       {event.title}
     </Link>
     {event.location && <p className="text-xs text-slate-500">📍 {event.location}</p>}

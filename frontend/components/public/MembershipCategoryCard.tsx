@@ -18,12 +18,12 @@ export const MembershipCategoryCard = ({ category }: { category: MembershipCateg
       </span>
       {category.postnominal && <Badge tone="primary">{category.postnominal}</Badge>}
     </div>
-    <h3 className="text-sm font-semibold text-[#082B55]">{category.title}</h3>
+    <h3 className="text-sm font-semibold text-[#022D5A]">{category.title}</h3>
     <p className="text-xs leading-relaxed text-slate-600">{category.summary}</p>
     {category.href && (
       <Link
         href={category.href}
-        className="mt-auto text-xs font-semibold text-[#0047AB] hover:underline"
+        className="mt-auto text-xs font-semibold text-[#035CB3] hover:underline"
       >
         Learn more ›
       </Link>

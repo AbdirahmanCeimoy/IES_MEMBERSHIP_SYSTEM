@@ -4,6 +4,7 @@ export interface Partner {
   name: string;
   href: string;
   scope?: string;
+  logo?: string;
 }
 
 export const PartnerCard = ({ partner }: { partner: Partner }) => (
@@ -12,7 +13,7 @@ export const PartnerCard = ({ partner }: { partner: Partner }) => (
       href={partner.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-sm font-semibold text-[#082B55] hover:text-[#0047AB]"
+      className="text-sm font-semibold text-[#022D5A] hover:text-[#035CB3]"
     >
       {partner.name}
     </a>

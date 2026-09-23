@@ -50,25 +50,25 @@ export default function CpdPage() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold text-[#082B55]">CPD Activities</h1>
+        <h1 className="text-2xl font-bold text-[#022D5A]">CPD Activities</h1>
         <p className="text-sm text-slate-600">Log your continuing professional development and track your annual target.</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Approved hours</p>
-          <p className="mt-2 text-2xl font-bold text-[#082B55]">{totals.approved}</p>
+          <p className="mt-2 text-2xl font-bold text-[#022D5A]">{totals.approved}</p>
         </Card>
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Pending review</p>
-          <p className="mt-2 text-2xl font-bold text-[#082B55]">{totals.pending}</p>
+          <p className="mt-2 text-2xl font-bold text-[#022D5A]">{totals.pending}</p>
         </Card>
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Annual target</p>
-          <p className="mt-2 text-2xl font-bold text-[#082B55]">{totals.target}</p>
+          <p className="mt-2 text-2xl font-bold text-[#022D5A]">{totals.target}</p>
           <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
             <div
-              className="h-full bg-[#66FF00] transition-all"
+              className="h-full bg-[#48C184] transition-all"
               style={{ width: `${progressPct}%` }}
             />
           </div>
@@ -77,24 +77,24 @@ export default function CpdPage() {
       </div>
 
       <Card padded>
-        <h2 className="text-sm font-semibold text-[#082B55]">Log a new CPD activity</h2>
+        <h2 className="text-sm font-semibold text-[#022D5A]">Log a new CPD activity</h2>
         <form onSubmit={handleAdd} className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55] lg:col-span-2">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A] lg:col-span-2">
             Activity
             <input
               type="text"
               value={form.activity}
               onChange={(e) => setForm((prev) => ({ ...prev, activity: e.target.value }))}
               placeholder="e.g. IES CPD workshop on structural design"
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
             />
           </label>
-          <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
             Category
             <select
               value={form.category}
               onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
             >
               <option>Workshop</option>
               <option>Conference</option>
@@ -103,16 +103,16 @@ export default function CpdPage() {
               <option>Self-study</option>
             </select>
           </label>
-          <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
             Date
             <input
               type="date"
               value={form.date}
               onChange={(e) => setForm((prev) => ({ ...prev, date: e.target.value }))}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
             />
           </label>
-          <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
             Hours
             <input
               type="number"
@@ -120,13 +120,13 @@ export default function CpdPage() {
               step="0.5"
               value={form.hours}
               onChange={(e) => setForm((prev) => ({ ...prev, hours: e.target.value }))}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
             />
           </label>
           <div className="lg:col-span-5">
             <button
               type="submit"
-              className="inline-flex items-center rounded-lg bg-[#66FF00] px-5 py-2 text-sm font-semibold text-[#082B55] transition-colors hover:bg-[#5be000]"
+              className="inline-flex items-center rounded-lg bg-[#48C184] px-5 py-2 text-sm font-semibold text-[#022D5A] transition-colors hover:bg-[#3AA870]"
             >
               Add activity
             </button>
@@ -135,7 +135,7 @@ export default function CpdPage() {
       </Card>
 
       <Card padded>
-        <h2 className="text-sm font-semibold text-[#082B55]">Activity log</h2>
+        <h2 className="text-sm font-semibold text-[#022D5A]">Activity log</h2>
         {entries.length === 0 ? (
           <div className="mt-3">
             <EmptyState
@@ -148,11 +148,11 @@ export default function CpdPage() {
             {entries.map((entry) => (
               <li key={entry.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
                 <div>
-                  <p className="text-sm font-semibold text-[#082B55]">{entry.activity}</p>
+                  <p className="text-sm font-semibold text-[#022D5A]">{entry.activity}</p>
                   <p className="text-xs text-slate-500">{entry.category} · {entry.date}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-[#082B55]">{entry.hours}h</span>
+                  <span className="text-sm font-semibold text-[#022D5A]">{entry.hours}h</span>
                   <Badge tone={entry.status === 'approved' ? 'success' : 'warning'}>
                     {entry.status}
                   </Badge>

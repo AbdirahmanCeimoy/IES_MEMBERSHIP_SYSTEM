@@ -114,7 +114,7 @@ function FinalizeCredentialsForm() {
       <Section>
         <Card padded className="max-w-2xl">
           <form className="flex flex-col gap-3" onSubmit={handleSubmit} aria-label="Finalize credentials">
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Username
               <input
                 type="text"
@@ -122,13 +122,13 @@ function FinalizeCredentialsForm() {
                 autoComplete="username"
                 value={username}
                 onChange={(event) => setUsername(sanitizeUsername(event.target.value))}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 placeholder="3–32 letters or numbers"
               />
               <span className="text-[11px] font-normal text-slate-500">{USERNAME_RULE}</span>
             </label>
 
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Email
               <input
                 type="email"
@@ -136,12 +136,12 @@ function FinalizeCredentialsForm() {
                 autoComplete="email"
                 value={email}
                 onChange={(event) => setEmail(sanitizeEmail(event.target.value))}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
               <span className="text-[11px] font-normal text-slate-500">{EMAIL_RULE}</span>
             </label>
 
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Password
               <PasswordInput
                 required
@@ -152,7 +152,7 @@ function FinalizeCredentialsForm() {
               <span className="text-[11px] font-normal text-slate-500">{SECURE_PASSWORD_RULE}</span>
             </label>
 
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Confirm password
               <PasswordInput
                 required
@@ -172,7 +172,7 @@ function FinalizeCredentialsForm() {
               <Button type="submit" variant="accent" disabled={loading}>
                 {loading ? 'Saving…' : 'Save credentials'}
               </Button>
-              <Link href="/login" className="text-xs text-slate-500 hover:text-[#0047AB]">
+              <Link href="/login" className="text-xs text-slate-500 hover:text-[#035CB3]">
                 Sign in instead
               </Link>
             </div>

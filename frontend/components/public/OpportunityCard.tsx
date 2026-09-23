@@ -19,7 +19,7 @@ export const OpportunityCard = ({ item }: { item: OpportunityItem }) => (
         <span className="text-[11px] font-semibold text-amber-700">Deadline: {item.deadline}</span>
       )}
     </div>
-    <Link href={item.href} className="text-sm font-semibold text-[#082B55] hover:text-[#0047AB]">
+    <Link href={item.href} className="text-sm font-semibold text-[#022D5A] hover:text-[#035CB3]">
       {item.title}
     </Link>
     <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">

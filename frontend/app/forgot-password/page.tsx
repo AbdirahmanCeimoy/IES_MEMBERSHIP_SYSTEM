@@ -141,7 +141,7 @@ export default function ForgotPasswordPage() {
       <div className="mx-auto w-full max-w-5xl">
         <Link
           href={routes.home}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#0047AB]"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#035CB3]"
         >
           <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M12 5l-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -157,19 +157,19 @@ export default function ForgotPasswordPage() {
           <div className="relative h-10 w-10">
             <Image src={site.logo} alt="" fill className="object-contain" />
           </div>
-          <span className="text-base font-bold text-[#082B55]">{site.shortName}omalia</span>
+          <span className="text-base font-bold text-[#022D5A]">{site.shortName}omalia</span>
         </Link>
 
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-5 text-center">
-            <h1 className="text-lg font-bold text-[#082B55]">Recover Account</h1>
+            <h1 className="text-lg font-bold text-[#022D5A]">Recover Account</h1>
             <p className="mt-1 text-xs text-slate-500">
               Enter your account details and choose a new password.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3" aria-label="Password recovery">
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Username
               <input
                 name="username"
@@ -178,11 +178,11 @@ export default function ForgotPasswordPage() {
                 autoComplete="username"
                 value={formData.username}
                 onChange={handleChange}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
 
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Full name
               <input
                 name="fullName"
@@ -191,11 +191,11 @@ export default function ForgotPasswordPage() {
                 autoComplete="name"
                 value={formData.fullName}
                 onChange={handleChange}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
 
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Email (admin recovery)
               <input
                 name="email"
@@ -203,23 +203,23 @@ export default function ForgotPasswordPage() {
                 autoComplete="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 placeholder="you@gmail.com"
               />
             </label>
 
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               National ID / Passport (membership recovery)
               <input
                 name="nationalIdNumber"
                 type="text"
                 value={formData.nationalIdNumber}
                 onChange={handleChange}
-                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
 
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               New password
               <PasswordInput
                 name="newPassword"
@@ -231,7 +231,7 @@ export default function ForgotPasswordPage() {
               <span className="text-[11px] font-normal text-slate-500">{SECURE_PASSWORD_RULE}</span>
             </label>
 
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Confirm new password
               <PasswordInput
                 name="confirmNewPassword"
@@ -256,7 +256,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-1 inline-flex items-center justify-center rounded-lg bg-[#66FF00] px-4 py-2.5 text-sm font-semibold text-[#082B55] transition-colors hover:bg-[#5be000] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0047AB] focus-visible:ring-offset-2 disabled:opacity-50"
+              className="mt-1 inline-flex items-center justify-center rounded-lg bg-[#48C184] px-4 py-2.5 text-sm font-semibold text-[#022D5A] transition-colors hover:bg-[#3AA870] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3] focus-visible:ring-offset-2 disabled:opacity-50"
             >
               {loading ? 'Resetting…' : 'Reset password'}
             </button>
@@ -264,7 +264,7 @@ export default function ForgotPasswordPage() {
 
           <p className="mt-4 text-center text-xs text-slate-500">
             Remembered it?{' '}
-            <Link href={routes.auth.login} className="font-semibold text-[#0047AB] hover:underline">
+            <Link href={routes.auth.login} className="font-semibold text-[#035CB3] hover:underline">
               Back to login
             </Link>
           </p>

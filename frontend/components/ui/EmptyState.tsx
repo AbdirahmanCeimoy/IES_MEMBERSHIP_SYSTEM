@@ -17,7 +17,7 @@ export const EmptyState = ({ title, description, action, icon, className }: Empt
     )}
   >
     {icon && <div className="text-slate-400">{icon}</div>}
-    <h3 className="text-base font-semibold text-[#082B55]">{title}</h3>
+    <h3 className="text-base font-semibold text-[#022D5A]">{title}</h3>
     {description && <p className="max-w-md text-sm text-slate-600">{description}</p>}
     {action && <div className="mt-2">{action}</div>}
   </div>

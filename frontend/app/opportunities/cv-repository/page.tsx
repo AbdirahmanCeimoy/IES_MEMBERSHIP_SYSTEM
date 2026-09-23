@@ -21,12 +21,12 @@ export default function CVRepositoryPage() {
       <Section>
         <ContentGrid columns={2}>
           <Card padded>
-            <h3 className="text-sm font-semibold text-[#082B55]">Submit CV</h3>
+            <h3 className="text-sm font-semibold text-[#022D5A]">Submit CV</h3>
             <p className="mt-1 text-sm text-slate-600">Add your CV to the IES talent pool.</p>
             <Button href={routes.auth.login} variant="primary" size="sm" className="mt-3">Sign in to submit</Button>
           </Card>
           <Card padded>
-            <h3 className="text-sm font-semibold text-[#082B55]">Search CVs</h3>
+            <h3 className="text-sm font-semibold text-[#022D5A]">Search CVs</h3>
             <p className="mt-1 text-sm text-slate-600">Registered organizations can browse the repository.</p>
             <Button href="mailto:info@iesomalia.org.so" variant="secondary" size="sm" className="mt-3">Request access</Button>
           </Card>

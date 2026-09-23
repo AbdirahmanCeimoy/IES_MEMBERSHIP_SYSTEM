@@ -1,5 +1,4 @@
 import { StubPage } from '@/components/public/StubPage';
-import { routes } from '@/config/routes';
 export const metadata = { title: 'CPD Courses' };
 export default function CoursesPage() {
   return (
@@ -9,7 +8,7 @@ export default function CoursesPage() {
       description="Short, focused CPD courses designed to strengthen specific technical and professional skills."
       breadcrumbs={[
         { label: 'Home', href: '/' },
-        { label: 'Professional Development', href: routes.professionalDevelopment.root },
+        { label: 'Professional Development', href: '/professional-development' },
         { label: 'Courses' },
       ]}
     />

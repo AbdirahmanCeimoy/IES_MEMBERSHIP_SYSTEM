@@ -14,6 +14,7 @@ class SignupRequest extends BaseNestFormRequest
             'password' => ['string', 'regex:' . AuthValidation::SECURE_PASSWORD_REGEX],
             'fullName' => ['string'],
             'email' => ['email', 'regex:' . AuthValidation::GMAIL_EMAIL_REGEX],
+            'grade' => ['sometimes', 'nullable', 'string', 'in:STUDENT,GRADUATE,ASSOCIATE,CORPORATE,SENIOR,FELLOW'],
         ];
     }
 

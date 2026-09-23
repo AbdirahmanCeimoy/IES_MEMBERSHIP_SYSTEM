@@ -18,7 +18,7 @@ export default function AllApplicationsPage() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold text-[#082B55]">All Applications</h1>
+        <h1 className="text-2xl font-bold text-[#022D5A]">All Applications</h1>
         <p className="text-sm text-slate-600">Admin-only view of every submitted membership application.</p>
       </div>
 
@@ -42,7 +42,7 @@ export default function AllApplicationsPage() {
               <tbody>
                 {sample.map((row) => (
                   <tr key={row.id} className="border-b border-slate-100">
-                    <td className="py-2 pr-4 text-[#082B55]">{row.applicant}</td>
+                    <td className="py-2 pr-4 text-[#022D5A]">{row.applicant}</td>
                     <td className="py-2 pr-4">{row.grade}</td>
                     <td className="py-2 pr-4 text-slate-500">{row.submitted}</td>
                     <td className="py-2">

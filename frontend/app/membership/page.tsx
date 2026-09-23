@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ContentGrid } from '@/components/public/ContentGrid';
 import { MembershipCategoryCard } from '@/components/public/MembershipCategoryCard';
-import { CTASection } from '@/components/public/CTASection';
 import { ValueList } from '@/components/public/ValueList';
 import { routes } from '@/config/routes';
 import {
@@ -28,7 +27,7 @@ export default function MembershipPage() {
         description="Joining IES is a valuable investment in your future as an engineering and technology professional. Our benefits support your career from university, throughout your professional life, and through retirement."
         actions={
           <>
-            <Button href={routes.membership.apply} variant="primary">Apply for Membership</Button>
+            <Button href={routes.membership.applicationGuidelines} variant="primary">Apply for Membership</Button>
             <Button href={routes.membership.categories} variant="secondary">See Categories</Button>
           </>
         }
@@ -40,7 +39,7 @@ export default function MembershipPage() {
           {whyJoinPillars.map((pillar, i) => (
             <Card key={pillar.title} padded>
               <Badge tone="primary" className="mb-2">{String(i + 1).padStart(2, '0')}</Badge>
-              <h3 className="text-sm font-semibold text-[#082B55]">{pillar.title}</h3>
+              <h3 className="text-sm font-semibold text-[#022D5A]">{pillar.title}</h3>
               <p className="mt-1 text-sm text-slate-600">{pillar.body}</p>
             </Card>
           ))}
@@ -76,37 +75,29 @@ export default function MembershipPage() {
         <SectionHeading eyebrow="Ready to apply?" title="Application quick links" />
         <ContentGrid columns={3} className="mt-6">
           <Card padded>
-            <h3 className="text-sm font-semibold text-[#082B55]">Requirements</h3>
+            <h3 className="text-sm font-semibold text-[#022D5A]">Requirements</h3>
             <p className="mt-1 text-sm text-slate-600">Documents and referees required for each grade.</p>
             <Button href={routes.membership.requirements} variant="ghost" size="sm" className="mt-3 px-0">
               View requirements ›
             </Button>
           </Card>
           <Card padded>
-            <h3 className="text-sm font-semibold text-[#082B55]">Fees</h3>
+            <h3 className="text-sm font-semibold text-[#022D5A]">Fees</h3>
             <p className="mt-1 text-sm text-slate-600">Application fees for each membership category.</p>
             <Button href={routes.membership.fees} variant="ghost" size="sm" className="mt-3 px-0">
               View fees ›
             </Button>
           </Card>
           <Card padded>
-            <h3 className="text-sm font-semibold text-[#082B55]">Organizations</h3>
+            <h3 className="text-sm font-semibold text-[#022D5A]">Organizations</h3>
             <p className="mt-1 text-sm text-slate-600">Organization membership for companies and institutions.</p>
-            <Button href={routes.membership.organizations} variant="ghost" size="sm" className="mt-3 px-0">
+            <Button href={routes.membership.becomeMember} variant="ghost" size="sm" className="mt-3 px-0">
               View organization membership ›
             </Button>
           </Card>
         </ContentGrid>
       </Section>
 
-      <CTASection
-        eyebrow="Apply today"
-        title="Join the national engineering community"
-        primaryLabel="Apply for Membership"
-        primaryHref={routes.membership.apply}
-        secondaryLabel="Member Check"
-        secondaryHref={routes.membership.memberCheck}
-      />
     </>
   );
 }

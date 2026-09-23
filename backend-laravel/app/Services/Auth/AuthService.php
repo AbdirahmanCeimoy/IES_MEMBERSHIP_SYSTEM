@@ -6,17 +6,21 @@ use App\Enums\UserRole;
 use App\Exceptions\NestHttpException;
 use App\Models\MembershipApplication;
 use App\Models\User;
+use App\Services\Memberships\WelcomeEmailService;
 use App\Support\Iso8601;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class AuthService
 {
     private const PROFILE_UPDATE_COOLDOWN_MONTHS = 2;
 
     public function __construct(
-        private readonly JwtTokenService $jwtTokenService
+        private readonly JwtTokenService $jwtTokenService,
+        private readonly WelcomeEmailService $welcomeEmailService
     ) {
     }
 
@@ -48,6 +52,18 @@ class AuthService
             }
 
             throw $exception;
+        }
+
+        // Fire welcome email asynchronously - do NOT block signup on it.
+        try {
+            $this->welcomeEmailService->sendWelcomeEmail([
+                'fullName' => $user->fullName ?: $user->username,
+                'email' => $user->email,
+                'username' => $user->username,
+                'grade' => $dto['grade'] ?? null,
+            ]);
+        } catch (Throwable $exception) {
+            Log::warning('Welcome email failed for ' . $user->email . ': ' . $exception->getMessage());
         }
 
         return [
@@ -153,6 +169,18 @@ class AuthService
                 'fullName' => $hasFullNameChange ? $nextFullName : $existing->fullName,
                 'email' => $hasEmailChange ? $nextEmail : $existing->email,
             ]);
+            // Persist additional profile fields when the migration has added them.
+            foreach (['gender', 'title', 'firstName', 'lastName', 'dateOfBirth', 'discipline', 'grade'] as $extra) {
+                if (array_key_exists($extra, $dto) && $dto[$extra] !== null) {
+                    try {
+                        $existing->{$extra} = $extra === 'gender'
+                            ? strtoupper((string) $dto[$extra])
+                            : $dto[$extra];
+                    } catch (\Throwable) {
+                        // ignore if column not present yet
+                    }
+                }
+            }
             $existing->save();
         } catch (QueryException $exception) {
             if ($this->isUniqueConstraintError($exception)) {

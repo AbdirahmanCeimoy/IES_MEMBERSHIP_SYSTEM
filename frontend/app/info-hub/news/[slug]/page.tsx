@@ -58,7 +58,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<Para
           </article>
           <Card padded className="h-fit">
             <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Signed by</p>
-            <p className="mt-1 text-sm font-semibold text-[#082B55]">{article.author.name}</p>
+            <p className="mt-1 text-sm font-semibold text-[#022D5A]">{article.author.name}</p>
             <p className="text-xs text-slate-500">{article.author.role}</p>
             <div className="mt-4">
               <Button href={routes.infoHub.news} variant="secondary" size="sm">‹ All news</Button>

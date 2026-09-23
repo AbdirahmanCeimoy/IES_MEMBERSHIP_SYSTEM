@@ -49,35 +49,35 @@ export const coreValues = [
 export const whatWeDo: { title: string; body: string }[] = [
   {
     title: 'Information to Members',
-    body: 'Conferences, seminars, workshops, webinars and other professional opportunities from national and international engineering organizations.',
+    body: 'IES provides members with information about conferences, seminars, workshops, webinars, and other professional opportunities from national and international engineering organizations. These activities help members stay informed, enhance their professional skills, and engage with the wider engineering community.',
   },
   {
-    title: 'Professional Development',
-    body: 'Workshops, technical seminars, training programs and CPD activities that strengthen the knowledge, skills and professional growth of engineers.',
+    title: 'Professional Development Programs',
+    body: 'IES organizes workshops, technical seminars, training programs, and Continuing Professional Development (CPD) activities to strengthen the knowledge, skills, and professional growth of engineers. The Institution supports lifelong learning and career development across all engineering disciplines.',
   },
   {
-    title: 'Advocacy & Policy Support',
-    body: 'Representing the engineering profession and collaborating with government, universities, industry and international engineering organizations.',
+    title: 'Advocacy and Policy Support',
+    body: 'IES represents the engineering profession and collaborates with government institutions, universities, industry stakeholders, development partners, and international engineering organizations to address engineering challenges, promote professional standards, and contribute to national development.',
   },
   {
-    title: 'Research, Innovation & Knowledge Sharing',
-    body: 'Promoting engineering research, innovation and knowledge exchange through technical discussions, studies, publications and collaboration.',
+    title: 'Research, Innovation and Knowledge Sharing',
+    body: 'IES promotes engineering research, innovation, and knowledge exchange by encouraging technical discussions, supporting studies, publishing engineering resources, and facilitating collaboration among engineers, academic institutions, industries, and other stakeholders.',
   },
   {
-    title: 'Website & Communication',
-    body: 'Information about IES activities, membership, events, publications and announcements through the official website and communication channels.',
+    title: 'Website and Communication',
+    body: 'IES provides information about its activities, membership opportunities, events, publications, and announcements through its official website and communication channels. These platforms help members and stakeholders stay connected with IES programs, initiatives, and professional activities.',
   },
   {
-    title: 'Arbitration & Dispute Resolution',
-    body: 'A professional framework for arbitration and dispute resolution engaging qualified engineers for independent technical opinions.',
+    title: 'Arbitration and Dispute Resolution',
+    body: 'IES aims to establish a professional framework for arbitration and dispute resolution by engaging qualified engineers to provide independent technical opinions and expert support in engineering and construction-related matters.',
   },
   {
-    title: 'Technical Audit & Project Review',
-    body: 'Independent technical audits and project reviews to evaluate progress, identify challenges and recommend improvements to quality and safety.',
+    title: 'Technical Audit and Project Review',
+    body: 'IES seeks to provide independent technical audits and project reviews upon request. The Institution may evaluate project progress, identify technical challenges, assess engineering practices, and recommend solutions to improve quality, safety, and performance.',
   },
   {
     title: 'Professional Networking',
-    body: 'A platform for engineers, students, academics and industry professionals to connect, exchange knowledge and collaborate.',
+    body: 'IES provides a platform for engineers, students, academics, and industry professionals to connect, exchange knowledge, collaborate, and contribute to the advancement of the engineering profession in Somalia.',
   },
 ];
 
@@ -144,17 +144,21 @@ export const secretariatPositions: string[] = [
 import type { Partner } from '@/components/public/PartnerCard';
 
 export const partners: Partner[] = [
-  { name: 'World Federation of Engineering Organizations (WFEO)', href: 'https://www.wfeo.org/', scope: 'International' },
-  { name: 'Federation of African Engineering Organisations (FAEO)', href: 'https://faeo.org/', scope: 'Regional (Africa)' },
-  { name: 'UNESCO', href: 'https://www.unesco.org/en', scope: 'International' },
-  { name: 'Institution of Engineers of Kenya (IEK)', href: 'https://www.iekenya.org/about-us', scope: 'Regional (East Africa)' },
-  { name: 'Uganda Institution of Professional Engineers (UIPE)', href: 'https://uipe.co.ug/', scope: 'Regional (East Africa)' },
-  { name: 'Institution of Engineers Tanzania (IET)', href: 'https://iet.or.tz/', scope: 'Regional (East Africa)' },
-  { name: 'Institution of Engineers Rwanda', href: 'https://engineersrwanda.rw/', scope: 'Regional (East Africa)' },
-  { name: 'Jamhuriya University of Science and Technology', href: 'https://www.just.edu.so/', scope: 'Academic Partner' },
-  { name: 'Benadir University', href: 'https://bu.edu.so/', scope: 'Academic Partner' },
-  { name: 'Jazeera University', href: 'https://jazeerauniversity.edu.so/', scope: 'Academic Partner' },
-  { name: 'Salaam University', href: 'https://salaam.edu.so/', scope: 'Academic Partner' },
+  { name: 'East Africa Federation of Engineering Organisations (EAFEO)', href: 'https://eafeo.org/', scope: 'International', logo: '/loges-international/eafeo.jpeg' },
+  { name: 'Federation of African Engineering Organisations (FAEO)', href: 'https://faeo.org/', scope: 'International', logo: '/loges-international/faeo.jpeg' },
+  { name: 'World Federation of Engineering Organizations (WFEO)', href: 'https://www.wfeo.org/', scope: 'International', logo: '/loges-international/wfeo.jpeg' },
+  { name: 'United Nations Educational, Scientific and Cultural Organization (UNESCO)', href: 'https://www.unesco.org/en', scope: 'International', logo: '/loges-international/unesco.jpeg' },
+  { name: 'The Institution of Engineers of Kenya (IEK)', href: 'https://www.iekenya.org/about-us', scope: 'International', logo: '/loges-international/iek.png' },
+  { name: 'Uganda Institution of Professional Engineers (UIPE)', href: 'https://uipe.co.ug/', scope: 'International', logo: '/loges-international/UGANDA.jpeg' },
+  { name: 'Institution of Engineers Tanzania (IET)', href: 'https://iet.or.tz/', scope: 'International', logo: '/loges-international/IET.jpeg' },
+  { name: 'Institute of Engineering Rwanda (IER)', href: 'https://engineersrwanda.rw/', scope: 'International', logo: '/loges-international/IER.jpeg' },
+  { name: 'Ministry of Public Works, Reconstruction and Housing (MPWR), Federal Government of Somalia', href: 'https://mpwr.gov.so/', scope: 'Local', logo: '/loges-locals/wasarada-howlaha-guud-dib-udhiska.jpeg' },
+  { name: 'Ministry of Energy and Water Resources (MoEWR), Federal Government of Somalia', href: 'https://moewr.gov.so/', scope: 'Local', logo: '/loges-locals/Minester-of-energy-and-water-resource.jpeg' },
+  { name: 'Somali Real Estate and Construction Association (SORECA)', href: 'https://soreca.so/', scope: 'Local', logo: '/loges-locals/SORECA.jpeg' },
+  { name: 'Jamhuriya University of Science and Technology (JUST)', href: 'https://www.just.edu.so/', scope: 'Local', logo: '/loges-locals/JAMHURIYA-UNIVER.png' },
+  { name: 'Jazeera University (JU)', href: 'https://jazeerauniversity.edu.so/', scope: 'Local', logo: '/loges-locals/JAZEERA-UNIVERSITY.jpeg' },
+  { name: 'Salaam University (SU)', href: 'https://salaam.edu.so/', scope: 'Local', logo: '/loges-locals/SALAAM-UNIVERSITY.jpeg' },
+  { name: 'Benadir University (BU)', href: 'https://bu.edu.so/', scope: 'Local', logo: '/loges-locals/BANADIR-UNIVERSITY.jpeg' },
 ];
 
 export const governanceDocuments = [

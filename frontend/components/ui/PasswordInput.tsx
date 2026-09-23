@@ -15,7 +15,7 @@ export const PasswordInput = ({ className, ...rest }: PasswordInputProps) => {
         type={visible ? 'text' : 'password'}
         className={cn(
           'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-10 text-sm font-normal',
-          'focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]',
+          'focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]',
           className,
         )}
       />
@@ -23,7 +23,7 @@ export const PasswordInput = ({ className, ...rest }: PasswordInputProps) => {
         type="button"
         onClick={() => setVisible((v) => !v)}
         aria-label={visible ? 'Hide password' : 'Show password'}
-        className="absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500 hover:text-[#0047AB] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#0047AB]"
+        className="absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500 hover:text-[#035CB3] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#035CB3]"
         tabIndex={-1}
       >
         {visible ? (

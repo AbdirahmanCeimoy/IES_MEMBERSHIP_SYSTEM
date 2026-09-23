@@ -47,7 +47,7 @@ export default function GalleryPhotosPage() {
                 />
               </div>
               <figcaption className="flex items-center justify-between gap-2 border-t border-slate-100 px-3 py-2">
-                <p className="text-sm font-medium text-[#082B55]">{p.title}</p>
+                <p className="text-sm font-medium text-[#022D5A]">{p.title}</p>
                 <Badge tone="muted">{p.category}</Badge>
               </figcaption>
             </figure>

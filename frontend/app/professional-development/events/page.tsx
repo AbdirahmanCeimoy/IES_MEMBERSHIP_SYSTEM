@@ -6,7 +6,6 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ContentGrid } from '@/components/public/ContentGrid';
-import { routes } from '@/config/routes';
 
 export const metadata = { title: 'Events Calendar' };
 
@@ -20,7 +19,7 @@ export default function EventsPage() {
   return (
     <>
       <PageHero
-        breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Professional Development', href: routes.professionalDevelopment.root }, { label: 'Events' }]} />}
+        breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Professional Development', href: '/professional-development' }, { label: 'Events' }]} />}
         eyebrow="Calendar"
         title="IES Events Calendar"
         description="Annual and ad-hoc events, conferences, seminars and technical forums organized by the Institution of Engineers of Somalia."
@@ -32,7 +31,7 @@ export default function EventsPage() {
           {annualEvents.map((e) => (
             <Card key={e.title} padded>
               <Badge tone="primary" className="mb-2">Annual</Badge>
-              <h3 className="text-sm font-semibold text-[#082B55]">{e.title}</h3>
+              <h3 className="text-sm font-semibold text-[#022D5A]">{e.title}</h3>
               <p className="mt-1 text-sm text-slate-600">{e.body}</p>
             </Card>
           ))}

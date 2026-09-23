@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import type { NavigationEntry } from '@/types/navigation';
+import type { NavigationEntry, NavigationItem } from '@/types/navigation';
 import { cn } from '@/lib/cn';
 import { ChevronIcon } from './ChevronIcon';
 
@@ -11,6 +11,77 @@ interface MobileNavSectionProps {
   active?: boolean;
   onNavigate: () => void;
 }
+
+const MobileSubItem = ({
+  item,
+  onNavigate,
+  depth = 0,
+}: {
+  item: NavigationItem;
+  onNavigate: () => void;
+  depth?: number;
+}) => {
+  const [open, setOpen] = useState(false);
+  const hasChildren = item.children && item.children.length > 0;
+
+  if (!hasChildren && item.href) {
+    return (
+      <li>
+        {item.external ? (
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onNavigate}
+            className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#035CB3]"
+          >
+            {item.label}
+          </a>
+        ) : (
+          <Link
+            href={item.href}
+            onClick={onNavigate}
+            className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#035CB3]"
+          >
+            {item.label}
+          </Link>
+        )}
+      </li>
+    );
+  }
+
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50"
+        aria-expanded={open}
+      >
+        <span>{item.label}</span>
+        <ChevronIcon className={cn('h-3.5 w-3.5 transition-transform', open && 'rotate-180')} />
+      </button>
+      {open && (
+        <div className="ml-3 border-l border-slate-200 pl-2">
+          {item.href && (
+            <Link
+              href={item.href}
+              onClick={onNavigate}
+              className="block rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-[#035CB3]"
+            >
+              View all
+            </Link>
+          )}
+          <ul>
+            {item.children!.map((child) => (
+              <MobileSubItem key={child.label} item={child} onNavigate={onNavigate} depth={depth + 1} />
+            ))}
+          </ul>
+        </div>
+      )}
+    </li>
+  );
+};
 
 export const MobileNavSection = ({ entry, active, onNavigate }: MobileNavSectionProps) => {
   const [open, setOpen] = useState(false);
@@ -24,7 +95,7 @@ export const MobileNavSection = ({ entry, active, onNavigate }: MobileNavSection
         onClick={onNavigate}
         className={cn(
           'block rounded-md px-3 py-3 text-base font-medium transition-colors',
-          active ? 'text-[#0047AB]' : 'text-slate-800 hover:bg-slate-50 hover:text-[#0047AB]',
+          active ? 'text-[#035CB3]' : 'text-slate-800 hover:bg-slate-50 hover:text-[#035CB3]',
         )}
       >
         {entry.label}
@@ -39,7 +110,7 @@ export const MobileNavSection = ({ entry, active, onNavigate }: MobileNavSection
         onClick={() => setOpen((v) => !v)}
         className={cn(
           'flex w-full items-center justify-between rounded-md px-3 py-3 text-left text-base font-medium transition-colors',
-          active ? 'text-[#0047AB]' : 'text-slate-800 hover:bg-slate-50',
+          active ? 'text-[#035CB3]' : 'text-slate-800 hover:bg-slate-50',
         )}
         aria-expanded={open}
       >
@@ -53,7 +124,7 @@ export const MobileNavSection = ({ entry, active, onNavigate }: MobileNavSection
             <Link
               href={entry.href}
               onClick={onNavigate}
-              className="block rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-[#0047AB]"
+              className="block rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-[#035CB3]"
             >
               View overview
             </Link>
@@ -71,7 +142,7 @@ export const MobileNavSection = ({ entry, active, onNavigate }: MobileNavSection
                       <Link
                         href={item.href}
                         onClick={onNavigate}
-                        className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0047AB]"
+                        className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#035CB3]"
                       >
                         {item.label}
                       </Link>
@@ -85,17 +156,7 @@ export const MobileNavSection = ({ entry, active, onNavigate }: MobileNavSection
           {entry.children && (
             <ul>
               {entry.children.map((item) => (
-                <li key={item.label}>
-                  {item.href && (
-                    <Link
-                      href={item.href}
-                      onClick={onNavigate}
-                      className="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0047AB]"
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-                </li>
+                <MobileSubItem key={item.label} item={item} onNavigate={onNavigate} />
               ))}
             </ul>
           )}

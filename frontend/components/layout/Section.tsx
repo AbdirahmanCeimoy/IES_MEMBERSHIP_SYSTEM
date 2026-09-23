@@ -23,8 +23,8 @@ const spacingMap: Record<SectionSpacing, string> = {
 const toneMap: Record<SectionTone, string> = {
   default: 'bg-white',
   muted: 'bg-slate-50',
-  primary: 'bg-[#0047AB] text-white',
-  dark: 'bg-[#082B55] text-white',
+  primary: 'bg-[#035CB3] text-white',
+  dark: 'bg-[#022D5A] text-white',
 };
 
 export const Section = ({

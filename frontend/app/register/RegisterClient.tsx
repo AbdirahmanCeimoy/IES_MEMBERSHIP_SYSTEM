@@ -101,6 +101,7 @@ export const RegisterClient = () => {
         password: form.password,
         fullName: username,
         email: form.email,
+        grade,
       });
 
       if (!response.ok || !response.data?.token) {
@@ -140,8 +141,8 @@ export const RegisterClient = () => {
     <div className="flex min-h-screen flex-col px-4 py-6">
       <div className="mx-auto w-full max-w-5xl">
         <Link
-          href={routes.membership.apply}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#0047AB]"
+          href={routes.membership.applicationGuidelines}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#035CB3]"
         >
           <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M12 5l-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -158,14 +159,14 @@ export const RegisterClient = () => {
 
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-5 text-center">
-            <h1 className="text-lg font-bold text-[#082B55]">REGISTER</h1>
+            <h1 className="text-lg font-bold text-[#022D5A]">REGISTER</h1>
             <p className="mt-1 text-xs font-semibold text-slate-500">
               For new individual {gradeLabel.toLowerCase()} application
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Email Address
               <input
                 type="email"
@@ -174,10 +175,10 @@ export const RegisterClient = () => {
                 value={form.email}
                 onChange={handleChange('email')}
                 placeholder="apdirahmanbashirapdullahi@gmail.com"
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Mobile No.
               <input
                 type="tel"
@@ -186,10 +187,10 @@ export const RegisterClient = () => {
                 value={form.phone}
                 onChange={handleChange('phone')}
                 placeholder="+252 61 2074218"
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Your ID / Passport No.
               <input
                 type="text"
@@ -198,10 +199,10 @@ export const RegisterClient = () => {
                 value={form.nationalId}
                 onChange={handleChange('nationalId')}
                 placeholder="11-digit National ID"
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#0047AB] focus:outline-none focus:ring-1 focus:ring-[#0047AB]"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Password
               <PasswordInput
                 autoComplete="new-password"
@@ -213,7 +214,7 @@ export const RegisterClient = () => {
                 8–16 characters · uppercase · lowercase · number
               </span>
             </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#082B55]">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Confirm Password
               <PasswordInput
                 autoComplete="new-password"
@@ -232,7 +233,7 @@ export const RegisterClient = () => {
             <button
               type="submit"
               disabled={loading}
-              className="mt-1 inline-flex items-center justify-center rounded-lg bg-[#66FF00] px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-[#082B55] transition-colors hover:bg-[#5be000] disabled:opacity-50"
+              className="mt-1 inline-flex items-center justify-center rounded-lg bg-[#48C184] px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-[#022D5A] transition-colors hover:bg-[#3AA870] disabled:opacity-50"
             >
               {loading ? 'Creating account…' : 'Create My Account'}
             </button>
@@ -240,7 +241,7 @@ export const RegisterClient = () => {
 
           <p className="mt-4 text-center text-xs text-slate-500">
             Already have an account?{' '}
-            <Link href={routes.auth.login} className="font-semibold text-[#0047AB] hover:underline">
+            <Link href={routes.auth.login} className="font-semibold text-[#035CB3] hover:underline">
               Sign in
             </Link>
           </p>

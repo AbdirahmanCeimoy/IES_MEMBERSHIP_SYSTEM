@@ -75,8 +75,8 @@ export const Pagination = ({
             aria-label="Previous page"
             className={cn(
               'inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors',
-              'hover:border-[#0047AB] hover:text-[#0047AB]',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0047AB]',
+              'hover:border-[#035CB3] hover:text-[#035CB3]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]',
               prevDisabled && 'cursor-not-allowed opacity-40 hover:border-slate-200 hover:text-slate-600',
             )}
           >
@@ -97,10 +97,10 @@ export const Pagination = ({
                 aria-label={`Go to page ${page}`}
                 className={cn(
                   'inline-flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-xs font-semibold transition-colors',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0047AB]',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]',
                   isActive
-                    ? 'border-[#0047AB] bg-[#0047AB] text-white'
-                    : 'border-slate-200 text-slate-700 hover:border-[#0047AB] hover:text-[#0047AB]',
+                    ? 'border-[#035CB3] bg-[#035CB3] text-white'
+                    : 'border-slate-200 text-slate-700 hover:border-[#035CB3] hover:text-[#035CB3]',
                 )}
               >
                 {page}
@@ -117,8 +117,8 @@ export const Pagination = ({
             aria-label="Next page"
             className={cn(
               'inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors',
-              'hover:border-[#0047AB] hover:text-[#0047AB]',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0047AB]',
+              'hover:border-[#035CB3] hover:text-[#035CB3]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]',
               nextDisabled && 'cursor-not-allowed opacity-40 hover:border-slate-200 hover:text-slate-600',
             )}
           >

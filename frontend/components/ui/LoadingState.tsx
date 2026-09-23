@@ -14,7 +14,7 @@ export const LoadingState = ({ label = 'Loading…', className }: LoadingStatePr
     role="status"
     aria-live="polite"
   >
-    <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-[#0047AB]" />
+    <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-[#035CB3]" />
     {label}
   </div>
 );

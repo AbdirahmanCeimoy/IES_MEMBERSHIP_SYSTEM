@@ -1,11 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ies-blue: #0047AB;
-  /* Deep Cobalt Blue from Logo */
-  --color-ies-green: #66FF00;
-  /* Bright Lime Green from Navbar */
-  --color-ies-dark: #003380;
+  --color-ies-blue: #035CB3;
+  --color-ies-green: #48C184;
+  --color-ies-dark: #024A8F;
   --color-ies-gray: #f8fafc;
 }
 
@@ -30,8 +28,38 @@ body {
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 120px;
+  background: #f1f5f9;
 }
 
 :target {
   scroll-margin-top: 120px;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }

@@ -15,7 +15,13 @@ import { Button } from '@/components/ui/Button';
 const collectHrefs = (entry: NavigationEntry): string[] => {
   const hrefs: string[] = [];
   if (entry.href) hrefs.push(entry.href);
-  entry.children?.forEach((c) => c.href && hrefs.push(c.href));
+  const walk = (items?: { href?: string; children?: typeof items }[]) => {
+    items?.forEach((c) => {
+      if (c.href) hrefs.push(c.href);
+      walk(c.children);
+    });
+  };
+  walk(entry.children);
   entry.groups?.forEach((g) => g.items.forEach((i) => i.href && hrefs.push(i.href)));
   return hrefs;
 };
@@ -51,11 +57,11 @@ export const MobileNavigation = () => {
   }, [open]);
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-md text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0047AB]"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]"
         aria-label="Open navigation menu"
         aria-expanded={open}
       >
@@ -78,7 +84,7 @@ export const MobileNavigation = () => {
             <div className="relative h-9 w-9">
               <Image src={site.logo} alt={`${site.shortName} logo`} fill className="object-contain" />
             </div>
-            <span className="text-sm font-bold text-[#0047AB]">{site.shortName}omalia</span>
+            <span className="text-sm font-bold text-[#035CB3]">{site.shortName}omalia</span>
           </Link>
           <button
             type="button"

@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-white text-slate-800 antialiased" suppressHydrationWarning>
+      <body className="mx-auto min-h-screen max-w-7xl bg-white text-slate-800 antialiased" suppressHydrationWarning>
         <AppShell>{children}</AppShell>
       </body>
     </html>
