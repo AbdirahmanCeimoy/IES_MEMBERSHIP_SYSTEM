@@ -62,25 +62,25 @@ export default function HomeSlider() {
                 ))}
             </div>
 
-            {/* Left Arrow */}
+            {/* Left Arrow - rounded pill style */}
             <button
                 onClick={prevSlide}
-                className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none backdrop-blur-sm"
+                className="absolute top-1/2 left-4 -translate-y-1/2 flex h-8 w-12 items-center justify-center rounded-full bg-white/85 text-[#022D5A] opacity-0 backdrop-blur-sm transition-all duration-300 hover:bg-white group-hover:opacity-100 focus:outline-none"
                 aria-label="Previous Slide"
             >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
                 </svg>
             </button>
 
-            {/* Right Arrow */}
+            {/* Right Arrow - rounded pill style */}
             <button
                 onClick={nextSlide}
-                className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:outline-none backdrop-blur-sm"
+                className="absolute top-1/2 right-4 -translate-y-1/2 flex h-8 w-12 items-center justify-center rounded-full bg-white/85 text-[#022D5A] opacity-0 backdrop-blur-sm transition-all duration-300 hover:bg-white group-hover:opacity-100 focus:outline-none"
                 aria-label="Next Slide"
             >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                 </svg>
             </button>
 

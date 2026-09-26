@@ -132,32 +132,6 @@ export const membershipRequirements: MembershipRequirement[] = [
       'Current colored passport photo.',
     ],
   },
-  {
-    category: 'Corporate Membership',
-    fee: '$30',
-    items: [
-      'Updated Curriculum Vitae.',
-      'Two proposers and two seconders (paid Corporate or Fellow members).',
-      'ID copy certified by Commissioner for Oaths.',
-      'Copy of IES graduate letter or certificate.',
-      'At least 3 years of relevant experience as a Graduate Member.',
-      'Current colored passport photo.',
-    ],
-  },
-  {
-    category: 'Fellow Membership',
-    fee: '$30',
-    items: [
-      'Updated Curriculum Vitae.',
-      'Two proposers and two seconders (paid up Fellows).',
-      'ID copy certified by Commissioner for Oaths.',
-      'Corporate membership for at least 7 years.',
-      'Senior engineering position for at least 5 years.',
-      'Demonstrated active involvement in IES activities and CSR (engineering in nature).',
-      'Short bio describing IES and CSR involvement.',
-      'Current colored passport photo.',
-    ],
-  },
 ];
 
 export const whyJoinPillars = [

@@ -1,21 +1,16 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { site } from '@/config/site';
 import { routes } from '@/config/routes';
 import { engineeringDivisions } from '@/data/institution';
+import { countries } from '@/data/countries';
 import { sanitizeName } from '@/lib/inputSanitizers';
 import { buildAuthHeader, getAuthToken, patchStoredUser } from '@/lib/authSession';
-import { apiJsonRequest, API_BASE_URL } from '@/lib/apiClient';
-import {
-  acceptAttr,
-  gradeDocuments,
-  type DocumentField,
-} from '@/data/grade-documents';
-import type { GradeCode } from '@/data/grade-requirements';
+import { apiJsonRequest } from '@/lib/apiClient';
 
 const gradeLabelMap: Record<string, string> = {
   STUDENT: 'Student Member',
@@ -24,12 +19,14 @@ const gradeLabelMap: Record<string, string> = {
   CORPORATE: 'Corporate Member',
   SENIOR: 'Senior Member',
   FELLOW: 'Fellow Member',
+  GRAD_TECHNICIAN: 'Graduate Engineering Technician',
+  GRAD_TECHNOLOGIST: 'Graduate Engineering Technologist',
 };
 
 interface FormState {
   lastName: string;
   firstName: string;
-  otherNames: string;
+  middleName: string;
   gender: string;
   title: string;
   dateOfBirth: string;
@@ -45,7 +42,7 @@ interface FormState {
 const INITIAL: FormState = {
   lastName: '',
   firstName: '',
-  otherNames: '',
+  middleName: '',
   gender: '',
   title: '',
   dateOfBirth: '',
@@ -74,7 +71,6 @@ const yearsAgo = (years: number) => {
   d.setFullYear(d.getFullYear() - years);
   return d.toISOString().slice(0, 10);
 };
-/** Minimum age 16, maximum sensible age 100. */
 const DOB_MAX = yearsAgo(16);
 const DOB_MIN = yearsAgo(100);
 
@@ -94,23 +90,13 @@ export const InitialProfileClient = () => {
   const params = useSearchParams();
   const grade = (params.get('grade') ?? 'GRADUATE').toUpperCase();
   const nationalId = params.get('nid') ?? '';
+  const phone = params.get('phone') ?? '';
 
   const [form, setForm] = useState<FormState>(INITIAL);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [showErrors, setShowErrors] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [docs, setDocs] = useState<Record<string, File | null>>({});
-
-  const gradeDocs = useMemo<DocumentField[]>(() => {
-    const g = grade as GradeCode;
-    return gradeDocuments[g] ?? gradeDocuments.GRADUATE;
-  }, [grade]);
-
-  const setDoc = (key: string, file: File | null) => {
-    setDocs((prev) => ({ ...prev, [key]: file }));
-    setShowErrors(false);
-  };
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -136,12 +122,6 @@ export const InitialProfileClient = () => {
       else if (age < 16) missing.push('You must be at least 16 years old');
       else if (age > 100) missing.push('Date of Birth is unrealistic (over 100 years)');
     }
-    // Grade-specific document requirements.
-    gradeDocs.forEach((field) => {
-      if (field.required && !docs[field.key]) {
-        missing.push(`${field.label} is required`);
-      }
-    });
     return missing;
   };
 
@@ -154,12 +134,11 @@ export const InitialProfileClient = () => {
       return;
     }
     setLoading(true);
-    const fullName = [form.title, form.firstName, form.otherNames, form.lastName]
+    const fullName = [form.title, form.firstName, form.middleName, form.lastName]
       .filter(Boolean)
       .join(' ')
       .trim();
 
-    // 1) Persist profile fields to /auth/me so the admin analytics update.
     try {
       await apiJsonRequest('/auth/me', 'PATCH', {
         fullName,
@@ -174,35 +153,7 @@ export const InitialProfileClient = () => {
         headers: buildAuthHeader(getAuthToken()),
       });
     } catch {
-      // Non-blocking: continue with the membership submission.
-    }
-
-    // 2) Submit the membership application with grade documents via multipart.
-    try {
-      const fd = new FormData();
-      fd.append('fullName', fullName);
-      fd.append('email', ''); // backend uses the authenticated user's email
-      fd.append('phone', form.city); // best-effort - phone came from URL earlier
-      fd.append('nationalIdNumber', nationalId);
-      fd.append('membershipGrade', grade);
-      fd.append('yearsOfExperience', '0');
-      fd.append('discipline', form.discipline);
-      fd.append('declarationAccepted', 'true');
-      // Attach the general photo + ID (in addition to grade-specific docs).
-      if (form.photo) fd.append('passportPhotoFileName', form.photo);
-      if (form.idFile) fd.append('idOrPassportFileName', form.idFile);
-      Object.entries(docs).forEach(([key, file]) => {
-        if (file) fd.append(key, file);
-      });
-
-      const token = getAuthToken();
-      await fetch(`${API_BASE_URL}/memberships/applications`, {
-        method: 'POST',
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-        body: fd,
-      });
-    } catch {
-      // Non-blocking: user still lands in the member portal.
+      // Non-blocking
     }
 
     patchStoredUser({
@@ -213,29 +164,51 @@ export const InitialProfileClient = () => {
       gradeLabel: gradeLabelMap[grade] ?? grade,
       discipline: form.discipline,
       gender: form.gender,
+      phone,
+      nationalId,
     });
+
+    // Store profile data for the documents page
+    try {
+      sessionStorage.setItem('ies_profile', JSON.stringify({
+        fullName,
+        phone,
+        nationalId,
+        grade,
+        discipline: form.discipline,
+        city: form.city,
+      }));
+    } catch {
+      // sessionStorage unavailable
+    }
 
     setLoading(false);
     router.push('/member');
   };
 
-  const requiredHint = useMemo(
-    () =>
-      `Complete your ${grade.toLowerCase()} profile - this becomes part of your membership application.`,
-    [grade],
-  );
+  const requiredHint = useMemo(() => {
+    // Extract the grade name without the "Member" suffix for a cleaner label.
+    const label = gradeLabelMap[grade] ?? 'Membership';
+    const gradeName = label.replace(/\s*Member$/, '');
+    return `Complete your ${gradeName} Membership Profile`;
+  }, [grade]);
+
+  // Set the browser tab title dynamically per grade
+  useEffect(() => {
+    const label = gradeLabelMap[grade] ?? 'Membership';
+    document.title = `Initial Profile - ${label} | IES`;
+  }, [grade]);
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white px-4 py-3">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
+      <header className="bg-[#035CB3]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <Link href={routes.home} className="flex items-center gap-2">
-            <div className="relative h-8 w-8">
+            <div className="relative h-10 w-10">
               <Image src={site.logo} alt="" fill className="object-contain" />
             </div>
-            <span className="text-sm font-bold text-[#022D5A]">{site.shortName}omalia</span>
           </Link>
-          <Link href={routes.auth.login} className="text-xs font-semibold text-slate-500 hover:text-[#035CB3]">
+          <Link href={routes.auth.login} className="text-xs font-semibold uppercase tracking-wider text-white hover:text-[#48C184]">
             Sign in instead ›
           </Link>
         </div>
@@ -243,7 +216,10 @@ export const InitialProfileClient = () => {
 
       <main className="mx-auto max-w-6xl px-4 py-6 lg:py-10">
         <div className="mb-5 text-center">
-          <h1 className="text-2xl font-bold text-[#022D5A]">Initial Profile</h1>
+          <span className="inline-block rounded-full bg-[#48C184]/15 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-[#3AA870]">
+            {gradeLabelMap[grade] ?? grade}
+          </span>
+          <h1 className="mt-2 text-2xl font-bold text-[#035CB3]">Initial Profile</h1>
           <p className="mt-1 text-sm text-slate-600">{requiredHint}</p>
         </div>
 
@@ -276,7 +252,7 @@ export const InitialProfileClient = () => {
               <span className="mt-1 block text-[10px] text-slate-500">PNG and JPEG images only</span>
             </label>
             <label className="w-full">
-              <span className="mb-1 block text-[11px] font-semibold text-[#022D5A]">Attach ID / Passport *</span>
+              <span className="mb-1 block text-[11px] font-semibold text-[#022D5A]">Attach ID/Passport *</span>
               <input
                 type="file"
                 accept=".pdf"
@@ -289,35 +265,42 @@ export const InitialProfileClient = () => {
 
           {/* Field grid */}
           <div className="grid gap-3 md:grid-cols-2">
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              Last Name *
-              <input
-                type="text"
-                required
-                value={form.lastName}
-                onChange={(event) => update('lastName', sanitizeName(event.target.value))}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
-              />
-            </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              First Name *
-              <input
-                type="text"
-                required
-                value={form.firstName}
-                onChange={(event) => update('firstName', sanitizeName(event.target.value))}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
-              />
-            </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              Other Names
-              <input
-                type="text"
-                value={form.otherNames}
-                onChange={(event) => update('otherNames', sanitizeName(event.target.value))}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
-              />
-            </label>
+            {/* Names row: First / Middle / Last in one row */}
+            <div className="grid gap-3 md:col-span-2 md:grid-cols-3">
+              <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                First Name *
+                <input
+                  type="text"
+                   placeholder="Enter Your First Name"
+                  required
+                  value={form.firstName}
+                  onChange={(event) => update('firstName', sanitizeName(event.target.value))}
+                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                />
+              </label>
+              <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                Middle Name *
+                <input
+                  type="text"
+                  placeholder="Enter Your Middle Name"
+                  value={form.middleName}
+                  onChange={(event) => update('middleName', sanitizeName(event.target.value))}
+                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                />
+              </label>
+              <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                Last Name *
+                <input
+                  type="text"
+                   placeholder="Enter Your Last Name"
+                  required
+                  value={form.lastName}
+                  onChange={(event) => update('lastName', sanitizeName(event.target.value))}
+                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                />
+              </label>
+            </div>
+
             <div className="grid grid-cols-2 gap-3">
               <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
                 Gender *
@@ -327,7 +310,7 @@ export const InitialProfileClient = () => {
                   onChange={(event) => update('gender', event.target.value)}
                   className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 >
-                  <option value="">Select…</option>
+                  <option value="">Select Your Gender</option>
                   <option value="MALE">Male</option>
                   <option value="FEMALE">Female</option>
                 </select>
@@ -340,13 +323,13 @@ export const InitialProfileClient = () => {
                   onChange={(event) => update('title', event.target.value)}
                   className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 >
-                  <option value="">Select…</option>
-                  <option>Mr</option>
-                  <option>Mrs</option>
-                  <option>Ms</option>
-                  <option>Dr</option>
+                  <option value="">Select Your Title</option>
                   <option>Eng.</option>
+                  <option>Dr.</option>
                   <option>Prof.</option>
+                  <option>Mr.</option>
+                  <option>Mrs.</option>
+                  <option>Ms.</option>
                 </select>
               </label>
             </div>
@@ -364,9 +347,10 @@ export const InitialProfileClient = () => {
               <span className="text-[10px] font-normal text-slate-500">Must be at least 16 years old</span>
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              ID / Passport No. *
+              National ID/Passport No. *
               <input
                 type="text"
+                 placeholder="Enter Your National ID/Passport No"
                 value={nationalId}
                 readOnly
                 className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-normal text-slate-600"
@@ -376,18 +360,25 @@ export const InitialProfileClient = () => {
               Nationality *
               <input
                 type="text"
+                list="nationality-countries"
+                placeholder="Search or Select Your Country (e.g., Somalia)"
                 value={form.nationality}
                 onChange={(event) => update('nationality', sanitizeName(event.target.value))}
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
+              <datalist id="nationality-countries">
+                {countries.map((country) => (
+                  <option key={country} value={country} />
+                ))}
+              </datalist>
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              City / Town
+              City/Town
               <input
                 type="text"
                 value={form.city}
                 onChange={(event) => update('city', sanitizeName(event.target.value))}
-                placeholder="e.g. Mogadishu"
+                placeholder="Enter Your City/Town (e.g; Mogadishu)"
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
@@ -399,7 +390,7 @@ export const InitialProfileClient = () => {
                 onChange={(event) => update('discipline', event.target.value)}
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               >
-                <option value="">Select an engineering discipline…</option>
+                <option value="">Select Your Engineering Discipline</option>
                 {engineeringDivisions.map((division) => (
                   <option key={division} value={division}>{division}</option>
                 ))}
@@ -414,70 +405,17 @@ export const InitialProfileClient = () => {
                   onChange={(event) => update('hasDisability', event.target.checked)}
                   className="h-4 w-4 rounded border-slate-300 text-[#035CB3] focus:ring-[#035CB3]"
                 />
-                <span className="text-[#022D5A]">Any form of disability</span>
+                <span className="text-[#022D5A]">Any Form of Disability</span>
               </label>
               {form.hasDisability && (
                 <textarea
-                  placeholder="Please describe (kept confidential and used only for reasonable accommodation)"
+                  placeholder="Please Specify Your Disability"
                   value={form.disabilityDetails}
                   onChange={(event) => update('disabilityDetails', event.target.value)}
                   rows={2}
                   className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 />
               )}
-            </div>
-
-            {/* Grade-specific documents section */}
-            <div className="md:col-span-2 border-t border-slate-100 pt-4">
-              <div className="mb-3 flex items-center justify-between">
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-500">
-                    Required Documents
-                  </p>
-                  <p className="mt-0.5 text-xs text-slate-500">
-                    Attach the documents required for your{' '}
-                    <span className="font-semibold text-[#022D5A]">
-                      {gradeLabelMap[grade] ?? grade}
-                    </span>{' '}
-                    application.
-                  </p>
-                </div>
-                <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-semibold text-slate-600">
-                  {Object.values(docs).filter(Boolean).length} / {gradeDocs.filter((d) => d.required).length}
-                </span>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {gradeDocs.map((field) => {
-                  const file = docs[field.key];
-                  return (
-                    <label key={field.key + field.label} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                      <span className="mb-1 flex items-center justify-between text-[11px] font-semibold text-[#022D5A]">
-                        <span className="truncate">
-                          {field.label}
-                          {field.required ? ' *' : ' (optional)'}
-                        </span>
-                        {file && (
-                          <span className="ml-2 shrink-0 rounded-full bg-[#48C184]/15 px-1.5 text-[9px] font-bold uppercase text-[#3AA870]">
-                            ✓
-                          </span>
-                        )}
-                      </span>
-                      {field.helper && (
-                        <span className="mb-1 block text-[10px] text-slate-500">{field.helper}</span>
-                      )}
-                      <input
-                        type="file"
-                        accept={acceptAttr(field.accept)}
-                        onChange={(event) => setDoc(field.key, event.target.files?.[0] ?? null)}
-                        className="w-full rounded-md border border-slate-300 bg-white px-2 py-1 text-[11px] file:mr-2 file:rounded file:border-0 file:bg-[#035CB3] file:px-2 file:py-1 file:text-[10px] file:font-semibold file:text-white hover:file:bg-[#022D5A]"
-                      />
-                      {file && (
-                        <span className="mt-1 block truncate text-[10px] text-slate-500">{file.name}</span>
-                      )}
-                    </label>
-                  );
-                })}
-              </div>
             </div>
 
             <div className="md:col-span-2 flex justify-end pt-2">
@@ -495,7 +433,6 @@ export const InitialProfileClient = () => {
           </div>
         </form>
 
-        {/* Error modal (like reference) */}
         {showErrors && errors.length > 0 && (
           <>
             <div

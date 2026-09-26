@@ -47,6 +47,14 @@ const MENU: MenuItem[] = [
     ),
   },
   {
+    label: 'Documents',
+    href: '/member/documents',
+    roles: ['MEMBER', 'ADMIN'],
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 3h8l4 4v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 3v4h4" strokeLinecap="round" strokeLinejoin="round" /><path d="M10 15l-2-2m0 0l-2 2m2-2v-4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+    ),
+  },
+  {
     label: 'Profile',
     href: '/member/profile',
     roles: ['MEMBER', 'ADMIN'],

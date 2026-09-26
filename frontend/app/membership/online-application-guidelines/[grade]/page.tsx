@@ -3,7 +3,7 @@ import { GradeRequirementsClient } from './GradeRequirementsClient';
 import { gradeRequirements, type GradeCode } from '@/data/grade-requirements';
 
 const isGradeCode = (value: string): value is GradeCode =>
-  ['STUDENT', 'GRADUATE', 'ASSOCIATE', 'CORPORATE', 'SENIOR', 'FELLOW'].includes(value);
+  ['STUDENT', 'GRADUATE', 'ASSOCIATE', 'CORPORATE', 'SENIOR', 'FELLOW', 'GRAD_TECHNICIAN', 'GRAD_TECHNOLOGIST'].includes(value);
 
 export function generateStaticParams() {
   return Object.keys(gradeRequirements).map((code) => ({ grade: code.toLowerCase() }));

@@ -42,4 +42,17 @@ class MembershipsPublicController extends Controller
             200
         );
     }
+
+    public function search(Request $request): JsonResponse
+    {
+        $searchTerm = $request->query('q', '');
+        if (! is_string($searchTerm) || trim($searchTerm) === '') {
+            throw NestHttpException::badRequest('Provide search term via ?q=');
+        }
+
+        return response()->json(
+            $this->membershipsService->searchMembersPublic($searchTerm),
+            200
+        );
+    }
 }

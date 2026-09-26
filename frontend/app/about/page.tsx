@@ -17,12 +17,16 @@ const coreValues = [
     label: 'Inclusivity',
     icon: (
       <>
-        <circle cx="12" cy="7" r="3" />
-        <circle cx="5" cy="9" r="2.5" />
-        <circle cx="19" cy="9" r="2.5" />
-        <path d="M2 20v-1a4 4 0 013.5-3.97" />
-        <path d="M22 20v-1a4 4 0 00-3.5-3.97" />
-        <path d="M6 20v-1a6 6 0 0112 0v1" />
+        <circle cx="12" cy="4" r="2" />
+        <circle cx="4.5" cy="9" r="2" />
+        <circle cx="19.5" cy="9" r="2" />
+        <circle cx="7" cy="18" r="2" />
+        <circle cx="17" cy="18" r="2" />
+        <path d="M13.7 5.3l4.3 2.2" />
+        <path d="M10.3 5.3l-4.3 2.2" />
+        <path d="M2.8 10.5l2.7 6" />
+        <path d="M21.2 10.5l-2.7 6" />
+        <path d="M9 18.5h6" />
       </>
     ),
   },
@@ -61,11 +65,12 @@ const coreValues = [
     label: 'Social Responsibility',
     icon: (
       <>
-        <circle cx="9" cy="8" r="2.5" />
-        <circle cx="17" cy="9" r="2" />
-        <path d="M4 20v-1a5 5 0 0110 0v1" />
-        <path d="M14 20v-1a4 4 0 018 0v1" />
-        <path d="M12 4.5l1 1 1.5-1.5-2.5-1.5-2.5 1.5 1.5 1.5z" />
+        <circle cx="12" cy="5" r="2.5" />
+        <circle cx="5" cy="7.5" r="2" />
+        <circle cx="19" cy="7.5" r="2" />
+        <path d="M7 21v-1a5 5 0 0110 0v1" />
+        <path d="M1 19v-.5a4 4 0 016-3.5" />
+        <path d="M23 19v-.5a4 4 0 00-6-3.5" />
       </>
     ),
   },
@@ -147,12 +152,9 @@ export default function AboutPage() {
       <Section spacing="default">
         <SiteContainer>
           <div className="mx-auto max-w-4xl text-center">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">About IES</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#022D5A] sm:text-4xl">
-              About the Institution of Engineers Somalia
-            </h2>
+            <p className="text-xs font-bold  tracking-widest sm:text-4xl text-[#035CB3]">About IES</p>
           </div>
-          <div className="mx-auto mt-8 flex max-w-4xl flex-col gap-4 text-sm leading-relaxed text-slate-700 sm:text-base">
+          <div className="mt-8 flex flex-col gap-4 text-left text-sm leading-relaxed text-slate-700 sm:text-base">
             <p>
               The Institution of Engineers Somalia (IES) was established in 2024 as the national professional body representing engineers across all engineering disciplines in Somalia. IES collaborates with national and international institutions to advance engineering for the benefit of society, promote the growth and development of the engineering profession, and support the adoption of international standards and global best practices.
             </p>
@@ -187,8 +189,10 @@ export default function AboutPage() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10" />
-                    <path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20" />
-                    <path d="M2 12h20" />
+                    <circle cx="12" cy="12" r="6" />
+                    <circle cx="12" cy="12" r="2" />
+                    <line x1="22" y1="2" x2="12" y2="12" />
+                    <path d="M22 2l-4.5 1.5L19 5z" />
                   </svg>
                 </div>
                 <p className="text-xs font-bold uppercase tracking-widest text-green-100">Our Mission</p>
@@ -205,7 +209,7 @@ export default function AboutPage() {
       <Section tone="muted" spacing="default">
         <SiteContainer>
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-[#022D5A] sm:text-4xl">Our Core Values</h2>
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">Our Core Values</h2>
           </div>
           <div className="mx-auto mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
             {coreValues.map((value) => (
@@ -228,8 +232,8 @@ export default function AboutPage() {
       <Section spacing="default">
         <SiteContainer>
           <div className="text-center">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">About IES</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#022D5A] sm:text-4xl">Roles of IES</h2>
+            {/* <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">About IES</p> */}
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">Roles of IES</h2>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {roles.map((role, i) => (
@@ -255,7 +259,7 @@ export default function AboutPage() {
       <Section tone="muted" spacing="default">
         <SiteContainer>
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-[#022D5A] sm:text-4xl">Objectives of IES</h2>
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">Objectives of IES</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">
               Since its formation, the Institution of Engineers Somalia (IES) has been guided by the following ideals and objectives:
             </p>
@@ -280,8 +284,8 @@ export default function AboutPage() {
       <Section spacing="default">
         <SiteContainer>
           <div className="text-center">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">Services</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#022D5A] sm:text-4xl">Activities of IES</h2>
+            {/* <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">Services</p> */}
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">Activities of IES</h2>
             <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
               IES is committed to providing valuable services to its members through various activities designed to keep them updated on technical, industrial, and managerial developments in engineering.
             </p>
@@ -356,7 +360,7 @@ export default function AboutPage() {
                 <path d="M13.73 21a2 2 0 01-3.46 0" />
               </svg>
             </div>
-            <h3 className="text-2xl font-extrabold tracking-tight text-[#022D5A] sm:text-3xl">Stay Updated</h3>
+            <h3 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">Stay Updated</h3>
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
               Through these activities, IES ensures that its members are well-equipped to tackle challenges in the engineering profession and contribute to the sustainable development of Somalia and beyond.
             </p>

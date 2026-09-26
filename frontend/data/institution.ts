@@ -90,16 +90,16 @@ export const executiveCommittee: Person[] = [
   { name: 'Abdishakur Abdullahi Mohamed', role: 'Honorary Treasurer' },
 ];
 
-/** Committee chair/vice roster. IES DECISION REQUIRED for named holders. */
+/** Committee chair/vice roster. */
 export const committees: { name: string; roles: string[] }[] = [
-  { name: 'Executive Committee', roles: ['President', 'Vice President', 'Honorary Secretary', 'Honorary Treasurer'] },
-  { name: 'Engineering Education Committee', roles: ['Chairperson', 'Vice Chairperson'] },
-  { name: 'Membership and Welfare Committee', roles: ['Chairperson', 'Vice Chairperson'] },
-  { name: 'Women Engineers Committee', roles: ['Chairperson', 'Vice Chairperson'] },
-  { name: 'Young Engineers Committee', roles: ['Chairperson', 'Vice Chairperson'] },
-  { name: 'Policy and Legislative Committee', roles: ['Chairperson', 'Vice Chairperson'] },
-  { name: 'Governance and Controls Committee', roles: ['Chairperson', 'Vice Chairperson'] },
-  { name: 'Resources and Sustainability Committee', roles: ['Chairperson', 'Vice Chairperson'] },
+  { name: 'Executive Committee', roles: ['President', '1st Vice President', '2nd Vice President', 'Honorary Secretary', 'Honorary Treasurer'] },
+  { name: 'Engineering Education Committee', roles: ['Chairperson', 'Vice Chairperson', '9 Members'] },
+  { name: 'Membership and Welfare Committee', roles: ['Chairperson', 'Vice Chairperson', '9 Members'] },
+  { name: 'Women Engineers Committee', roles: ['Chairperson', 'Vice Chairperson', '9 Members'] },
+  { name: 'Young Engineers Committee', roles: ['Chairperson', 'Vice Chairperson', '9 Members'] },
+  { name: 'Policy and Legislative Committee', roles: ['Chairperson', 'Vice Chairperson', '9 Members'] },
+  { name: 'Governance and Controls Committee', roles: ['Chairperson', 'Vice Chairperson', '9 Members'] },
+  { name: 'Resources and Sustainability Committee', roles: ['Chairperson', 'Vice Chairperson', '9 Members'] },
 ];
 
 export const engineeringDivisions: string[] = [
@@ -126,19 +126,20 @@ export const engineeringDivisions: string[] = [
 ];
 
 export const secretariatPositions: string[] = [
-  'Chief Executive Officer (CEO) / Registrar',
+  'Chief Executive Officer (CEO)',
   'Executive Office Assistant',
   'Membership and Training Manager',
-  'Finance and Administration Manager',
+  'Admin and Finance Manager',
+  'Policy, Research and Advocacy Manager',
   'Relationships and Partnerships Manager',
-  'Policy, Research and Advocacy Officer',
+  'Communication and Marketing Officer',
   'Human Resources and Welfare Officer',
-  'Finance Officer',
-  'Membership Officer',
   'Capacity Building Officer',
+  'Membership Officer',
   'Research and Publications Officer',
   'ICT Officer',
   'Assistant ICT Officer',
+  'Admin & Finance Officer',
 ];
 
 import type { Partner } from '@/components/public/PartnerCard';

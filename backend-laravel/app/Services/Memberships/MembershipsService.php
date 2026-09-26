@@ -387,6 +387,87 @@ class MembershipsService
         );
     }
 
+    public function searchMembersPublic(string $searchTerm): array
+    {
+        $searchTerm = trim($searchTerm);
+        if ($searchTerm === '') {
+            return ['total' => 0, 'members' => []];
+        }
+
+        $like = '%' . $searchTerm . '%';
+
+        // First: approved membership applications
+        $approvedMembers = MembershipApplication::query()
+            ->where('decision', ApplicationDecision::APPROVED->value)
+            ->select([
+                'fullName',
+                'email',
+                'nationalIdNumber',
+                'membershipGrade',
+                'registrationNumber',
+                'certificateNumber',
+                'validUntil',
+            ])
+            ->where(function ($builder) use ($like): void {
+                $builder->where('fullName', 'like', $like)
+                    ->orWhere('email', 'like', $like)
+                    ->orWhere('nationalIdNumber', 'like', $like)
+                    ->orWhere('registrationNumber', 'like', $like)
+                    ->orWhere('certificateNumber', 'like', $like);
+            })
+            ->orderBy('fullName')
+            ->limit(50)
+            ->get()
+            ->map(function ($member) {
+                $isActive = $member->validUntil !== null ? $member->validUntil->gte(now()) : false;
+                return [
+                    'fullName' => $member->fullName,
+                    'email' => $member->email,
+                    'membershipGrade' => $member->membershipGrade->value,
+                    'registrationNumber' => $member->registrationNumber,
+                    'certificateNumber' => $member->certificateNumber,
+                    'validUntil' => $member->validUntil ? Iso8601::format($member->validUntil) : null,
+                    'status' => $isActive ? 'ACTIVE' : 'EXPIRED',
+                ];
+            });
+
+        // Emails of approved members to avoid duplicates in the user list
+        $approvedEmails = $approvedMembers->pluck('email')->filter()->all();
+
+        // Second: registered users with role MEMBER (pending applicants)
+        $pendingUsers = \App\Models\User::query()
+            ->where('role', 'MEMBER')
+            ->select(['fullName', 'email'])
+            ->where(function ($builder) use ($like): void {
+                $builder->where('fullName', 'like', $like)
+                    ->orWhere('email', 'like', $like);
+            })
+            ->when(! empty($approvedEmails), function ($builder) use ($approvedEmails): void {
+                $builder->whereNotIn('email', $approvedEmails);
+            })
+            ->orderBy('fullName')
+            ->limit(50)
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'fullName' => $user->fullName,
+                    'email' => $user->email,
+                    'membershipGrade' => null,
+                    'registrationNumber' => null,
+                    'certificateNumber' => null,
+                    'validUntil' => null,
+                    'status' => 'PENDING',
+                ];
+            });
+
+        $combined = $approvedMembers->concat($pendingUsers)->take(50);
+
+        return [
+            'total' => $combined->count(),
+            'members' => $combined->values()->all(),
+        ];
+    }
+
     public function verifyMembershipPublic(array $lookup): array
     {
         $registrationNumber = $this->normalizeLookup($lookup['registrationNumber'] ?? null);

@@ -63,8 +63,10 @@ export default function HomePage() {
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
-                  <path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20" />
-                  <path d="M2 12h20" />
+                  <circle cx="12" cy="12" r="6" />
+                  <circle cx="12" cy="12" r="2" />
+                  <line x1="22" y1="2" x2="12" y2="12" />
+                  <path d="M22 2l-4.5 1.5L19 5z" />
                 </svg>
               </div>
               <p className="text-xs font-bold uppercase tracking-widest text-blue-200">Our Mission</p>
@@ -94,11 +96,11 @@ export default function HomePage() {
           <div className="mx-auto mt-8 grid grid-cols-3 gap-6 sm:grid-cols-6">
             {[
               { label: 'Integrity', icon: <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></> },
-              { label: 'Inclusivity', icon: <><circle cx="12" cy="7" r="3" /><circle cx="5" cy="9" r="2.5" /><circle cx="19" cy="9" r="2.5" /><path d="M2 20v-1a4 4 0 013.5-3.97" /><path d="M22 20v-1a4 4 0 00-3.5-3.97" /><path d="M6 20v-1a6 6 0 0112 0v1" /></> },
+              { label: 'Inclusivity', icon: <><circle cx="12" cy="4" r="2" /><circle cx="4.5" cy="9" r="2" /><circle cx="19.5" cy="9" r="2" /><circle cx="7" cy="18" r="2" /><circle cx="17" cy="18" r="2" /><path d="M13.7 5.3l4.3 2.2" /><path d="M10.3 5.3l-4.3 2.2" /><path d="M2.8 10.5l2.7 6" /><path d="M21.2 10.5l-2.7 6" /><path d="M9 18.5h6" /></> },
               { label: 'Professionalism', icon: <><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" /></> },
               { label: 'Innovation', icon: <><path d="M9 18h6" /><path d="M10 22h4" /><path d="M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z" /></> },
               { label: 'Sustainability', icon: <><circle cx="12" cy="12" r="10" /><path d="M12 2c-3 4-3 10 0 20" /><path d="M12 2c3 4 3 10 0 20" /><path d="M2 12h20" /><path d="M8 8c1.5 1 3 1 4 0" /></> },
-              { label: 'Social Responsibility', icon: <><circle cx="9" cy="8" r="2.5" /><circle cx="17" cy="9" r="2" /><path d="M4 20v-1a5 5 0 0110 0v1" /><path d="M14 20v-1a4 4 0 018 0v1" /><path d="M12 4.5l1 1 1.5-1.5-2.5-1.5-2.5 1.5 1.5 1.5z" /></> },
+              { label: 'Social Responsibility', icon: <><circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="7.5" r="2" /><circle cx="19" cy="7.5" r="2" /><path d="M7 21v-1a5 5 0 0110 0v1" /><path d="M1 19v-.5a4 4 0 016-3.5" /><path d="M23 19v-.5a4 4 0 00-6-3.5" /></> },
             ].map((value) => (
               <div key={value.label} className="flex flex-col items-center gap-3">
                 <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#035CB3]/8 transition-colors hover:bg-[#035CB3]/15">

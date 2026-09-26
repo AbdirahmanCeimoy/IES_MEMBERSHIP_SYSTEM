@@ -21,6 +21,19 @@ class WelcomeEmailService
         'CORPORATE' => 'Corporate Member',
         'SENIOR' => 'Senior Member',
         'FELLOW' => 'Fellow Member',
+        'GRAD_TECHNICIAN' => 'Graduate Engineering Technician',
+        'GRAD_TECHNOLOGIST' => 'Graduate Engineering Technologist',
+    ];
+
+    private const GRADE_MESSAGES = [
+        'STUDENT' => 'As a Student Member, you are joining a community that will nurture your development as a future engineer. Take advantage of our student events, networking opportunities, and mentorship programs.',
+        'GRADUATE' => 'As a Graduate Member, you are at the beginning of your professional engineering journey. Engage with our CPD programs, technical seminars, and Corporate Membership pathway to accelerate your career.',
+        'ASSOCIATE' => 'As an Associate Member, your experience and dedication to the engineering profession are recognised. We look forward to your contribution to IES committees and technical activities.',
+        'CORPORATE' => 'As a Corporate Member, you are a fully-qualified engineering professional recognised by the Institution. Your expertise will help shape engineering standards and practice in Somalia.',
+        'SENIOR' => 'As a Senior Member, your leadership and technical expertise are highly valued. We invite you to mentor emerging engineers and participate in shaping national engineering policy.',
+        'FELLOW' => 'As a Fellow, you represent the highest tier of engineering distinction at IES. Your outstanding contribution to the profession will inspire the next generation of Somali engineers.',
+        'GRAD_TECHNICIAN' => 'As a Graduate Engineering Technician, your technical skills strengthen the engineering workforce. Engage with our capacity-building programs and technical training initiatives.',
+        'GRAD_TECHNOLOGIST' => 'As a Graduate Engineering Technologist, your applied engineering expertise contributes to the profession. Take advantage of our CPD programs and technology-focused events.',
     ];
 
     /**
@@ -45,10 +58,11 @@ class WelcomeEmailService
         $fullName = trim((string) ($input['fullName'] ?? 'Member'));
         $gradeCode = strtoupper((string) ($input['grade'] ?? ''));
         $gradeLabel = self::GRADE_LABELS[$gradeCode] ?? 'IES Member';
-        $subject = 'Welcome to the Institution of Engineers Somalia';
+        $gradeMessage = self::GRADE_MESSAGES[$gradeCode] ?? 'We are delighted to welcome you to Somalia\'s national engineering community.';
+        $subject = 'Welcome to the Institution of Engineers Somalia - ' . $gradeLabel;
 
-        $html = $this->buildWelcomeHtml($fullName, $gradeLabel);
-        $text = $this->buildWelcomeText($fullName, $gradeLabel);
+        $html = $this->buildWelcomeHtml($fullName, $gradeLabel, $gradeMessage);
+        $text = $this->buildWelcomeText($fullName, $gradeLabel, $gradeMessage);
 
         try {
             $mailer = new PHPMailer(true);
@@ -89,7 +103,7 @@ class WelcomeEmailService
         }
     }
 
-    private function buildWelcomeText(string $fullName, string $gradeLabel): string
+    private function buildWelcomeText(string $fullName, string $gradeLabel, string $gradeMessage): string
     {
         return implode("\n", [
             "Dear {$fullName},",
@@ -97,7 +111,8 @@ class WelcomeEmailService
             'Welcome to the Institution of Engineers Somalia (IES).',
             '',
             "Your account has been created successfully as a {$gradeLabel} applicant.",
-            'We are delighted to have you as part of Somalia\'s national engineering community.',
+            '',
+            $gradeMessage,
             '',
             'What happens next:',
             '  1. Complete your Initial Profile with photo, ID and discipline.',
@@ -109,13 +124,15 @@ class WelcomeEmailService
             '',
             'Regards,',
             'IES Membership Secretariat',
+            'Institution of Engineers Somalia',
         ]);
     }
 
-    private function buildWelcomeHtml(string $fullName, string $gradeLabel): string
+    private function buildWelcomeHtml(string $fullName, string $gradeLabel, string $gradeMessage): string
     {
         $safeName = htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8');
         $safeGrade = htmlspecialchars($gradeLabel, ENT_QUOTES, 'UTF-8');
+        $safeMessage = htmlspecialchars($gradeMessage, ENT_QUOTES, 'UTF-8');
         $year = date('Y');
 
         return <<<HTML
@@ -152,6 +169,10 @@ class WelcomeEmailService
                 <p style="margin:4px 0 0;font-size:18px;font-weight:700;color:#082B55;">{$safeGrade}</p>
               </div>
 
+              <p style="margin:16px 0 20px;font-size:14px;line-height:1.7;color:#334155;">
+                {$safeMessage}
+              </p>
+
               <p style="margin:16px 0 8px;font-size:14px;font-weight:600;color:#082B55;">What happens next:</p>
               <ol style="margin:0 0 16px;padding-left:22px;font-size:14px;line-height:1.7;color:#334155;">
                 <li>Complete your <strong>Initial Profile</strong> with photo, ID and discipline.</li>
@@ -160,13 +181,10 @@ class WelcomeEmailService
                 <li>You will be notified by email once a decision is made.</li>
               </ol>
 
-              <p style="margin:24px 0 8px;font-size:14px;line-height:1.6;color:#334155;">
-                We are delighted to have you as part of Somalia's national engineering community.
-              </p>
-
               <p style="margin:20px 0 0;font-size:14px;color:#334155;">
                 Regards,<br>
-                <strong style="color:#082B55;">IES Membership Secretariat</strong>
+                <strong style="color:#082B55;">IES Membership Secretariat</strong><br>
+                <span style="color:#64748b;font-size:12px;">Institution of Engineers Somalia</span>
               </p>
             </td>
           </tr>

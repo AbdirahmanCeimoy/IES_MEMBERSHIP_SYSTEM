@@ -32,6 +32,7 @@ Route::prefix('auth')->group(function (): void {
 Route::prefix('memberships')->group(function (): void {
     Route::get('verify/{registrationNumber}', [MembershipsPublicController::class, 'verifyByRegistration']);
     Route::get('verify', [MembershipsPublicController::class, 'verify']);
+    Route::get('search', [MembershipsPublicController::class, 'search']);
 
     Route::middleware('jwt.auth')->group(function (): void {
         Route::post('applications', [MembershipsController::class, 'create'])->middleware('role:MEMBER,ADMIN');

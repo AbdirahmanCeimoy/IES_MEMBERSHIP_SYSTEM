@@ -1,12 +1,9 @@
 import { PageHero } from '@/components/layout/PageHero';
 import { Section } from '@/components/layout/Section';
-import { SectionHeading } from '@/components/layout/SectionHeading';
+import { SiteContainer } from '@/components/layout/SiteContainer';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
-import { ContentGrid } from '@/components/public/ContentGrid';
 import { routes } from '@/config/routes';
-import { committees, executiveCommittee } from '@/data/institution';
+import { committees } from '@/data/institution';
 
 export const metadata = { title: 'Committees' };
 
@@ -16,41 +13,49 @@ export default function CommitteesPage() {
       <PageHero
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About', href: routes.about.root }, { label: 'Committees' }]} />}
         eyebrow="About IES"
-        title="Committees 2026 – 2028"
-        description="Standing committees of the Institution of Engineers of Somalia."
+        title="IES Committees"
+        description="Committees of the Institution of Engineers Somalia (IES)"
       />
 
-      <Section>
-        <SectionHeading eyebrow="Executive Committee" title="Officers of the Institution" />
-        <ContentGrid columns={2} className="mt-4">
-          {executiveCommittee.map((p) => (
-            <Card key={p.name} padded>
-              <p className="text-sm font-semibold text-[#022D5A]">{p.name}</p>
-              <p className="text-xs text-slate-600">{p.role}</p>
-            </Card>
-          ))}
-        </ContentGrid>
-      </Section>
+      <Section spacing="relaxed">
+        <SiteContainer>
+          <h2 className="mb-8 text-center text-2xl font-extrabold text-[#035CB3] sm:text-3xl">
+            The Committees 2026–2028
+          </h2>
 
-      <Section tone="muted">
-        <SectionHeading eyebrow="Standing Committees" title="Committee structure" description="Each committee is led by a Chairperson and a Vice Chairperson elected in accordance with the IES Constitution. IES DECISION REQUIRED - individual chair names to be published once confirmed." />
-        <ContentGrid columns={2} className="mt-6">
-          {committees.slice(1).map((c) => (
-            <Card key={c.name} padded>
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <h3 className="text-sm font-semibold text-[#022D5A]">{c.name}</h3>
-                <Badge tone="muted">2026 – 2028</Badge>
-              </div>
-              <ul className="text-xs text-slate-600">
-                {c.roles.map((r) => (
-                  <li key={r} className="border-b border-slate-100 py-1 last:border-0">
-                    {r}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          ))}
-        </ContentGrid>
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-50">
+                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#022D5A]">Committees</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#022D5A]">Title</th>
+                </tr>
+              </thead>
+              <tbody>
+                {committees.map((committee) =>
+                  committee.roles.map((role, roleIdx) => (
+                    <tr
+                      key={`${committee.name}-${role}`}
+                      className={roleIdx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}
+                    >
+                      {roleIdx === 0 ? (
+                        <td
+                          rowSpan={committee.roles.length}
+                          className="border-t border-slate-200 px-6 py-4 align-top text-sm font-bold text-[#022D5A]"
+                        >
+                          {committee.name}
+                        </td>
+                      ) : null}
+                      <td className="border-t border-slate-100 px-6 py-3 text-sm text-slate-700">
+                        {role}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </SiteContainer>
       </Section>
     </>
   );

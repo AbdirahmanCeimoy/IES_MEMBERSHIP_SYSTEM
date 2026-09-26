@@ -52,10 +52,10 @@ export default function AdminReportsPage() {
   }, []);
 
   const genderTotals = useMemo(() => {
-    if (!analytics) return { total: 0, male: 0, female: 0, other: 0, unspecified: 0 };
+    if (!analytics) return { total: 0, male: 0, female: 0 };
     const g = analytics.gender;
-    const total = g.MALE + g.FEMALE + g.OTHER + g.UNSPECIFIED;
-    return { total, male: g.MALE, female: g.FEMALE, other: g.OTHER, unspecified: g.UNSPECIFIED };
+    const total = g.MALE + g.FEMALE;
+    return { total, male: g.MALE, female: g.FEMALE };
   }, [analytics]);
 
   const monthly = stats?.monthly ?? [];
@@ -145,7 +145,7 @@ export default function AdminReportsPage() {
       <Card padded>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-widest text-slate-500">
-            Gender breakdown
+            Gender
           </h2>
           <span className="text-xs text-slate-500">
             Total: <span className="font-semibold text-[#022D5A]">{genderTotals.total}</span>
@@ -158,13 +158,11 @@ export default function AdminReportsPage() {
             <>
               <div className="bg-[#035CB3]" style={{ width: `${genderPct(genderTotals.male)}%` }} />
               <div className="bg-[#48C184]" style={{ width: `${genderPct(genderTotals.female)}%` }} />
-              <div className="bg-slate-400" style={{ width: `${genderPct(genderTotals.other)}%` }} />
-              <div className="bg-slate-200" style={{ width: `${genderPct(genderTotals.unspecified)}%` }} />
             </>
           ) : null}
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2">
           <div className="rounded-lg border border-slate-100 p-3">
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-[#035CB3]" />
@@ -180,22 +178,6 @@ export default function AdminReportsPage() {
             </div>
             <p className="mt-2 text-2xl font-bold text-[#022D5A]">{genderTotals.female}</p>
             <p className="text-[11px] text-slate-500">{genderPct(genderTotals.female)}% of total</p>
-          </div>
-          <div className="rounded-lg border border-slate-100 p-3">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-slate-400" />
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500">Other</span>
-            </div>
-            <p className="mt-2 text-2xl font-bold text-[#022D5A]">{genderTotals.other}</p>
-            <p className="text-[11px] text-slate-500">{genderPct(genderTotals.other)}% of total</p>
-          </div>
-          <div className="rounded-lg border border-slate-100 p-3">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-slate-200" />
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500">Unspecified</span>
-            </div>
-            <p className="mt-2 text-2xl font-bold text-[#022D5A]">{genderTotals.unspecified}</p>
-            <p className="text-[11px] text-slate-500">{genderPct(genderTotals.unspecified)}% of total</p>
           </div>
         </div>
       </Card>

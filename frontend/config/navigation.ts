@@ -14,7 +14,7 @@ export const publicNavigation: NavigationEntry[] = [
     children: [
       { label: 'About Us', href: routes.about.root },
       { label: 'What We Do', href: routes.about.whatWeDo },
-      { label: 'Honour Board', href: routes.about.honourBoard },
+      { label: 'Honour Board (Past Presidents)', href: routes.about.honourBoard },
       { label: 'IES Council', href: routes.about.council },
       { label: 'IES Advisory Council', href: routes.about.advisoryCouncil },
       { label: 'IES Committees', href: routes.about.committees },
@@ -30,7 +30,7 @@ export const publicNavigation: NavigationEntry[] = [
       },
       { label: 'Nominations by IES to Boards', href: routes.about.boardNominations },
       {
-        label: 'Governance Resources',
+        label: 'Governance Resources (Instruments of Power)',
         href: routes.about.governance.root,
         children: [
           {

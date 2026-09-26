@@ -3,6 +3,36 @@ import { routes } from '@/config/routes';
 
 /** IES DECISION REQUIRED: replace with dynamic API-driven news feed. */
 export const featuredNews: NewsItem[] = [
+   {
+    title: '2027 WFEO Hackathon Registration Is Now Open!',
+    excerpt:
+      'The #WFEOHackathon is back as part of the 2027 World Engineering Day for Sustainable Development celebrations! Engineering students and young engineers are invited to develop innovative solutions to sustainable transport challenges.',
+    date: '2027',
+    href: `${routes.infoHub.news}/wfeo-hackathon-2027`,
+    category: 'Announcement',
+    image: '/PARTNER-WFOE.jpeg',
+  },
+   {
+    title: 'IES Meets with Ministry of Public Works, Reconstruction and Housing',
+    excerpt:
+      'IES leadership participated in a meeting with the Ministry of Public Works, Reconstruction and Housing alongside SORECA to strengthen collaboration on infrastructure and urban development in Somalia.',
+    date: '15 Apr 2026',
+    href: `${routes.infoHub.news}/ministry-public-works-meeting`,
+    category: 'Collaboration',
+    image: '/PARTNER-SORECA.jpeg',
+  },
+
+  {
+    title: 'IES Signs MoU with Benadir University (BU)',
+    excerpt:
+      'IES and Benadir University signed an MoU to strengthen cooperation in engineering education, professional training, research, innovation and continuing professional development.',
+    date: '01 Jan 2026',
+    href: `${routes.infoHub.news}/mou-benadir`,
+    category: 'Partnership',
+    image: '/parterner-Banadir-University.jpeg',
+  },
+ 
+ 
   {
     title: 'IES Signs MoU with Jamhuriya University of Science and Technology (JUST)',
     excerpt:
@@ -30,13 +60,5 @@ export const featuredNews: NewsItem[] = [
     category: 'Partnership',
     image: '/slaaam-University.jpeg',
   },
-  {
-    title: 'IES Signs MoU with Benadir University (BU)',
-    excerpt:
-      'IES and Benadir University signed an MoU to strengthen cooperation in engineering education, professional training, research, innovation and continuing professional development.',
-    date: '01 Jan 2026',
-    href: `${routes.infoHub.news}/mou-benadir`,
-    category: 'Partnership',
-    image: '/parterner-Banadir-University.jpeg',
-  },
+  
 ];

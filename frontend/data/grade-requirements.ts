@@ -10,7 +10,9 @@ export type GradeCode =
   | 'ASSOCIATE'
   | 'CORPORATE'
   | 'SENIOR'
-  | 'FELLOW';
+  | 'FELLOW'
+  | 'GRAD_TECHNICIAN'
+  | 'GRAD_TECHNOLOGIST';
 
 export interface GradeRequirements {
   code: GradeCode;
@@ -27,52 +29,50 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
   STUDENT: {
     code: 'STUDENT',
     label: 'Student Member',
-    headline: 'Requirements for Student Member application',
+    headline: 'Requirements for Student Member Application',
     summary: 'For persons currently receiving engineering education and training in a recognised and accredited engineering programme.',
     applicationFee: '$5',
     requirements: [
       'Certified university student ID stamped and signed by the Dean of School.',
-      'A copy of your national ID / passport verified by the Dean.',
-      'A copy of your secondary school completion certificate.',
+      'ID Copy certified by Commissioner for Oaths (NB: not advocates).',
+      'A copy of your secondary school completion certificate certified by Commissioner for Oaths (NB: not advocates).',
+      'Two referees: One proposer and one seconder must be paid up Corporate or Fellow members (Your application must be supported by two existing IES members).',
       'Current colored passport photo.',
-      'Proposer and seconder must be paid-up Corporate or Fellow members (two existing IES members).',
-    ],
-    notes: [
-      'Verification of student status by the Dean of School is mandatory.',
+      'Application Fee: $5.',
     ],
   },
   GRADUATE: {
     code: 'GRADUATE',
     label: 'Graduate Member',
     postnominal: 'GMIES',
-    headline: 'Requirements for Graduate Member application',
+    headline: 'Requirements for Graduate Member Application',
     summary: 'For persons holding an accredited engineering degree and at the early stage of their professional career, working toward Corporate Membership.',
     applicationFee: '$10',
     requirements: [
       'Updated Curriculum Vitae (CV).',
-      'Proposer and seconder - paid up Corporate or Fellow members (two existing IES members).',
       'Degree certificate certified by Commissioner for Oaths (not advocates).',
-      'ID copy certified by Commissioner for Oaths (not advocates).',
-      'Secondary school completion certificate certified by Commissioner for Oaths.',
+      'ID Copy certified by Commissioner for Oaths (not advocates).',
+      'A copy of your secondary school completion certificate certified by Commissioner for Oaths (NB: not advocates).',
+      'Two referees: One proposer and one seconder must be paid up Corporate or Fellow members (Your application must be supported by two existing IES members).',
       'Current colored passport photo.',
+      'Application Fee: $10.',
     ],
   },
   ASSOCIATE: {
     code: 'ASSOCIATE',
     label: 'Associate Member',
     postnominal: 'AMIES',
-    headline: 'Requirements for Associate Member application',
+    headline: 'Requirements for Associate Member Application',
     summary: 'For persons not qualified for Corporate Membership but with 10+ years experience in a position of responsibility related to engineering.',
     applicationFee: '$30',
     requirements: [
       'Updated Curriculum Vitae (CV).',
-      'Two proposers and two seconders - paid Corporate or Fellow members.',
-      'Higher National Diploma certificate certified by Commissioner for Oaths.',
-      'ID copy certified by Commissioner for Oaths.',
+      'A Copy of your Higher National Diploma Certificate certified by Commissioner for Oaths (N.B not advocates).',
+      'ID Copy certified by Commissioner for Oaths (NB: not advocates).',
+      'A copy of your secondary school completion certificate certified by Commissioner for Oaths (NB: not advocates).',
+      'Four referees: Two proposers and two seconders who are paid Corporate or Fellow members (Your application must be supported by two existing IES members).',
       'Current colored passport photo.',
-    ],
-    notes: [
-      'Associate applicants must provide at least one of: Transcript/Diploma evidence OR Experience Letter demonstrating responsibility.',
+      'Application Fee: $30.',
     ],
   },
   CORPORATE: {
@@ -128,6 +128,38 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     ],
     notes: [
       'Fellowship is elected by Council - meeting the requirements does not guarantee admission.',
+    ],
+  },
+  GRAD_TECHNICIAN: {
+    code: 'GRAD_TECHNICIAN',
+    label: 'Graduate Engineering Technician',
+    headline: 'Requirements for Graduate Engineering Technician Application',
+    summary: 'For persons holding a recognized diploma or equivalent in engineering or related technical studies, developing technical skills and professional competence.',
+    applicationFee: '$10',
+    requirements: [
+      'Updated Curriculum Vitae (CV).',
+      'Degree certificate certified by Commissioner for Oaths (NB: not advocates).',
+      'ID Copy certified by Commissioner for Oaths (N.B: not advocates).',
+      'A copy of your secondary school completion certificate certified by Commissioner for Oaths (NB: not advocates).',
+      'Two referees: One proposer and one seconder must be paid Corporate or Fellow members (Your application must be supported by two existing IES members).',
+      'Current colored passport photo.',
+      'Application Fee: $10.',
+    ],
+  },
+  GRAD_TECHNOLOGIST: {
+    code: 'GRAD_TECHNOLOGIST',
+    label: 'Graduate Engineering Technologist',
+    headline: 'Requirements for Graduate Engineering Technologist Application',
+    summary: 'For persons holding a recognized degree or equivalent in Engineering Technology, committed to professional competence in engineering technology.',
+    applicationFee: '$10',
+    requirements: [
+      'Updated Curriculum Vitae (CV).',
+      'Degree certificate certified by Commissioner for Oaths (NB: not advocates).',
+      'ID Copy certified by Commissioner for Oaths (NB: not advocates).',
+      'A copy of your secondary school completion certificate certified by Commissioner for Oaths (NB: not advocates).',
+      'Two referees: One proposer and one seconder must be paid up Corporate or Fellow members (Your application must be supported by two existing IES members).',
+      'Current colored passport photo.',
+      'Application Fee: $10.',
     ],
   },
 };

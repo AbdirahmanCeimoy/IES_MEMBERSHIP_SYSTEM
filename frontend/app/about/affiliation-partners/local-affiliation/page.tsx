@@ -1,7 +1,9 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Section } from '@/components/layout/Section';
 import { SiteContainer } from '@/components/layout/SiteContainer';
 import { partners } from '@/data/institution';
+import { routes } from '@/config/routes';
 
 export const metadata = { title: 'Local Affiliation' };
 
@@ -71,6 +73,27 @@ export default function LocalAffiliationPage() {
           </div>
         </SiteContainer>
       </Section>
+
+      {/* Want to Partner CTA */}
+      <section className="border-t border-slate-100 bg-white py-16 sm:py-20">
+        <SiteContainer>
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-extrabold text-[#022D5A] sm:text-3xl">
+              Want to Partner with IES?
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-slate-600 sm:text-base">
+              We welcome organizations that share our commitment to engineering excellence and professional development to collaborate with and support IES initiatives.
+            </p>
+            <Link
+              href={routes.contact}
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#022D5A] px-8 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#03407a] sm:text-base"
+            >
+              Contact Us for Partnership
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </SiteContainer>
+      </section>
     </>
   );
 }

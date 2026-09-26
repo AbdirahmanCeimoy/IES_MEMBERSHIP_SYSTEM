@@ -101,6 +101,7 @@ class ComposerStaticInit2d448df4367b4749b019b175d33ba919
             'Psr\\Clock\\' => 10,
             'PhpParser\\' => 10,
             'PhpOption\\' => 10,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'N' =>
         array (
@@ -345,6 +346,10 @@ class ComposerStaticInit2d448df4367b4749b019b175d33ba919
         'PhpOption\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'PHPMailer\\PHPMailer\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Nette\\' =>
         array (

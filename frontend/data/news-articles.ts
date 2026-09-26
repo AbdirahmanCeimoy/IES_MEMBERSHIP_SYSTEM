@@ -92,4 +92,38 @@ export const newsArticles: NewsArticle[] = [
     closing:
       'Through this partnership, IES and Benadir University will work together to develop skilled engineers, strengthen professional capacity, encourage innovation and create more opportunities for engineering students and professionals in Somalia.',
   },
+  {
+    slug: 'ministry-public-works-meeting',
+    title: 'IES Meets with Ministry of Public Works, Reconstruction and Housing',
+    date: '18 September 2026',
+    author: { name: 'Eng. Omar Abdi Arab', role: 'President, IES' },
+    hashtags: ['IES', 'InfrastructureDevelopment', 'UrbanDevelopment', 'EngineeringSomalia', 'PublicWorks', 'SustainableCities', 'CapacityBuilding', 'ConstructionSector', 'Collaboration', 'SomaliaDevelopment', 'SomaliRealEstates', 'ProfessionalEngineers', 'SORECA', 'MoPWHRD'],
+    intro:
+      'The Institution of Engineers Somalia (IES), led by President Eng. Omar Abdi Arab and Vice President Eng. Bashir Ali Hussein, participated in an important meeting with the Ministry of Public Works, Reconstruction and Housing, Somalia. The meeting was attended by the Minister of Public Works, Reconstruction and Housing, H.E. Hon. Ayub Ismail Yusuf, alongside representatives of the Somali Real Estate and Construction Association (SORECA).',
+    areas: [
+      'Strengthening collaboration and consultation on infrastructure development and urban development in Somalia.',
+      'Enhancing cooperation between the Ministry and SORECA.',
+      'Aligning efforts toward advancing the country\'s infrastructure and urban development.',
+      'Establishing an effective framework for collaboration that can contribute to the growth, quality, and regulation of Somalia\'s construction sector.',
+    ],
+    closing:
+      'The participants emphasized the importance of establishing an effective framework for collaboration that can contribute to the growth, quality, and regulation of Somalia\'s construction sector.',
+  },
+  {
+    slug: 'wfeo-hackathon-2027',
+    title: '2027 WFEO Hackathon Registration Is Now Open!',
+    date: '22 September 2026',
+    author: { name: 'WFEO', role: 'World Federation of Engineering Organizations' },
+    hashtags: ['WFEOHackathon', 'WED', 'WorldEngineeringDay', 'SustainableDevelopment', 'SustainableTransport', 'YoungEngineers', 'EngineeringStudents', 'Innovation'],
+    intro:
+      'The #WFEOHackathon is back as part of the 2027 World Engineering Day for Sustainable Development celebrations! We\'re calling on engineering students, young engineers and multidisciplinary teams from around the world to develop innovative solutions to real-world sustainable transport challenges.',
+    areas: [
+      'Engineering students and young engineers are invited to participate.',
+      'Multidisciplinary teams from around the world are welcome.',
+      'Develop innovative solutions to real-world sustainable transport challenges.',
+      'Take your idea to the global stage.',
+    ],
+    closing:
+      'Ready to take on the challenge? Learn more, register now and take your idea to the global stage at worldengineeringday.net/hackathon/',
+  },
 ];

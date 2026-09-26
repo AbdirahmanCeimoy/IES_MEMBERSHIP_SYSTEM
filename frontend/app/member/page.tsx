@@ -19,6 +19,7 @@ interface StoredUser {
 }
 
 const quickLinks = [
+  { title: 'Upload Documents', body: 'Submit the required documents for your application.', href: '/member/documents' },
   { title: 'Application Status', body: 'Track your membership application.', href: '/member/application' },
   { title: 'Update Profile', body: 'Keep your contact and profile up to date.', href: '/member/profile' },
   { title: 'CPD Activities', body: 'Log CPD hours and view your record.', href: '/member/cpd' },

@@ -22,6 +22,8 @@ const gradeLabels: Record<string, string> = {
   CORPORATE: 'Corporate Member',
   SENIOR: 'Senior Member',
   FELLOW: 'Fellow Member',
+  GRAD_TECHNICIAN: 'Graduate Engineering Technician',
+  GRAD_TECHNOLOGIST: 'Graduate Engineering Technologist',
 };
 
 const buildUsernameFromEmail = (email: string): string => {
@@ -36,6 +38,7 @@ const isValidPassword = (value: string): boolean => {
   if (!/[a-z]/.test(value)) return false;
   if (!/[A-Z]/.test(value)) return false;
   if (!/\d/.test(value)) return false;
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/.test(value)) return false;
   return true;
 };
 
@@ -54,6 +57,7 @@ export const RegisterClient = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showConsent, setShowConsent] = useState(false);
 
   const handleChange = (name: keyof typeof form) => (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -61,7 +65,10 @@ export const RegisterClient = () => {
     let value = event.target.value;
     if (name === 'email') value = sanitizeEmail(value);
     else if (name === 'phone') value = sanitizePhone(value);
-    else if (name === 'nationalId') value = sanitizeDigitsOnly(value, 11);
+    else if (name === 'nationalId') {
+      // Allow letters and digits (passports can have letters, e.g. AB1234567)
+      value = value.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 11);
+    }
     setForm((prev) => ({ ...prev, [name]: value }));
     setError('');
   };
@@ -72,22 +79,28 @@ export const RegisterClient = () => {
     const digits = form.phone.replace(/\D/g, '');
     if (digits.length < 9 || digits.length > 15)
       return 'Mobile number must be 9–15 digits.';
-    if (!/^\d{11}$/.test(form.nationalId))
-      return 'National ID / Passport must be exactly 11 digits.';
+    if (!/^[A-Z0-9]{7,11}$/.test(form.nationalId))
+      return 'National ID / Passport must be 7 to 11 characters (letters and digits).';
     if (!isValidPassword(form.password))
-      return 'Password: 8–16 characters, at least one uppercase, one lowercase and one number.';
+      return 'Password: 8–16 characters, must include uppercase, lowercase, number, and symbol.';
     if (form.password !== form.confirmPassword)
       return 'Passwords do not match.';
     return null;
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const err = validate();
     if (err) {
       setError(err);
       return;
     }
+    // Show consent modal before proceeding
+    setShowConsent(true);
+  };
+
+  const handleConsentAgree = async () => {
+    setShowConsent(false);
     setLoading(true);
 
     const username = buildUsernameFromEmail(form.email);
@@ -147,7 +160,7 @@ export const RegisterClient = () => {
           <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M12 5l-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          Back to grade selection
+          Back to Grade Selection
         </Link>
       </div>
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-6">
@@ -161,7 +174,7 @@ export const RegisterClient = () => {
           <div className="mb-5 text-center">
             <h1 className="text-lg font-bold text-[#022D5A]">REGISTER</h1>
             <p className="mt-1 text-xs font-semibold text-slate-500">
-              For new individual {gradeLabel.toLowerCase()} application
+              as a New Individual {gradeLabel}
             </p>
           </div>
 
@@ -174,7 +187,7 @@ export const RegisterClient = () => {
                 required
                 value={form.email}
                 onChange={handleChange('email')}
-                placeholder="apdirahmanbashirapdullahi@gmail.com"
+                placeholder="Enter Your Email Address"
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
@@ -186,39 +199,44 @@ export const RegisterClient = () => {
                 required
                 value={form.phone}
                 onChange={handleChange('phone')}
-                placeholder="+252 61 2074218"
+                placeholder="Enter Your Mobile No."
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              Your ID / Passport No.
+              National ID/Passport No.
               <input
                 type="text"
-                inputMode="numeric"
                 required
                 value={form.nationalId}
                 onChange={handleChange('nationalId')}
-                placeholder="11-digit National ID"
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                placeholder="Enter Your National ID/Passport No"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm  focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Password
               <PasswordInput
                 autoComplete="new-password"
+                 placeholder=" Enter Your New Password"
                 required
+                minLength={8}
+                maxLength={16}
                 value={form.password}
                 onChange={handleChange('password')}
               />
               <span className="text-[10px] font-normal text-slate-500">
-                8–16 characters · uppercase · lowercase · number
+                8–16 characters · uppercase · lowercase · number · symbol
               </span>
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              Confirm Password
+              Confirm 
               <PasswordInput
                 autoComplete="new-password"
+                 placeholder="  Confirm Your Password"
                 required
+                minLength={8}
+                maxLength={16}
                 value={form.confirmPassword}
                 onChange={handleChange('confirmPassword')}
               />
@@ -239,14 +257,52 @@ export const RegisterClient = () => {
             </button>
           </form>
 
-          <p className="mt-4 text-center text-xs text-slate-500">
-            Already have an account?{' '}
-            <Link href={routes.auth.login} className="font-semibold text-[#035CB3] hover:underline">
-              Sign in
-            </Link>
-          </p>
         </div>
       </div>
+
+      {/* Consent Modal */}
+      {showConsent && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-slate-900/50"
+            onClick={() => setShowConsent(false)}
+            aria-hidden="true"
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="consent-title"
+            className="fixed left-1/2 top-1/2 z-50 w-[min(460px,90vw)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-lg bg-white shadow-2xl"
+          >
+            <div className="bg-slate-100 px-6 py-4">
+              <h2 id="consent-title" className="text-base font-bold text-[#022D5A]">
+                Consent to Share Information
+              </h2>
+            </div>
+            <div className="px-6 py-6">
+              <p className="text-sm leading-relaxed text-slate-700">
+                I consent to the processing of my personal data for the purposes of the membership application process.
+              </p>
+            </div>
+            <div className="flex items-center justify-end gap-2 border-t border-slate-100 px-6 py-3">
+              <button
+                type="button"
+                onClick={() => setShowConsent(false)}
+                className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-slate-500 transition-colors hover:text-slate-700"
+              >
+                Disagree
+              </button>
+              <button
+                type="button"
+                onClick={handleConsentAgree}
+                className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#035CB3] transition-colors hover:text-[#48C184]"
+              >
+                Agree
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

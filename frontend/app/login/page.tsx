@@ -17,8 +17,9 @@ const getErrorMessage = (err: unknown, fallback: string) =>
 
 export default function LoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -32,8 +33,7 @@ export default function LoginPage() {
         user?: ApiUser;
         message?: string | string[];
       }>('/auth/login', 'POST', {
-        // Backend accepts either username OR email in this field.
-        username: username.trim(),
+        username: email.trim(),
         password,
       });
 
@@ -41,7 +41,7 @@ export default function LoginPage() {
         const message = Array.isArray(response.data?.message)
           ? response.data?.message[0]
           : response.data?.message;
-        setError(message || 'Invalid username or password.');
+        setError(message || 'Invalid email or password.');
         return;
       }
 
@@ -57,8 +57,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col px-4 py-6">
-      <div className="mx-auto w-full max-w-5xl">
+    <div className="flex min-h-screen flex-col bg-white px-4 py-6">
+      {/* Back to website */}
+      <div className="mx-auto w-full max-w-md">
         <Link
           href={routes.home}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#035CB3]"
@@ -69,92 +70,124 @@ export default function LoginPage() {
           Back to website
         </Link>
       </div>
-      <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-8">
-        <Link
-          href={routes.home}
-          className="mb-5 flex items-center justify-center gap-2"
-        >
-          <div className="relative h-10 w-10">
+
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-8">
+        {/* Logo */}
+        <div className="mb-3 flex justify-center">
+          <div className="relative h-20 w-20">
             <Image src={site.logo} alt="" fill className="object-contain" />
           </div>
-          <span className="text-base font-bold text-[#022D5A]">{site.shortName}omalia</span>
-        </Link>
+        </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="mb-5 text-center">
-            <h1 className="text-lg font-bold text-[#022D5A]">Member Login</h1>
-            <p className="mt-1 text-xs text-slate-500">Welcome back. Please sign in to continue.</p>
+        {/* Organization Name */}
+        <h2 className="mb-8 text-center text-base font-bold leading-snug text-[#035CB3]">
+          {site.name}
+        </h2>
+
+        {/* Log In Heading */}
+        <h1 className="mb-2 text-center text-2xl font-extrabold text-gray-900">
+          Log In
+        </h1>
+
+        {/* Subtitle */}
+        <p className="mb-7 text-center text-sm text-gray-500">
+          Please enter your registered email and password below to
+          <br />
+          Sign in.
+        </p>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4" aria-label="Member login">
+          {/* Email */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="login-email" className="text-sm font-semibold text-gray-900">
+              Email
+            </label>
+            <input
+              id="login-email"
+              type="text"
+              autoComplete="username"
+              required
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value.replace(/\s+/g, '').toLowerCase());
+                setError('');
+              }}
+              className="rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+              placeholder="example@gmail.com"
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3" aria-label="Member login">
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              Email or Username
+          {/* Password */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="login-password" className="text-sm font-semibold text-gray-900">
+              Password
+            </label>
+            <PasswordInput
+              id="login-password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value);
+                setError('');
+              }}
+              placeholder="Password"
+              className="!rounded-xl !px-4 !py-3"
+            />
+          </div>
+
+          {/* Remember Me + Forgot Password */}
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2 text-sm text-gray-600">
               <input
-                type="text"
-                autoComplete="username"
-                required
-                value={username}
-                onChange={(event) => {
-                  // Allow full email OR plain username — no sanitization here,
-                  // strip only obvious whitespace.
-                  setUsername(event.target.value.replace(/\s+/g, '').toLowerCase());
-                  setError('');
-                }}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
-                placeholder="you@gmail.com or your.username"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300 text-[#035CB3] focus:ring-[#035CB3]"
               />
+              Remember me for 7 days
             </label>
-
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              <span className="flex items-center justify-between">
-                <span>Password</span>
-                <Link
-                  href={routes.auth.forgotPassword}
-                  className="text-[11px] font-medium text-[#035CB3] hover:underline"
-                >
-                  Forgot password?
-                </Link>
-              </span>
-              <PasswordInput
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(event) => {
-                  setPassword(event.target.value);
-                  setError('');
-                }}
-                placeholder="••••••••"
-              />
-              <span className="text-[10px] font-normal text-slate-500">
-                8–16 characters · uppercase · lowercase · number
-              </span>
-            </label>
-
-            {error && (
-              <div
-                role="alert"
-                className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700"
-              >
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-1 inline-flex items-center justify-center rounded-lg bg-[#48C184] px-4 py-2.5 text-sm font-semibold text-[#022D5A] transition-colors hover:bg-[#3AA870] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3] focus-visible:ring-offset-2 disabled:opacity-50"
+            <Link
+              href={routes.auth.forgotPassword}
+              className="text-sm font-semibold text-[#035CB3] hover:underline"
             >
-              {loading ? 'Signing in…' : 'Sign in'}
-            </button>
-          </form>
-
-          <p className="mt-4 text-center text-xs text-slate-500">
-            New here?{' '}
-            <Link href={routes.membership.applicationGuidelines} className="font-semibold text-[#035CB3] hover:underline">
-              Apply for membership
+              Forgot Password?
             </Link>
-          </p>
-        </div>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div
+              role="alert"
+              className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+            >
+              {error}
+            </div>
+          )}
+
+          {/* Sign In Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-1 w-full rounded-xl bg-[#035CB3] py-3 text-sm font-bold text-white transition-colors hover:bg-[#024a94] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3] focus-visible:ring-offset-2 disabled:opacity-50"
+          >
+            {loading ? 'Signing In…' : 'Sign In'}
+          </button>
+        </form>
+
+        {/* Register Link */}
+        <p className="mt-6 text-center text-sm text-gray-500">
+          Don&apos;t have an account?{' '}
+          <Link href={routes.auth.register} className="font-semibold text-[#035CB3] hover:underline">
+            Click here to register
+          </Link>
+        </p>
+
+        {/* Footer */}
+        <p className="mt-8 text-center text-xs text-gray-400">
+          © {new Date().getFullYear()} {site.name}
+        </p>
       </div>
     </div>
   );

@@ -34,6 +34,7 @@ export default function CouncilPage() {
             <p>
               The Council provides leadership in areas including professional standards, membership development, engineering education, Continuing Professional Development (CPD), innovation, and the promotion of ethical engineering practice.
             </p>
+            <p>The Council has recently been reconstituted. Updated profiles and photographs of Council members will be published here shortly.</p>
           </div>
           <Card padded>
             <Badge tone="primary" className="mb-2">Council composition</Badge>
