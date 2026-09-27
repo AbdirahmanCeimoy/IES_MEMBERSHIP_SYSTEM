@@ -64,9 +64,6 @@ export const routes = {
     applicationGuidelines:
       '/membership/online-application-guidelines',
 
-    accountActivation:
-      '/membership/account-activation',
-
     memberCheck:
       '/membership/member-check',
 

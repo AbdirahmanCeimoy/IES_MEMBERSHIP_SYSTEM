@@ -13,6 +13,7 @@ export const stakeholders: Stakeholder[] = [
   { name: 'TAYOGEN ENGINEERING & CONSULTANCY COMPANY', logo: '/partners-stakeholders/tayogen.jpeg' },
   { name: 'SETAC ENGINEERING CONSULTANCY', logo: '/partners-stakeholders/setac.jpeg' },
   { name: 'DELTA ENGINEERING & CONSULTANCY LTD', logo: '/partners-stakeholders/delta.jpeg' },
+  { name: 'Mogadishu Stars General Tradinh (L.L.C)', logo: '/partners-stakeholders/L.L.C.jpeg' },
   { name: 'SOLARGEN TECHNOLOGIES', logo: '/partners-stakeholders/solargen.jpeg' },
   { name: 'HORMUUD TELECOM', logo: '/partners-stakeholders/hormuud.jpeg' },
   { name: 'DAHABSHIIL GROUP', logo: '/partners-stakeholders/DhabshilGroup.jpeg' },

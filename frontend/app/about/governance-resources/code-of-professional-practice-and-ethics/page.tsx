@@ -3,7 +3,7 @@ import { Section } from '@/components/layout/Section';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { routes } from '@/config/routes';
 
-export const metadata = { title: 'Code of Professional Practice and Ethics' };
+export const metadata = { title: 'Code of Professional Practice & Ethics' };
 
 export default function CodeOfProfessionalPracticePage() {
   return (
@@ -14,14 +14,13 @@ export default function CodeOfProfessionalPracticePage() {
             items={[
               { label: 'Home', href: '/' },
               { label: 'About', href: routes.about.root },
-              { label: 'Governance Resources', href: routes.about.governance.root },
-              { label: 'Code of Professional Practice and Ethics' },
+              { label: 'Governance Instruments', href: routes.about.governance.root },
+              { label: 'Code of Professional Practice & Ethics' },
             ]}
           />
         }
         eyebrow="About IES"
-        title="Code of Professional Practice and Ethics"
-        // description="Professional practice and ethics code for IES members."
+        title="Code of Professional Practice & Ethics"
       />
       <Section>
         <div className="mx-auto max-w-3xl text-center">

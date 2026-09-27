@@ -7,11 +7,11 @@ export const PartnersStakeholdersStrip = () => {
   const loop = [...stakeholders, ...stakeholders];
 
   return (
-    <section className="bg-white py-12 sm:py-16">
+    <section className="bg-white py-8 sm:py-10">
       <SiteContainer>
         <div className="grid gap-6 lg:grid-cols-[1fr_1.6fr] lg:items-center">
           <div>
-            <h2 className="text-2xl font-extrabold tracking-tight text-[#022D5A] sm:text-3xl">
+            <h2 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">
               Sponsors &amp; Stakeholders
             </h2>
             <Link

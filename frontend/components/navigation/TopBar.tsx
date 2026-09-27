@@ -82,11 +82,13 @@ export const TopBar = () => {
           <div className="flex items-center gap-4">
             <a href={`tel:${site.contact.phones[0].replace(/\s/g, '')}`} className="flex items-center gap-1.5 transition-colors hover:text-[#035CB3]">
               <PhoneIcon />
+              <span className="font-semibold text-[#022D5A]">Call Us:</span>
               <span>{site.contact.phones[0]}</span>
             </a>
             <span className="text-slate-300">|</span>
             <a href={`mailto:${site.contact.generalEmail}`} className="flex items-center gap-1.5 transition-colors hover:text-[#035CB3]">
               <MailIcon />
+              <span className="font-semibold text-[#022D5A]">Email Us:</span>
               <span>{site.contact.generalEmail}</span>
             </a>
           </div>

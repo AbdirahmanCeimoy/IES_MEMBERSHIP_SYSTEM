@@ -5,7 +5,7 @@ import { SiteContainer } from '@/components/layout/SiteContainer';
 import { partners } from '@/data/institution';
 import { routes } from '@/config/routes';
 
-export const metadata = { title: 'Local Affiliation' };
+export const metadata = { title: 'Local Affiliation & Partners' };
 
 const localPartners = partners.filter((p) => p.scope === 'Local');
 
@@ -15,7 +15,7 @@ export default function LocalAffiliationPage() {
       <section className="bg-[#e8f0fe] border-b border-[#035CB3]/10">
         <SiteContainer className="py-8 sm:py-12">
           <div className="flex flex-col items-center text-center gap-4">
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#035CB3]">Local Affiliates</span>
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#035CB3]">Local Affiliation & Partners</span>
             <h1 className="text-3xl font-bold tracking-tight text-[#022D5A] sm:text-4xl lg:text-5xl">
               IES National Collaborating Organizations
             </h1>

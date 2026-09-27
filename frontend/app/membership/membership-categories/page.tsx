@@ -14,10 +14,13 @@ export default function CategoriesPage() {
       <PageHero
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Membership', href: routes.membership.root }, { label: 'Categories' }]} />}
         eyebrow="Membership"
-        title="Membership Categories"
-        description="IES provides membership categories that recognise engineers and engineering professionals at different stages of their academic and professional development, from student level to senior professional leadership."
+        title="IES Membership Categories"
+        description="Discover Our Membership Categories"
       />
       <Section>
+        <p className="mb-8 text-sm leading-relaxed text-slate-700 sm:text-base">
+          The Institution of Engineers Somalia (IES) provides membership categories that recognize engineers and engineering professionals at different stages of their academic and professional development. The membership structure supports career progression from student level to senior professional leadership while maintaining high standards of competence, ethics, and professional excellence.
+        </p>
         <ContentGrid columns={3}>
           {membershipCategories.map((c) => (
             <MembershipCategoryCard key={c.code} category={c} />

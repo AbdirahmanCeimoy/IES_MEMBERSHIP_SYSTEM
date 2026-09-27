@@ -38,6 +38,35 @@ class AuthController extends Controller
         );
     }
 
+    public function requestPasswordReset(Request $request): JsonResponse
+    {
+        $email = (string) $request->input('email', '');
+        return response()->json(
+            $this->authService->requestPasswordReset($email),
+            200
+        );
+    }
+
+    public function verifyPasswordResetOtp(Request $request): JsonResponse
+    {
+        $email = (string) $request->input('email', '');
+        $otp = (string) $request->input('otp', '');
+        return response()->json(
+            $this->authService->verifyPasswordResetOtp($email, $otp),
+            200
+        );
+    }
+
+    public function resetPasswordWithToken(Request $request): JsonResponse
+    {
+        $token = (string) $request->input('token', '');
+        $newPassword = (string) $request->input('newPassword', '');
+        return response()->json(
+            $this->authService->resetPasswordWithToken($token, $newPassword),
+            200
+        );
+    }
+
     public function me(Request $request): JsonResponse
     {
         $auth = $request->attributes->get('auth');

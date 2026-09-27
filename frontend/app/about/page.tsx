@@ -317,8 +317,8 @@ export default function AboutPage() {
         <SiteContainer>
           <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-start">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">Governance</p>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#022D5A] sm:text-4xl">
+              {/* <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">Governance</p> */}
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">
                 Role of the Council
               </h2>
               <p className="mt-4 text-sm leading-relaxed text-slate-700 sm:text-base">

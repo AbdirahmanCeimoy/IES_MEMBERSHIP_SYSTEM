@@ -9,6 +9,7 @@ import { routes } from '@/config/routes';
 import { site } from '@/config/site';
 import {
   institutionSummary,
+  institutionSummaryExtended,
   missionStatement,
   visionStatement,
 } from '@/data/institution';
@@ -35,7 +36,7 @@ export default function HomePage() {
               Become a Member
             </Button>
             <Button
-              href={site.cta.partner.href}
+              href={routes.about.partners.root}
               variant="secondary"
               size="lg"
               className="border-white/40 bg-transparent text-white hover:bg-white/10"
@@ -47,16 +48,39 @@ export default function HomePage() {
       </section>
 
       {/* About preview: mission / vision / values */}
-      <Section tone="muted" spacing="relaxed">
-        <SectionHeading
-          eyebrow="About IES"
-          title="A trusted national body for engineering excellence"
-          description={institutionSummary}
-        />
+      <Section tone="muted" spacing="default">
+        <div>
+          <p className="text-xs text-3xl top-0 font-bold tracking-widest text-[#035CB3] sm:text-3xl">About IES</p>
+         
+          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-2xl">
+            The Voice of Engineers in Somalia
+          </h2>
+        </div>
+        <div className="mt-4 flex flex-col gap-3 text-left text-sm leading-relaxed text-slate-700 sm:text-base">
+          <p>{institutionSummary}</p>
+          <p>{institutionSummaryExtended}</p>
+        </div>
 
-        {/* Mission & Vision */}
+        {/* Vision & Mission */}
         <div className="mt-10 grid gap-5 md:grid-cols-2">
+          {/* Vision - left (blue) */}
           <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#035CB3] to-[#024A8F] p-8 text-white shadow-lg transition-transform hover:-translate-y-0.5">
+            <div className="absolute -right-6 -top-6 h-28 w-28 rounded-full bg-white/5" />
+            <div className="absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-white/5" />
+            <div className="relative">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </div>
+              <p className="text-xs font-bold uppercase tracking-widest text-blue-200">Our Vision</p>
+              <p className="mt-2 text-base leading-relaxed text-blue-50">{visionStatement}</p>
+            </div>
+          </div>
+
+          {/* Mission - right (green) */}
+          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#48C184] to-[#2d7a50] p-8 text-white shadow-lg transition-transform hover:-translate-y-0.5">
             <div className="absolute -right-6 -top-6 h-28 w-28 rounded-full bg-white/5" />
             <div className="absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-white/5" />
             <div className="relative">
@@ -69,30 +93,15 @@ export default function HomePage() {
                   <path d="M22 2l-4.5 1.5L19 5z" />
                 </svg>
               </div>
-              <p className="text-xs font-bold uppercase tracking-widest text-blue-200">Our Mission</p>
-              <p className="mt-2 text-base leading-relaxed text-blue-50">{missionStatement}</p>
-            </div>
-          </div>
-
-          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#48C184] to-[#2d7a50] p-8 text-white shadow-lg transition-transform hover:-translate-y-0.5">
-            <div className="absolute -right-6 -top-6 h-28 w-28 rounded-full bg-white/5" />
-            <div className="absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-white/5" />
-            <div className="relative">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/15">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M2 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </div>
-              <p className="text-xs font-bold uppercase tracking-widest text-green-100">Our Vision</p>
-              <p className="mt-2 text-base leading-relaxed text-green-50">{visionStatement}</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-green-100">Our Mission</p>
+              <p className="mt-2 text-base leading-relaxed text-green-50">{missionStatement}</p>
             </div>
           </div>
         </div>
 
         {/* Core Values */}
         <div className="mt-14 text-center">
-          <h3 className="text-2xl font-extrabold tracking-tight text-[#022D5A]">Our Core Values</h3>
+          <h3 className="text-2xl font-extrabold tracking-tight text-left text-[#035CB3] sm:text-4xl">Our Core Values</h3>
           <div className="mx-auto mt-8 grid grid-cols-3 gap-6 sm:grid-cols-6">
             {[
               { label: 'Integrity', icon: <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></> },
@@ -119,7 +128,13 @@ export default function HomePage() {
       </Section>
 
       {/* President's Message */}
-      <Section tone="default" spacing="relaxed">
+      <Section tone="default" spacing="default">
+        <div className="mb-8">
+          {/* <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">Leadership</p> */}
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">
+            President&apos;s Message
+          </h2>
+        </div>
         <div className="overflow-hidden rounded-2xl bg-gradient-to-r from-[#022D5A] to-[#035CB3] shadow-xl">
           <div className="grid lg:grid-cols-[auto_1fr]">
             <div className="relative hidden lg:block">
@@ -159,14 +174,20 @@ export default function HomePage() {
       </Section>
 
       {/* Latest news */}
-      <Section tone="muted" spacing="relaxed">
-        <SectionHeading
-          eyebrow="Info Hub"
-          title="Latest news"
-          description="Recent announcements and partnerships from the Institution of Engineers of Somalia."
-          actions={<Button href={routes.infoHub.news} variant="secondary" size="sm">All news</Button>}
-        />
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <Section tone="muted" spacing="default">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3] sm:text-1.5xl ">Info Hub</p>
+            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">
+             Latest News &amp; Update 
+            </h2>
+            {/* <p className="mt-2 max-w-2xl text-sm text-slate-600 sm:text-base">
+              Recent announcements and partnerships from the Institution of Engineers of Somalia.
+            </p> */}
+          </div>
+          <Button href={routes.infoHub.news} variant="secondary" size="sm">All news</Button>
+        </div>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 text-[#035CB3]">
           {featuredNews.map((item) => (
             <NewsCard key={item.href} item={item} />
           ))}

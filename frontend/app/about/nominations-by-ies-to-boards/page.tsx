@@ -68,12 +68,12 @@ export default function BoardNominationsPage() {
           The Institution of Engineers Somalia (IES) actively nominates its members to serve on various boards, committees, and professional platforms,
          contributing their expertise to the engineering profession and the development of society.
         </p>
-        <h2 className="mt-6 text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">
+        {/* <h2 className="mt-6 text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">
           Members Nominated by IES
-        </h2>
-        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+        </h2> */}
+        {/* <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+          <div className="overflow-x-auto"> */}
+            {/* <table className="w-full text-left text-sm">
               <thead>
                 <tr className="bg-[#035CB3] text-white">
                   <th className="px-4 py-3 font-semibold">Name</th>
@@ -93,16 +93,16 @@ export default function BoardNominationsPage() {
                   </tr>
                 ))}
               </tbody>
-            </table>
-          </div>
-        </div>
+            </table> */}
+          
         <p className="mt-4 text-sm text-slate-500">
-          For more information on IES activities, upcoming events, and membership registration, please continue visiting the IES website.
-        </p>
+        The list of nominations made by IES to various boards will be updated soon.</p>
+        {/* </div>
+        </div> */}
       </Section>
 
       <Section tone="muted" spacing="compact">
-        <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">Key Partner Organizations</p>
+        <p className="text-xstext-8xl font-bold uppercase tracking-widest text-[#035CB3]">Key Partner Organizations</p>
         <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
           While specific appointments are updated regularly, IES collaborates with several key partner organizations and professional bodies.
         </p>

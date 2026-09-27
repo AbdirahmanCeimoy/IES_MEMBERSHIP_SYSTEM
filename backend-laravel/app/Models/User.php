@@ -36,10 +36,13 @@ class User extends Authenticatable
         'dateOfBirth',
         'discipline',
         'grade',
+        'passwordResetToken',
+        'passwordResetExpiresAt',
     ];
 
     protected $hidden = [
         'passwordHash',
+        'passwordResetToken',
     ];
 
     protected function casts(): array
@@ -48,6 +51,7 @@ class User extends Authenticatable
             'role' => UserRoleCast::class,
             'createdAt' => 'datetime',
             'updatedAt' => 'datetime',
+            'passwordResetExpiresAt' => 'datetime',
         ];
     }
 

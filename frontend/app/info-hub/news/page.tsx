@@ -22,8 +22,8 @@ export default function NewsIndexPage() {
       <PageHero
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Info Hub', href: routes.infoHub.root }, { label: 'News' }]} />}
         eyebrow="News"
-        title="Latest news from IES"
-        description="Announcements, partnerships and updates from the Institution of Engineers of Somalia."
+        title="Latest News & Updates"
+        // description="Announcements, partnerships and updates from the Institution of Engineers of Somalia."
       />
       <Section>
         <ContentGrid columns={3}>

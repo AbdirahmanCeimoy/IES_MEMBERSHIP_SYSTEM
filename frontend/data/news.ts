@@ -6,16 +6,16 @@ export const featuredNews: NewsItem[] = [
    {
     title: '2027 WFEO Hackathon Registration Is Now Open!',
     excerpt:
-      'The #WFEOHackathon is back as part of the 2027 World Engineering Day for Sustainable Development celebrations! Engineering students and young engineers are invited to develop innovative solutions to sustainable transport challenges.',
+      'The WFEO Hackathon returns as part of the 2027 World Engineering Day for Sustainable Development. Engineering students and young engineers worldwide are invited to develop innovative solutions to sustainable transport challenges.',
     date: '2027',
     href: `${routes.infoHub.news}/wfeo-hackathon-2027`,
     category: 'Announcement',
     image: '/PARTNER-WFOE.jpeg',
   },
    {
-    title: 'IES Meets with Ministry of Public Works, Reconstruction and Housing',
+    title: 'IES Participated in SORECA and Ministry of Public Works Meeting on Infrastructure and Urban Development',
     excerpt:
-      'IES leadership participated in a meeting with the Ministry of Public Works, Reconstruction and Housing alongside SORECA to strengthen collaboration on infrastructure and urban development in Somalia.',
+      'IES leadership, led by President Eng. Omar Abdi Arab and Vice President Eng. Bashir Ali Hussein, joined a strategic meeting between SORECA and the Ministry of Public Works, Reconstruction and Housing to advance Somalia’s infrastructure and urban development.',
     date: '15 Apr 2026',
     href: `${routes.infoHub.news}/ministry-public-works-meeting`,
     category: 'Collaboration',

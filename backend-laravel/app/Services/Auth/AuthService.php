@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Exceptions\NestHttpException;
 use App\Models\MembershipApplication;
 use App\Models\User;
+use App\Services\Auth\PasswordResetService;
 use App\Services\Memberships\WelcomeEmailService;
 use App\Support\Iso8601;
 use Carbon\CarbonImmutable;
@@ -20,8 +21,116 @@ class AuthService
 
     public function __construct(
         private readonly JwtTokenService $jwtTokenService,
-        private readonly WelcomeEmailService $welcomeEmailService
+        private readonly WelcomeEmailService $welcomeEmailService,
+        private readonly PasswordResetService $passwordResetService
     ) {
+    }
+
+    /** Generate a 6-digit OTP, store it, and email it to the user. */
+    public function requestPasswordReset(string $email): array
+    {
+        $email = $this->normalizeEmail($email);
+        if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return [
+                'success' => true,
+                'message' => 'If an account exists, a code has been sent to the email.',
+            ];
+        }
+
+        $user = User::query()->where('email', $email)->first();
+        if ($user) {
+            $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            $user->passwordResetToken = hash('sha256', $otp . '|' . $user->email);
+            $user->passwordResetExpiresAt = CarbonImmutable::now()->addMinutes(10);
+            $user->save();
+
+            // Log OTP in dev so testing works without SMTP.
+            Log::info('Password reset OTP for ' . $user->email . ': ' . $otp);
+
+            try {
+                $this->passwordResetService->sendResetEmail([
+                    'email' => $user->email,
+                    'fullName' => $user->fullName ?: $user->username,
+                    'otp' => $otp,
+                ]);
+            } catch (Throwable $exception) {
+                Log::warning('Password reset email failed for ' . $user->email . ': ' . $exception->getMessage());
+            }
+        }
+
+        return [
+            'success' => true,
+            'message' => 'If an account exists, a code has been sent to the email.',
+        ];
+    }
+
+    /** Verify OTP code for the given email. Returns a short-lived confirmation token. */
+    public function verifyPasswordResetOtp(string $email, string $otp): array
+    {
+        $email = $this->normalizeEmail($email);
+        $otp = trim($otp);
+        if ($email === '' || ! preg_match('/^\d{6}$/', $otp)) {
+            throw NestHttpException::badRequest('Invalid email or code.');
+        }
+
+        $user = User::query()->where('email', $email)->first();
+        if (! $user || ! $user->passwordResetToken || ! $user->passwordResetExpiresAt) {
+            throw NestHttpException::badRequest('Invalid or expired code.');
+        }
+        if ($user->passwordResetExpiresAt->lt(now())) {
+            throw NestHttpException::badRequest('This code has expired. Please request a new one.');
+        }
+
+        $hashedOtp = hash('sha256', $otp . '|' . $user->email);
+        if (! hash_equals($user->passwordResetToken, $hashedOtp)) {
+            throw NestHttpException::badRequest('The code you entered is incorrect.');
+        }
+
+        // Rotate token to a one-time confirmation token used to complete reset.
+        $confirmationToken = bin2hex(random_bytes(24));
+        $user->passwordResetToken = hash('sha256', 'CONFIRMED|' . $confirmationToken);
+        // Give the user 10 more minutes to enter a new password.
+        $user->passwordResetExpiresAt = CarbonImmutable::now()->addMinutes(10);
+        $user->save();
+
+        return [
+            'success' => true,
+            'token' => $confirmationToken,
+        ];
+    }
+
+    /** Finalize the reset using the confirmation token from OTP verification. */
+    public function resetPasswordWithToken(string $token, string $newPassword): array
+    {
+        $token = trim($token);
+        if ($token === '' || strlen($token) < 32) {
+            throw NestHttpException::badRequest('Invalid or expired session.');
+        }
+
+        if (! preg_match(\App\Support\AuthValidation::SECURE_PASSWORD_REGEX, $newPassword)) {
+            throw NestHttpException::badRequest(\App\Support\AuthValidation::SECURE_PASSWORD_ERROR);
+        }
+
+        $hashedToken = hash('sha256', 'CONFIRMED|' . $token);
+        $user = User::query()->where('passwordResetToken', $hashedToken)->first();
+
+        if (! $user) {
+            throw NestHttpException::badRequest('Invalid or expired session.');
+        }
+
+        if (! $user->passwordResetExpiresAt || $user->passwordResetExpiresAt->lt(now())) {
+            throw NestHttpException::badRequest('Your session has expired. Please start over.');
+        }
+
+        $user->passwordHash = Hash::make($newPassword);
+        $user->passwordResetToken = null;
+        $user->passwordResetExpiresAt = null;
+        $user->save();
+
+        return [
+            'success' => true,
+            'message' => 'Password reset successful. You can now sign in with your new password.',
+        ];
     }
 
     public function signup(array $dto): array

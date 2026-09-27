@@ -30,22 +30,22 @@ export const publicNavigation: NavigationEntry[] = [
       },
       { label: 'Nominations by IES to Boards', href: routes.about.boardNominations },
       {
-        label: 'Governance Resources (Instruments of Power)',
+        label: 'Governance Instruments',
         href: routes.about.governance.root,
         children: [
-          {
-            label: 'IES Documents',
-            href: routes.about.governance.iesDocuments.root,
-            children: [
-              { label: 'By-Laws', href: routes.about.governance.iesDocuments.byLaws },
-              { label: 'Policies & Regulations', href: routes.about.governance.iesDocuments.policiesAndRegulations },
-              { label: 'Annual Reports', href: routes.about.governance.iesDocuments.annualReports },
-            ],
-          },
+          { label: 'IES Constitution', href: routes.about.governance.constitution2026 },
+          { label: 'IES By-Laws', href: routes.about.governance.iesDocuments.byLaws },
+          { label: 'IES Policies & Regulations', href: routes.about.governance.iesDocuments.policiesAndRegulations },
+          { label: 'Code of Professional Practice & Ethics', href: routes.about.governance.codeOfProfessionalPractice },
+        ],
+      },
+      {
+        label: 'IES Key Documents',
+        href: routes.about.governance.iesDocuments.root,
+        children: [
           { label: 'IES Brochure', href: routes.about.governance.brochure },
-          { label: 'IES Constitution 2026', href: routes.about.governance.constitution2026 },
-          { label: 'Code of Professional Practice and Ethics', href: routes.about.governance.codeOfProfessionalPractice },
-          { label: 'Strategic Plan 2026 - 2030', href: routes.about.governance.strategicPlan2026_2030 },
+          { label: 'IES Strategic Plan 2026–2030', href: routes.about.governance.strategicPlan2026_2030 },
+          { label: 'IES Annual Reports', href: routes.about.governance.iesDocuments.annualReports },
         ],
       },
       { label: 'IES Awards', href: routes.about.awards },
@@ -62,7 +62,6 @@ export const publicNavigation: NavigationEntry[] = [
       { label: 'Membership Requirements', href: routes.membership.requirements },
       { label: 'Membership Fees Structure', href: routes.membership.fees },
       { label: 'Online Application Guidelines (Account Creation)', href: routes.membership.applicationGuidelines },
-      { label: 'Account Activation', href: routes.membership.accountActivation },
       { label: 'Member Check', href: routes.membership.memberCheck },
       {
         label: 'Professional Development',

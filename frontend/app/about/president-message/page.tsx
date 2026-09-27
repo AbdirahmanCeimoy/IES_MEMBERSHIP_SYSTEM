@@ -6,15 +6,15 @@ export const metadata = { title: "Message from the President" };
 
 const paragraphs = [
   'Dear Members, Partners, Government Institutions, Development Partners, and Friends,',
-  'It is my great honor and privilege to welcome you on behalf of the Institution of Engineers of Somalia (IES).',
-  'The Institution of Engineers of Somalia (IES) serves as the national professional body dedicated to promoting engineering excellence, advancing professional standards, and supporting the sustainable development of our country. As Somalia continues its journey of reconstruction and economic transformation, engineers have a vital responsibility to design, build, and maintain the infrastructure that will improve the quality of life for present and future generations.',
+  'It is my great honor and privilege to welcome you on behalf of the Institution of Engineers Somalia (IES).',
+  'The Institution of Engineers Somalia (IES) serves as the national professional body dedicated to promoting engineering excellence, advancing professional standards, and supporting the sustainable development of our country. As Somalia continues its journey of reconstruction and economic transformation, engineers have a vital responsibility to design, build, and maintain the infrastructure that will improve the quality of life for present and future generations.',
   'Today, Somalia stands at a defining moment. Our nation requires resilient roads, bridges, water supply systems, ports, airports, renewable energy, public buildings, and modern urban infrastructure. Engineers are at the center of this transformation, providing innovative, safe, and sustainable solutions that contribute to national development and economic growth.',
   'At IES, we are committed to strengthening the engineering profession through continuous professional development, technical excellence, ethical practice, research, innovation, and knowledge sharing. We will continue to provide opportunities for engineers to enhance their skills through training, seminars, conferences, mentorship programs, and collaboration with universities, government institutions, and industry partners.',
   'The Institution also remains committed to supporting young engineers and engineering students by creating pathways for professional growth, mentorship, leadership development, and international exposure. Investing in the next generation of engineers is essential for building a stronger and more prosperous Somalia.',
   'Engineering is increasingly a global profession. Therefore, IES will continue expanding partnerships with regional and international engineering organizations to promote professional recognition, knowledge exchange, capacity building, and collaboration on issues of mutual interest. Through these partnerships, Somali engineers will gain greater opportunities to contribute to regional and global engineering initiatives while bringing international best practices home.',
   'Professional ethics, competence, and public trust remain the foundation of our Institution. We encourage every member to uphold the highest standards of integrity, accountability, and professionalism in all engineering activities, ensuring that our work contributes positively to society and protects public safety.',
   'As we look toward the future, I invite every member to actively participate in the growth of our Institution. Together, we can strengthen the engineering profession, support national development, promote innovation, and contribute to achieving Somalia’s vision for sustainable development.',
-  'I extend my sincere appreciation to our members, partners, government institutions, universities, development organizations, and all stakeholders who continue to support the Institution of Engineers, Somalia. Your collaboration is essential to build a stronger profession and a better future for our nation.',
+  'I extend my sincere appreciation to our members, partners, government institutions, universities, development organizations, and all stakeholders who continue to support the Institution of Engineers Somalia (IES). Your collaboration is essential to build a stronger profession and a better future for our nation.',
   'Together, let us build a resilient Somalia through engineering excellence, innovation, professionalism, and collaboration.',
 ];
 
@@ -28,7 +28,7 @@ export default function PresidentMessagePage() {
             Eng. Omar Abdi Arab, CE
           </h1>
           <p className="mt-2 text-sm text-blue-100 sm:text-base">
-            President, The Institution of Engineers of Somalia (IES)
+            President, The Institution of Engineers Somalia (IES)
           </p>
         </SiteContainer>
       </section>
@@ -48,7 +48,7 @@ export default function PresidentMessagePage() {
                 </div>
                 <div className="p-5">
                   <p className="text-sm font-bold text-[#022D5A]">Eng. Omar Abdi Arab, CE</p>
-                  <p className="mt-0.5 text-xs text-slate-500">President — IES</p>
+                  <p className="mt-0.5 text-xs text-slate-500">President of IES</p>
                   <p className="mt-3 border-l-2 border-[#48C184] pl-3 text-xs italic leading-relaxed text-slate-600">
                     &ldquo;Engineering Sustainable Development through Excellence, Innovation, Leadership, and Collaboration.&rdquo;
                   </p>
@@ -79,7 +79,7 @@ export default function PresidentMessagePage() {
               <div className="mt-6 border-t border-slate-200 pt-5">
                 <p className="text-sm font-bold text-[#022D5A]">Eng. Omar Abdi Arab</p>
                 <p className="text-sm text-slate-600">President, CE</p>
-                <p className="text-sm text-slate-600">The Institution of Engineers of Somalia (IES)</p>
+                <p className="text-sm text-slate-600">The Institution of Engineers Somalia (IES)</p>
               </div>
             </article>
           </div>
