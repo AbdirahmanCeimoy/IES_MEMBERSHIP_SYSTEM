@@ -57,9 +57,14 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-white px-4 py-6">
-      {/* Back to website */}
-      <div className="mx-auto w-full max-w-md">
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-white px-4 py-4">
+      {/* Decorative background blobs */}
+      <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-[#035CB3]/10 blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-[#48C184]/10 blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute right-1/4 top-1/3 h-64 w-64 rounded-full bg-[#035CB3]/5 blur-3xl" aria-hidden="true" />
+
+      {/* Back to website - top-left */}
+      <div className="relative w-full">
         <Link
           href={routes.home}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-[#035CB3]"
@@ -71,7 +76,9 @@ export default function LoginPage() {
         </Link>
       </div>
 
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-8">
+      <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-4">
+        {/* Silver card box */}
+        <div className="rounded-2xl border border-slate-300/70 bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200 p-6 shadow-xl backdrop-blur-sm sm:p-8">
         {/* Logo */}
         <div className="mb-3 flex justify-center">
           <div className="relative h-20 w-20">
@@ -80,20 +87,18 @@ export default function LoginPage() {
         </div>
 
         {/* Organization Name */}
-        <h2 className="mb-8 text-center text-base font-bold leading-snug text-[#035CB3]">
+        <h2 className="mb-1 text-center text-2xl font-extrabold leading-snug text-[#035CB3] sm:text-2xl">
           {site.name}
         </h2>
 
         {/* Log In Heading */}
-        <h1 className="mb-2 text-center text-2xl font-extrabold text-gray-900">
+        <h1 className="mb-3 text-center text-base font-bold text-[#035CB3]">
           Log In
         </h1>
 
         {/* Subtitle */}
-        <p className="mb-7 text-center text-sm text-gray-500">
-          Please enter your registered email and password below to
-          <br />
-          Sign in.
+        <p className="mb-4 text-center text-sm text-gray-500">
+          Please enter your registered email and password below to Sign in.
         </p>
 
         {/* Form */}
@@ -121,7 +126,7 @@ export default function LoginPage() {
           {/* Password */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="login-password" className="text-sm font-semibold text-gray-900">
-              Password
+            Password
             </label>
             <PasswordInput
               id="login-password"
@@ -132,7 +137,7 @@ export default function LoginPage() {
                 setPassword(event.target.value);
                 setError('');
               }}
-              placeholder="Password"
+              placeholder="Enter your Password"
               className="!rounded-xl !px-4 !py-3"
             />
           </div>
@@ -183,9 +188,11 @@ export default function LoginPage() {
             Click here to register
           </Link>
         </p>
+        </div>
+        {/* End white card */}
 
-        {/* Footer */}
-        <p className="mt-8 text-center text-xs text-gray-400">
+        {/* Footer - outside card */}
+        <p className="mt-6 text-center text-xs text-gray-500">
           © {new Date().getFullYear()} {site.name}
         </p>
       </div>

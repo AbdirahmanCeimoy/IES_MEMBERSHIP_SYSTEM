@@ -21,12 +21,12 @@ interface StoredUser {
 }
 
 const gradeLabelMap: Record<string, string> = {
-  STUDENT: 'Student Member',
-  GRADUATE: 'Graduate Member',
-  ASSOCIATE: 'Associate Member',
-  CORPORATE: 'Corporate Member',
-  SENIOR: 'Senior Member',
-  FELLOW: 'Fellow Member',
+  STUDENT: 'Student Member (SMIES)',
+  GRADUATE: 'Graduate Member (GMIES)',
+  ASSOCIATE: 'Associate Member (AMIES)',
+  CORPORATE: 'Corporate Member (CMIES)',
+  SENIOR: 'Senior Member (SenMIES)',
+  FELLOW: 'Fellow Member (FMIES)',
   GRAD_TECHNICIAN: 'Graduate Engineering Technician',
   GRAD_TECHNOLOGIST: 'Graduate Engineering Technologist',
 };

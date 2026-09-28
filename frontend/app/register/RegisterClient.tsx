@@ -16,12 +16,12 @@ import {
 import { PasswordInput } from '@/components/ui/PasswordInput';
 
 const gradeLabels: Record<string, string> = {
-  STUDENT: 'Student Member',
-  GRADUATE: 'Graduate Member',
-  ASSOCIATE: 'Associate Member',
-  CORPORATE: 'Corporate Member',
-  SENIOR: 'Senior Member',
-  FELLOW: 'Fellow Member',
+  STUDENT: 'Student Member (SMIES)',
+  GRADUATE: 'Graduate Member (GMIES)',
+  ASSOCIATE: 'Associate Member (AMIES)',
+  CORPORATE: 'Corporate Member (CMIES)',
+  SENIOR: 'Senior Member (SenMIES)',
+  FELLOW: 'Fellow Member (FMIES)',
   GRAD_TECHNICIAN: 'Graduate Engineering Technician',
   GRAD_TECHNOLOGIST: 'Graduate Engineering Technologist',
 };
@@ -139,8 +139,10 @@ export const RegisterClient = () => {
       // OTP endpoint is not yet wired on the backend - skip verify-otp and
       // go straight to initial profile. Re-enable once the /auth/otp/send
       // and /auth/otp/verify endpoints exist.
+      // Redirect to email verification first, then to initial-profile after verified
       router.push(
-        `/initial-profile?grade=${grade}` +
+        `/verify-email?email=${encodeURIComponent(form.email)}` +
+        `&grade=${grade}` +
         `&phone=${encodeURIComponent(form.phone)}` +
         `&nid=${encodeURIComponent(form.nationalId)}`,
       );

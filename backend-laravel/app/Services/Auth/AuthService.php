@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Exceptions\NestHttpException;
 use App\Models\MembershipApplication;
 use App\Models\User;
+use App\Services\Auth\EmailVerificationService;
 use App\Services\Auth\PasswordResetService;
 use App\Services\Memberships\WelcomeEmailService;
 use App\Support\Iso8601;
@@ -22,8 +23,80 @@ class AuthService
     public function __construct(
         private readonly JwtTokenService $jwtTokenService,
         private readonly WelcomeEmailService $welcomeEmailService,
-        private readonly PasswordResetService $passwordResetService
+        private readonly PasswordResetService $passwordResetService,
+        private readonly EmailVerificationService $emailVerificationService
     ) {
+    }
+
+    /** Send an email verification OTP to the given email address. */
+    public function sendEmailVerification(string $email): array
+    {
+        $email = $this->normalizeEmail($email);
+        if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw NestHttpException::badRequest('Invalid email address.');
+        }
+
+        $user = User::query()->where('email', $email)->first();
+        if (! $user) {
+            throw NestHttpException::badRequest('No account found for that email.');
+        }
+
+        $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $user->emailVerificationToken = hash('sha256', $otp . '|' . $user->email);
+        $user->emailVerificationExpiresAt = CarbonImmutable::now()->addMinutes(5);
+        $user->save();
+
+        // Log OTP in dev so testing works without SMTP.
+        Log::info('Email verification OTP for ' . $user->email . ': ' . $otp);
+
+        try {
+            $this->emailVerificationService->sendVerificationEmail([
+                'email' => $user->email,
+                'fullName' => $user->fullName ?: $user->username,
+                'otp' => $otp,
+            ]);
+        } catch (Throwable $exception) {
+            Log::warning('Email verification send failed for ' . $user->email . ': ' . $exception->getMessage());
+        }
+
+        return [
+            'success' => true,
+            'message' => 'A verification code has been sent to your email.',
+        ];
+    }
+
+    /** Verify the OTP against the stored verification token. */
+    public function verifyEmailOtp(string $email, string $otp): array
+    {
+        $email = $this->normalizeEmail($email);
+        $otp = trim($otp);
+
+        if ($email === '' || ! preg_match('/^\d{6}$/', $otp)) {
+            throw NestHttpException::badRequest('Invalid email or code.');
+        }
+
+        $user = User::query()->where('email', $email)->first();
+        if (! $user || ! $user->emailVerificationToken || ! $user->emailVerificationExpiresAt) {
+            throw NestHttpException::badRequest('Invalid or expired verification code.');
+        }
+        if ($user->emailVerificationExpiresAt->lt(now())) {
+            throw NestHttpException::badRequest('This code has expired. Please request a new one.');
+        }
+
+        $hashedOtp = hash('sha256', $otp . '|' . $user->email);
+        if (! hash_equals($user->emailVerificationToken, $hashedOtp)) {
+            throw NestHttpException::badRequest('The code you entered is incorrect.');
+        }
+
+        $user->emailVerifiedAt = CarbonImmutable::now();
+        $user->emailVerificationToken = null;
+        $user->emailVerificationExpiresAt = null;
+        $user->save();
+
+        return [
+            'success' => true,
+            'message' => 'Email verified successfully.',
+        ];
     }
 
     /** Generate a 6-digit OTP, store it, and email it to the user. */
@@ -173,6 +246,24 @@ class AuthService
             ]);
         } catch (Throwable $exception) {
             Log::warning('Welcome email failed for ' . $user->email . ': ' . $exception->getMessage());
+        }
+
+        // Automatically generate and send an email verification OTP after signup.
+        try {
+            $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            $user->emailVerificationToken = hash('sha256', $otp . '|' . $user->email);
+            $user->emailVerificationExpiresAt = CarbonImmutable::now()->addMinutes(5);
+            $user->save();
+
+            Log::info('Email verification OTP for ' . $user->email . ': ' . $otp);
+
+            $this->emailVerificationService->sendVerificationEmail([
+                'email' => $user->email,
+                'fullName' => $user->fullName ?: $user->username,
+                'otp' => $otp,
+            ]);
+        } catch (Throwable $exception) {
+            Log::warning('Signup verification email failed for ' . $user->email . ': ' . $exception->getMessage());
         }
 
         return [

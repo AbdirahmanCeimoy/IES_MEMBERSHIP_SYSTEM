@@ -67,6 +67,25 @@ class AuthController extends Controller
         );
     }
 
+    public function sendEmailVerification(Request $request): JsonResponse
+    {
+        $email = (string) $request->input('email', '');
+        return response()->json(
+            $this->authService->sendEmailVerification($email),
+            200
+        );
+    }
+
+    public function verifyEmail(Request $request): JsonResponse
+    {
+        $email = (string) $request->input('email', '');
+        $otp = (string) $request->input('otp', '');
+        return response()->json(
+            $this->authService->verifyEmailOtp($email, $otp),
+            200
+        );
+    }
+
     public function me(Request $request): JsonResponse
     {
         $auth = $request->attributes->get('auth');

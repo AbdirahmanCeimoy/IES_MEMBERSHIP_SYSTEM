@@ -64,7 +64,7 @@ export const Footer = ({ hideCta }: { hideCta?: boolean }) => (
       <div className="bg-[#035CB3]">
         <SiteContainer className="flex items-center justify-between py-3">
           <p className="text-xs font-semibold text-white sm:text-sm">
-            Join The Institution of Engineers Somalia (IES)
+            Join the Institution of Engineers Somalia (IES)
           </p>
           <Link
             href={routes.membership.applicationGuidelines}

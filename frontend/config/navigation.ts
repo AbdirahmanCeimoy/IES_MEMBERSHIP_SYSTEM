@@ -57,10 +57,10 @@ export const publicNavigation: NavigationEntry[] = [
     layout: 'dropdown',
     children: [
       { label: 'Become a Member', href: routes.membership.becomeMember },
-      { label: 'Membership Categories', href: routes.membership.categories },
-      { label: 'Membership Benefits', href: routes.membership.benefits },
-      { label: 'Membership Requirements', href: routes.membership.requirements },
-      { label: 'Membership Fees Structure', href: routes.membership.fees },
+      { label: 'IES Membership Categories', href: routes.membership.categories },
+      { label: 'IES Membership Benefits', href: routes.membership.benefits },
+      { label: 'IES Membership Requirements', href: routes.membership.requirements },
+      { label: 'IES Membership Fees Structure', href: routes.membership.fees },
       { label: 'Online Application Guidelines (Account Creation)', href: routes.membership.applicationGuidelines },
       { label: 'Member Check', href: routes.membership.memberCheck },
       {

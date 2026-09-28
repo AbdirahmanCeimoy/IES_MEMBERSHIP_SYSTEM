@@ -50,7 +50,7 @@ export default function HomePage() {
       {/* About preview: mission / vision / values */}
       <Section tone="muted" spacing="default">
         <div>
-          <p className="text-xs text-3xl top-0 font-bold tracking-widest text-[#035CB3] sm:text-3xl">About IES</p>
+          <p className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-2xl">About IES</p>
          
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-2xl">
             The Voice of Engineers in Somalia
@@ -153,8 +153,8 @@ export default function HomePage() {
               <h2 className="mt-3 text-2xl font-extrabold leading-tight text-white lg:text-3xl">
                 Building a resilient Somalia through engineering excellence
               </h2>
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-blue-100">
-                Somalia stands at a defining moment. Our nation needs resilient roads, bridges, water systems, ports, airports, renewable energy and modern urban infrastructure — engineers are at the centre of this transformation.
+              <p className="mt-4 text-sm leading-relaxed text-blue-100">
+                Today, Somalia stands at a defining moment. Our nation requires resilient roads, bridges, water supply systems, ports, airports, renewable energy, public buildings, and modern urban infrastructure. Engineers are at the center of this transformation, providing innovative, safe, and sustainable solutions that contribute to national development and economic growth.
               </p>
               <div className="mt-6 flex items-center gap-4">
                 <div className="h-12 w-12 overflow-hidden rounded-full border-2 border-white/30 lg:hidden">
@@ -162,7 +162,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-white">Eng. Omar Abdi Arab, CE</p>
-                  <p className="text-xs text-blue-200">President, Institution of Engineers Somalia</p>
+                  <p className="text-xs text-blue-200">President, CE<br></br> The Institution of Engineers Somalia (IES)</p>
                 </div>
               </div>
               <Button href="/about/president-message" variant="accent" size="sm" className="mt-6 w-fit">
@@ -177,7 +177,7 @@ export default function HomePage() {
       <Section tone="muted" spacing="default">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3] sm:text-1.5xl ">Info Hub</p>
+            <p className="text-xs font-bold  tracking-widest text-[#035CB3] sm:text-1.5xl ">Info Hub</p>
             <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">
              Latest News &amp; Update 
             </h2>

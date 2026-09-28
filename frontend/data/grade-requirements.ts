@@ -64,7 +64,7 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     postnominal: 'AMIES',
     headline: 'Requirements for Associate Member Application',
     summary: 'For persons not qualified for Corporate Membership but with 10+ years experience in a position of responsibility related to engineering.',
-    applicationFee: '$30',
+    applicationFee: '$20',
     requirements: [
       'Updated Curriculum Vitae (CV).',
       'A Copy of your Higher National Diploma Certificate certified by Commissioner for Oaths (N.B not advocates).',
@@ -78,10 +78,10 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
   CORPORATE: {
     code: 'CORPORATE',
     label: 'Corporate Member',
-    postnominal: 'MIES',
-    headline: 'Requirements for Corporate Membership application',
+    postnominal: 'CMIES',
+    headline: 'Requirements for Corporate Membership Application',
     summary: 'For fully qualified engineering professionals with at least three years of post-graduate experience and demonstrated professional competence.',
-    applicationFee: '$30',
+    applicationFee: '$20',
     requirements: [
       'Updated Curriculum Vitae (CV).',
       'Two proposers and two seconders - paid Corporate or Fellow members.',
@@ -95,7 +95,7 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     code: 'SENIOR',
     label: 'Senior Member',
     postnominal: 'SenMIES',
-    headline: 'Requirements for Senior Member application',
+    headline: 'Requirements for Senior Membership Application',
     summary: 'For Corporate Members (or equivalent standing) with 10+ years professional engineering experience and demonstrated leadership.',
     applicationFee: '$30',
     requirements: [
@@ -111,10 +111,10 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
   FELLOW: {
     code: 'FELLOW',
     label: 'Fellow Member',
-    postnominal: 'FIES',
-    headline: 'Requirements for Fellow Membership application',
+    postnominal: 'FMIES',
+    headline: 'Requirements for Fellow Membership Application',
     summary: 'The highest membership grade - for Corporate Members with 7+ years of standing, 15+ years experience, and outstanding contribution to engineering.',
-    applicationFee: '$30',
+    applicationFee: '$50',
     requirements: [
       'Updated Curriculum Vitae (CV).',
       'Two proposers and two seconders - paid up Fellows only.',
@@ -125,9 +125,6 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
       'Demonstrated CSR (engineering-nature) activities.',
       'Short bio describing IES and CSR involvement.',
       'Current colored passport photo.',
-    ],
-    notes: [
-      'Fellowship is elected by Council - meeting the requirements does not guarantee admission.',
     ],
   },
   GRAD_TECHNICIAN: {

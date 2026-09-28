@@ -16,11 +16,14 @@ interface IndividualGrade {
 }
 
 const individualGrades: IndividualGrade[] = [
-  { code: 'STUDENT', label: 'Student Member', fee: '$5.00' },
-  { code: 'GRADUATE', label: 'Graduate Member', fee: '$10.00' },
-  { code: 'GRAD_TECHNICIAN', label: 'Graduate Engineering Technician', fee: '$10.00' },
+  { code: 'FELLOW', label: 'Fellow Member (FMIES)', fee: '$50.00' },
+  { code: 'SENIOR', label: 'Senior Member (SenMIES)', fee: '$30.00' },
+  { code: 'CORPORATE', label: 'Corporate Member (CMIES)', fee: '$20.00' },
+  { code: 'ASSOCIATE', label: 'Associate Member (AMIES)', fee: '$20.00' },
+  { code: 'GRADUATE', label: 'Graduate Member (GMIES)', fee: '$10.00' },
   { code: 'GRAD_TECHNOLOGIST', label: 'Graduate Engineering Technologist', fee: '$10.00' },
-  { code: 'ASSOCIATE', label: 'Associate Member', fee: '$30.00' },
+  { code: 'GRAD_TECHNICIAN', label: 'Graduate Engineering Technician', fee: '$10.00' },
+  { code: 'STUDENT', label: 'Student Member (SMIES)', fee: '$5.00' },
 ];
 
 export default function ApplyPage() {
@@ -102,49 +105,165 @@ export default function ApplyPage() {
 
         {/* Organization tab */}
         {tab === 'organization' && (
-          <div className="mx-auto mt-10 max-w-2xl">
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-              <div className="flex flex-col items-center px-8 py-10 text-center">
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#035CB3]/10">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#035CB3" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                    <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-[#022D5A]">Organization Member</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Organization Membership is available to companies, universities, research institutions, and organizations involved in engineering and technology.
+          <div className="mx-auto mt-10 max-w-3xl space-y-6">
+            {/* Main heading */}
+            <div className="text-center">
+              <h2 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">
+                Join Our Organization Membership
+              </h2>
+            </div>
+
+            {/* Objective */}
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="mb-3 text-lg font-bold text-[#035CB3]">Objective</h3>
+              <div className="flex flex-col gap-3 text-sm leading-relaxed text-slate-700 sm:text-base">
+                <p>
+                  The Institution of Engineers Somalia (IES) welcomes companies, universities, research institutions, and other organizations engaged in engineering, technology, education, research and development, contracting, manufacturing, and related activities to become Organization Members.
                 </p>
-
-                <div className="mt-6 w-full rounded-lg border border-slate-100 bg-slate-50 p-5 text-left">
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-500">Requirements</p>
-                  <ul className="flex flex-col gap-2">
-                    <li className="flex items-start gap-2 text-sm text-slate-700">
-                      <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#035CB3]">
-                        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                      </span>
-                      Registered organization involved in engineering, technology, education, or related activities.
-                    </li>
-                    <li className="flex items-start gap-2 text-sm text-slate-700">
-                      <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#035CB3]">
-                        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                      </span>
-                      Commitment to supporting engineering development and professional standards.
-                    </li>
-                  </ul>
-                </div>
-
-                <Link
-                  href="/contact"
-                  className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#035CB3] px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#48C184]"
-                >
-                  Contact Us to Apply
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </Link>
+                <p>
+                  Organization Membership provides a platform for collaboration between IES and industry, academia, research institutions, and other relevant organizations. It promotes professional networking, knowledge exchange, continuing professional development, and greater contribution of the engineering profession to the development of Somali society.
+                </p>
               </div>
+            </div>
+
+            {/* Eligibility */}
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="mb-3 text-lg font-bold text-[#035CB3]">Eligibility</h3>
+              <p className="mb-3 text-sm text-slate-700">Organization Membership is open to:</p>
+              <ul className="flex flex-col gap-2">
+                {[
+                  'Companies and organizations legally registered in Somalia.',
+                  'Engineering and technology companies.',
+                  'Contracting and construction companies.',
+                  'Manufacturing and engineering-related industries.',
+                  'Universities and academic institutions.',
+                  'Research and development institutions.',
+                  'Other organizations engaged in engineering, technology, education, or related activities.',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-slate-700">
+                    <span className="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-[#48C184]" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Membership Requirements */}
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="mb-3 text-lg font-bold text-[#035CB3]">Membership Requirements</h3>
+              <p className="mb-3 text-sm text-slate-700">Organizations applying for membership should:</p>
+              <ul className="flex flex-col gap-2">
+                {[
+                  'Be a legally registered organization in Somalia.',
+                  'Be engaged in engineering, technology, education, research, contracting, manufacturing, or related activities.',
+                  'Demonstrate an interest in supporting engineering development and professional standards.',
+                  'Provide the required organizational information and documentation requested by IES.',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-slate-700">
+                    <span className="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-[#48C184]" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Membership Fee */}
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="mb-3 text-lg font-bold text-[#035CB3]">Membership Fee</h3>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-lg bg-[#035CB3]/5 p-4">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">Annual Subscription</p>
+                  <p className="mt-1 text-2xl font-extrabold text-[#022D5A]">USD 500</p>
+                </div>
+                <div className="rounded-lg bg-[#48C184]/10 p-4">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#3AA870]">Entrance Fee</p>
+                  <p className="mt-1 text-2xl font-extrabold text-[#022D5A]">None</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-bold text-[#035CB3]">Benefits of Organization Membership</h3>
+              <div className="flex flex-col gap-5">
+                {[
+                  {
+                    title: 'Continuing Professional Development (CPD)',
+                    items: [
+                      'Access to IES conferences, seminars, workshops, and other professional development activities.',
+                      'Opportunities for continuing education and professional upgrading.',
+                      'Members’ rates for IES-organized events.',
+                      'Member rates are applicable to two (2) nominated employees of the organization.',
+                    ],
+                  },
+                  {
+                    title: 'Professional Networking and Collaboration',
+                    items: [
+                      'Opportunities to connect with engineers, engineering organizations, academic institutions, government institutions, and industry stakeholders.',
+                      'Opportunities to participate in IES programs, initiatives, and professional activities.',
+                      'Support for collaboration between industry, academia, and the engineering profession.',
+                    ],
+                  },
+                  {
+                    title: 'Updates and Professional Information',
+                    items: [
+                      'Receive updates on relevant government regulations, engineering developments, and professional matters.',
+                      'Receive information about activities, programs, and opportunities organized by IES and allied institutions.',
+                    ],
+                  },
+                  {
+                    title: 'Marketing and Outreach',
+                    items: [
+                      'Organization’s name and logo may be featured on the IES website as an Organization Member.',
+                      'Opportunities to increase organizational visibility through appropriate IES activities and communication channels.',
+                    ],
+                  },
+                  {
+                    title: 'Contribution to Engineering Development',
+                    items: [
+                      'Opportunity to support the development and advancement of the engineering profession in Somalia.',
+                      'Opportunity to contribute to initiatives that promote professional standards, knowledge, innovation, and engineering development.',
+                    ],
+                  },
+                ].map((benefit, idx) => (
+                  <div key={benefit.title}>
+                    <div className="mb-2 flex items-center gap-2">
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#035CB3] text-xs font-bold text-white">
+                        {idx + 1}
+                      </span>
+                      <h4 className="text-sm font-bold text-[#022D5A] sm:text-base">{benefit.title}</h4>
+                    </div>
+                    <ul className="ml-8 flex flex-col gap-1.5">
+                      {benefit.items.map((item) => (
+                        <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-slate-700">
+                          <span className="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-[#48C184]" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Closing / Join CTA */}
+            <div className="rounded-xl border border-[#035CB3]/15 bg-gradient-to-br from-[#e8f0fe] to-white p-6 text-center shadow-sm">
+              <h3 className="text-lg font-bold text-[#022D5A] sm:text-xl">
+                Join IES as an Organization Member
+              </h3>
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                Organizations interested in joining IES as an Organization Member can submit their application through the IES Membership Portal and provide the required registration and organizational information.
+              </p>
+              <Link
+                href="/contact"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#022D5A] px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#035CB3]"
+              >
+                Contact Us to Apply
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </Link>
             </div>
           </div>
         )}

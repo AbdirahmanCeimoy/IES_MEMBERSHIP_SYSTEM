@@ -38,11 +38,15 @@ class User extends Authenticatable
         'grade',
         'passwordResetToken',
         'passwordResetExpiresAt',
+        'emailVerificationToken',
+        'emailVerificationExpiresAt',
+        'emailVerifiedAt',
     ];
 
     protected $hidden = [
         'passwordHash',
         'passwordResetToken',
+        'emailVerificationToken',
     ];
 
     protected function casts(): array
@@ -52,6 +56,8 @@ class User extends Authenticatable
             'createdAt' => 'datetime',
             'updatedAt' => 'datetime',
             'passwordResetExpiresAt' => 'datetime',
+            'emailVerificationExpiresAt' => 'datetime',
+            'emailVerifiedAt' => 'datetime',
         ];
     }
 

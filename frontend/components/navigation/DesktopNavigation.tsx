@@ -33,7 +33,7 @@ export const DesktopNavigation = () => {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Primary" className="hidden items-center gap-0.5 xl:flex">
+    <nav aria-label="Primary" className="hidden items-center gap-0.5 lg:flex">
       {publicNavigation.map((entry) => {
         const active = isEntryActive(pathname, entry);
         const hasSubmenu =

@@ -23,6 +23,8 @@ Route::prefix('auth')->group(function (): void {
     Route::post('forgot-password/request', [AuthController::class, 'requestPasswordReset']);
     Route::post('forgot-password/verify-otp', [AuthController::class, 'verifyPasswordResetOtp']);
     Route::post('forgot-password/reset-with-token', [AuthController::class, 'resetPasswordWithToken']);
+    Route::post('email/send-verification', [AuthController::class, 'sendEmailVerification']);
+    Route::post('email/verify', [AuthController::class, 'verifyEmail']);
 
     Route::middleware('jwt.auth')->group(function (): void {
         Route::get('me', [AuthController::class, 'me']);

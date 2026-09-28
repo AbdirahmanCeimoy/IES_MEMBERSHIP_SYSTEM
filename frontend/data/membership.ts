@@ -10,7 +10,7 @@ export const membershipCategories: MembershipCategory[] = [
   {
     code: '02',
     title: 'Fellow Member',
-    postnominal: 'FIES',
+    postnominal: 'FMIES',
     summary:
       'Every candidate for election or transfer to the class of Fellow Member shall satisfy the Council that they are a Corporate Member of the Institution or possess equivalent professional standing, have been a Corporate Member of the Institution for at least seven (7) years, have at least fifteen (15) years of professional engineering experience, and have demonstrated outstanding professional achievement, leadership, and significant contributions to engineering practice, industry, education, research, public service, or the advancement of the Institution and the engineering profession.',
   },
@@ -36,13 +36,6 @@ export const membershipCategories: MembershipCategory[] = [
       'Every candidate for admission or transfer to the class of Associate Member shall satisfy the Council that they are not qualified for admission as a Corporate Member and have at least two (2) years of relevant engineering-related experience. Associate Membership shall recognize individuals who possess relevant engineering-related knowledge, experience, and responsibility but do not meet the requirements for Corporate Membership.',
   },
   {
-    code: '06',
-    title: 'Companion Member',
-    postnominal: 'CompIES',
-    summary:
-      'Every candidate for election or transfer to the class of Companion Member shall satisfy the Council that they are not qualified for admission as an engineering member of the Institution but have rendered significant service or made valuable contributions to the engineering profession, science, education, industry, commerce, finance, law, public service, or other fields related to the application and advancement of engineering. Companion Membership shall recognize individuals who support the objectives of the Institution and contribute to the development, promotion, and advancement of engineering in society. Such individuals may include professionals from law, finance, business, education, government, or industry, as well as people who support engineering projects, policies, research, education, or professional activities and have demonstrated commitment to the advancement of engineering and national development.',
-  },
-  {
     code: '07',
     title: 'Graduate Member',
     postnominal: 'GMIES',
@@ -64,8 +57,16 @@ export const membershipCategories: MembershipCategory[] = [
   {
     code: '10',
     title: 'Student Member',
+     postnominal: 'SMIES',
     summary:
       'Every candidate for admission to the class of Student Member shall satisfy the Council that they are receiving education and training in engineering through a recognized and accredited engineering programme at a recognized educational institution.',
+  },
+    {
+    code: '06',
+    title: 'Companion Member',
+    postnominal: 'CompMIES',
+    summary:
+      'Every candidate for election or transfer to the class of Companion Member shall satisfy the Council that they are not qualified for admission as an Engineering Member of the Institution, but have rendered significant service or made valuable contributions to the engineering profession, science, education, industry, commerce, finance, law, public service, or other fields related to the application and advancement of engineering and national development.',
   },
 ];
 
@@ -76,17 +77,7 @@ export interface MembershipRequirement {
 }
 
 export const membershipRequirements: MembershipRequirement[] = [
-  {
-    category: 'Student Member',
-    fee: '$5',
-    items: [
-      'Certified university student ID stamped and signed by the Dean of School.',
-      'A copy of your national ID/Passport verified by the Dean.',
-      'A copy of your secondary school completion certificate.',
-      'Current colored passport photo.',
-      'Proposer and seconder must be paid up Corporate or Fellow members.',
-    ],
-  },
+  
   {
     category: 'Graduate Member',
     fee: '$10',
@@ -123,7 +114,7 @@ export const membershipRequirements: MembershipRequirement[] = [
   },
   {
     category: 'Associate Member',
-    fee: '$30',
+    fee: '$20',
     items: [
       'Updated Curriculum Vitae.',
       'Two proposers and two seconders (paid Corporate or Fellow members).',

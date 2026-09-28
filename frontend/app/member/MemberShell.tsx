@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, type ReactNode } from 'react';
-/* useState uses lazy initializer to avoid setState-in-effect */
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -95,6 +94,20 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
     typeof window === 'undefined' ? null : getStoredUser<StoredUser>() ?? {},
   );
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.localStorage.getItem('member.sidebar.collapsed') === '1';
+  });
+
+  const toggleCollapsed = () => {
+    setCollapsed((v) => {
+      const next = !v;
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('member.sidebar.collapsed', next ? '1' : '0');
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !getAuthToken()) {
@@ -109,29 +122,53 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
 
   const role = (user?.role as 'MEMBER' | 'ADMIN') ?? 'MEMBER';
   const items = MENU.filter((item) => item.roles.includes(role));
+  const displayName = user?.fullName || [user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.username || 'Member';
 
   if (!user) return null;
 
   return (
     <div className="flex min-h-screen bg-slate-50">
-      {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 flex-col border-r border-slate-200 bg-white transition-transform lg:static lg:translate-x-0',
+          'group/aside fixed inset-y-0 left-0 z-40 flex shrink-0 flex-col border-r border-white/10 bg-[#022D5A] text-slate-100 transition-[width,transform] duration-200 lg:static lg:translate-x-0',
+          collapsed ? 'w-[68px]' : 'w-64',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
-        <div className="flex h-16 items-center gap-2 border-b border-slate-100 px-4">
-          <div className="relative h-9 w-9">
+        <div className={cn('flex h-16 items-center border-b border-white/10', collapsed ? 'justify-center px-2' : 'gap-2 px-4')}>
+          <div className="relative h-9 w-9 shrink-0">
             <Image src={site.logo} alt="" fill className="object-contain" />
           </div>
-          <div className="flex flex-col leading-tight">
-            <span className="text-sm font-bold text-[#035CB3]">{site.shortName}omalia</span>
-            <span className="text-[10px] uppercase tracking-widest text-slate-500">Member Portal</span>
-          </div>
+          {!collapsed && (
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm font-bold text-white">{site.shortName}omalia</span>
+              <span className="text-[10px] uppercase tracking-widest text-[#48C184]">Member Portal</span>
+            </div>
+          )}
         </div>
 
-        <nav className="flex-1 overflow-y-auto p-3">
+        {/* Collapse toggle - floating pill on the right edge */}
+        <button
+          type="button"
+          onClick={toggleCollapsed}
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="absolute -right-3 top-20 z-10 hidden h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-white text-[#022D5A] shadow-md transition-all hover:scale-110 hover:bg-[#48C184] lg:flex"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            className={cn('transition-transform duration-200', collapsed && 'rotate-180')}
+            aria-hidden="true"
+          >
+            <path d="M12 5l-5 5 5 5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden p-2">
           <ul className="flex flex-col gap-1">
             {items.map((item) => {
               const active = pathname === item.href;
@@ -140,15 +177,20 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
                   <Link
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
+                    title={collapsed ? item.label : undefined}
                     className={cn(
-                      'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                      'group relative flex items-center rounded-lg text-sm font-medium transition-colors',
+                      collapsed ? 'h-10 w-full justify-center px-0' : 'gap-2.5 px-3 py-2',
                       active
-                        ? 'bg-[#035CB3] text-white'
-                        : 'text-slate-700 hover:bg-slate-100 hover:text-[#035CB3]',
+                        ? 'bg-[#035CB3] text-white shadow-sm'
+                        : 'text-slate-300 hover:bg-white/5 hover:text-white',
                     )}
                   >
-                    {item.icon}
-                    {item.label}
+                    <span className={cn('shrink-0', active && 'text-[#48C184]')}>{item.icon}</span>
+                    {!collapsed && <span className="truncate">{item.label}</span>}
+                    {active && !collapsed && (
+                      <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[#48C184]" />
+                    )}
                   </Link>
                 </li>
               );
@@ -156,27 +198,33 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
           </ul>
         </nav>
 
-        <div className="border-t border-slate-100 p-3">
-          <div className="mb-2 flex items-center gap-2 rounded-lg bg-slate-50 px-2 py-2">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#035CB3] text-xs font-bold text-white">
+        <div className={cn('border-t border-white/10', collapsed ? 'p-2' : 'p-3')}>
+          <div className={cn('mb-2 flex items-center rounded-lg bg-white/5', collapsed ? 'justify-center p-2' : 'gap-2 px-2 py-2')}>
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#48C184] text-xs font-bold text-[#022D5A]">
               {(user.firstName?.[0] ?? user.fullName?.[0] ?? user.username?.[0] ?? 'M').toUpperCase()}
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-semibold text-[#022D5A]">
-                {user.fullName || [user.firstName, user.lastName].filter(Boolean).join(' ') || user.username || 'Member'}
-              </p>
-              <p className="truncate text-[10px] text-slate-500">
-                {user.gradeLabel ?? role}
-              </p>
-            </div>
+            {!collapsed && (
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs font-semibold text-white">
+                  {displayName}
+                </p>
+                <p className="truncate text-[10px] uppercase tracking-wider text-[#48C184]">
+                  {user.gradeLabel ?? role}
+                </p>
+              </div>
+            )}
           </div>
           <button
             type="button"
             onClick={handleLogout}
-            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-rose-700"
+            title={collapsed ? 'Sign out' : undefined}
+            className={cn(
+              'flex w-full items-center rounded-lg text-xs font-semibold text-slate-300 transition-colors hover:bg-white/5 hover:text-rose-400',
+              collapsed ? 'h-9 justify-center' : 'gap-2 px-3 py-2',
+            )}
           >
             <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M8 4H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3M12 7l4 3-4 3M16 10H8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            Sign out
+            {!collapsed && 'Sign out'}
           </button>
         </div>
       </aside>
@@ -202,7 +250,9 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h12M4 10h12M4 14h12" strokeLinecap="round" /></svg>
             </button>
             <div className="text-sm text-slate-500">
-              Welcome back, <span className="font-semibold text-[#022D5A]">{user.fullName ?? user.username}</span>
+              <span className="font-semibold text-[#022D5A]">Member</span>
+              {' / '}
+              {MENU.find((m) => m.href === pathname)?.label ?? 'Overview'}
             </div>
           </div>
           {user.gradeLabel && (

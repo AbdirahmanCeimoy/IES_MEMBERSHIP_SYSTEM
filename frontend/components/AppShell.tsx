@@ -11,7 +11,7 @@ const isPathIn = (pathname: string | null, prefixes: readonly string[]) =>
   !!pathname && prefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 
 const APP_ROUTES = ['/dashboard', '/admin', '/member'] as const;
-const AUTH_ROUTES = ['/login', '/forgot-password', '/reset-password', '/verify-otp', '/signup', '/register', '/initial-profile'] as const;
+const AUTH_ROUTES = ['/login', '/forgot-password', '/reset-password', '/verify-otp', '/verify-email', '/signup', '/register', '/initial-profile'] as const;
 const BARE_ROUTES = ['/membership/online-application-guidelines', '/membership/member-check'] as const;
 
 const AppShell = ({ children }: AppShellProps) => {

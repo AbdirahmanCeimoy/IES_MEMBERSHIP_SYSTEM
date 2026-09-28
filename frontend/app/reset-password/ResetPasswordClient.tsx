@@ -75,9 +75,7 @@ export const ResetPasswordClient = () => {
             <Image src={site.logo} alt="" fill className="object-contain" />
           </div>
           <h2 className="text-center text-base font-bold leading-tight text-[#022D5A]">
-            The Institution of Engineers
-            <br />
-            Somalia
+            The Institution of Engineers Somalia (IES).
           </h2>
         </div>
 

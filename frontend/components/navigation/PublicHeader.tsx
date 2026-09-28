@@ -26,7 +26,7 @@ export const PublicHeader = () => (
         <DesktopNavigation />
 
         <div className="flex items-center gap-2">
-          <div className="hidden xl:flex">
+          <div className="hidden lg:flex">
             <NavigationActions />
           </div>
           <MobileNavigation />

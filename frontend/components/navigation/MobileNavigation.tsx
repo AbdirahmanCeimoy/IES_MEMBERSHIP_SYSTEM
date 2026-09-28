@@ -57,7 +57,7 @@ export const MobileNavigation = () => {
   }, [open]);
 
   return (
-    <div className="xl:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen(true)}

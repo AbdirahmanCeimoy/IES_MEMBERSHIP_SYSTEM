@@ -153,9 +153,7 @@ export default function ForgotPasswordPage() {
             <Image src={site.logo} alt="" fill className="object-contain" />
           </div>
           <h2 className="text-center text-base font-bold leading-tight text-[#022D5A]">
-            The Institution of Engineers
-            <br />
-            Somalia
+            The Institution of Engineers Somalia (IES)
           </h2>
         </div>
 
@@ -192,7 +190,7 @@ export default function ForgotPasswordPage() {
                     setEmail(sanitizeEmail(e.target.value));
                     setError('');
                   }}
-                  placeholder="you@gmail.com"
+                  placeholder="example@gmail.com"
                   className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 />
               </div>
