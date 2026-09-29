@@ -65,6 +65,45 @@ class AuthService
         ];
     }
 
+    /**
+     * Change the email of a still-unverified account and resend the OTP to the new address.
+     * This is only allowed when the user has not yet verified their email — protects real
+     * accounts from being hijacked while letting new signups fix typos.
+     */
+    public function changePendingEmail(string $currentEmail, string $newEmail): array
+    {
+        $currentEmail = $this->normalizeEmail($currentEmail);
+        $newEmail = $this->normalizeEmail($newEmail);
+
+        if ($currentEmail === '' || ! filter_var($currentEmail, FILTER_VALIDATE_EMAIL)) {
+            throw NestHttpException::badRequest('Invalid current email address.');
+        }
+        if ($newEmail === '' || ! filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+            throw NestHttpException::badRequest('Invalid new email address.');
+        }
+        if ($currentEmail === $newEmail) {
+            throw NestHttpException::badRequest('The new email is the same as the current one.');
+        }
+
+        $user = User::query()->where('email', $currentEmail)->first();
+        if (! $user) {
+            throw NestHttpException::badRequest('No account found for that email.');
+        }
+        if ($user->emailVerifiedAt !== null) {
+            throw NestHttpException::badRequest('This email is already verified and cannot be changed here.');
+        }
+
+        if (User::query()->where('email', $newEmail)->where('id', '!=', $user->id)->exists()) {
+            throw NestHttpException::badRequest('An account with that email already exists.');
+        }
+
+        $user->email = $newEmail;
+        $user->save();
+
+        // Immediately (re-)send the verification OTP to the new address.
+        return $this->sendEmailVerification($newEmail);
+    }
+
     /** Verify the OTP against the stored verification token. */
     public function verifyEmailOtp(string $email, string $otp): array
     {
@@ -227,6 +266,11 @@ class AuthService
                 'fullName' => $dto['fullName'],
                 'email' => $normalizedEmail,
                 'role' => UserRole::MEMBER,
+                'phone' => isset($dto['phone']) && $dto['phone'] !== '' ? trim((string) $dto['phone']) : null,
+                'nationalId' => isset($dto['nationalId']) && $dto['nationalId'] !== ''
+                    ? strtoupper(trim((string) $dto['nationalId']))
+                    : null,
+                'grade' => isset($dto['grade']) && $dto['grade'] !== '' ? $dto['grade'] : null,
             ]);
         } catch (QueryException $exception) {
             if ($this->isUniqueConstraintError($exception)) {
@@ -314,8 +358,14 @@ class AuthService
 
     public function updateMe(string $userId, array $dto): array
     {
+        // Load full profile columns so we can detect changes on the extra fields too.
         $existing = User::query()
-            ->select(['id', 'username', 'fullName', 'email', 'role', 'createdAt', 'updatedAt'])
+            ->select([
+                'id', 'username', 'fullName', 'email', 'role',
+                'gender', 'title', 'firstName', 'lastName', 'dateOfBirth', 'discipline', 'specialization', 'grade',
+                'phone', 'alternativePhone', 'nationalId', 'city', 'address', 'district', 'nationality',
+                'createdAt', 'updatedAt',
+            ])
             ->find($userId);
 
         if (! $existing) {
@@ -335,7 +385,27 @@ class AuthService
         $hasUsernameChange = $nextUsername !== null && $nextUsername !== $existing->username;
         $hasFullNameChange = $nextFullName !== null && $nextFullName !== $existing->fullName;
         $hasEmailChange = $nextEmail !== null && $nextEmail !== $existing->email;
-        $hasAnyChange = $hasUsernameChange || $hasFullNameChange || $hasEmailChange;
+
+        // Detect changes on extra profile fields too (title / firstName / gender / discipline / ...).
+        $extraFields = [
+            'gender', 'title', 'firstName', 'lastName', 'dateOfBirth', 'discipline', 'specialization', 'grade',
+            'phone', 'alternativePhone', 'nationalId', 'city', 'address', 'district', 'nationality',
+        ];
+        $hasExtraChange = false;
+        foreach ($extraFields as $extra) {
+            if (! array_key_exists($extra, $dto) || $dto[$extra] === null) {
+                continue;
+            }
+            $incoming = $extra === 'gender'
+                ? strtoupper((string) $dto[$extra])
+                : (is_string($dto[$extra]) ? trim($dto[$extra]) : $dto[$extra]);
+            if ((string) ($existing->{$extra} ?? '') !== (string) $incoming) {
+                $hasExtraChange = true;
+                break;
+            }
+        }
+
+        $hasAnyChange = $hasUsernameChange || $hasFullNameChange || $hasEmailChange || $hasExtraChange;
 
         $nextProfileUpdateAt = $this->addMonths($existing->updatedAt, self::PROFILE_UPDATE_COOLDOWN_MONTHS);
         $isFirstSelfEditWindow = abs($existing->updatedAt->getTimestampMs() - $existing->createdAt->getTimestampMs()) < 1000;
@@ -347,7 +417,10 @@ class AuthService
             ];
         }
 
-        if (! $isFirstSelfEditWindow && now()->lt($nextProfileUpdateAt)) {
+        // Cooldown only applies to identity fields (username / fullName / email).
+        // Filling initial-profile extras (title, gender, discipline, ...) is always allowed.
+        $identityChanged = $hasUsernameChange || $hasFullNameChange || $hasEmailChange;
+        if ($identityChanged && ! $isFirstSelfEditWindow && now()->lt($nextProfileUpdateAt)) {
             throw NestHttpException::badRequest(
                 'Profile can be updated once every 2 months. Next update is available on '
                 . $nextProfileUpdateAt->format('Y-m-d')
@@ -370,7 +443,7 @@ class AuthService
                 'email' => $hasEmailChange ? $nextEmail : $existing->email,
             ]);
             // Persist additional profile fields when the migration has added them.
-            foreach (['gender', 'title', 'firstName', 'lastName', 'dateOfBirth', 'discipline', 'grade'] as $extra) {
+            foreach ($extraFields as $extra) {
                 if (array_key_exists($extra, $dto) && $dto[$extra] !== null) {
                     try {
                         $existing->{$extra} = $extra === 'gender'
@@ -586,6 +659,21 @@ class AuthService
             'fullName' => $user->fullName,
             'email' => $user->email,
             'role' => $user->role->value,
+            'title' => $user->title ?? null,
+            'firstName' => $user->firstName ?? null,
+            'lastName' => $user->lastName ?? null,
+            'gender' => $user->gender ?? null,
+            'dateOfBirth' => $user->dateOfBirth ?? null,
+            'discipline' => $user->discipline ?? null,
+            'specialization' => $user->specialization ?? null,
+            'grade' => $user->grade ?? null,
+            'phone' => $user->phone ?? null,
+            'alternativePhone' => $user->alternativePhone ?? null,
+            'nationalId' => $user->nationalId ?? null,
+            'city' => $user->city ?? null,
+            'address' => $user->address ?? null,
+            'district' => $user->district ?? null,
+            'nationality' => $user->nationality ?? null,
             'createdAt' => Iso8601::format($user->createdAt),
             'updatedAt' => Iso8601::format($user->updatedAt),
         ];

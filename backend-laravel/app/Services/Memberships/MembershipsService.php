@@ -396,76 +396,133 @@ class MembershipsService
 
         $like = '%' . $searchTerm . '%';
 
-        // First: approved membership applications
-        $approvedMembers = MembershipApplication::query()
-            ->where('decision', ApplicationDecision::APPROVED->value)
-            ->select([
-                'fullName',
-                'email',
-                'nationalIdNumber',
-                'membershipGrade',
-                'registrationNumber',
-                'certificateNumber',
-                'validUntil',
-            ])
+        // First: ALL membership applications matching the search (approved + pending).
+        // Also search by phone.
+        $allApplications = MembershipApplication::query()
+            ->with(['applicant', 'documents'])
             ->where(function ($builder) use ($like): void {
                 $builder->where('fullName', 'like', $like)
                     ->orWhere('email', 'like', $like)
+                    ->orWhere('phone', 'like', $like)
                     ->orWhere('nationalIdNumber', 'like', $like)
                     ->orWhere('registrationNumber', 'like', $like)
                     ->orWhere('certificateNumber', 'like', $like);
             })
-            ->orderBy('fullName')
+            ->orderByDesc('createdAt')
             ->limit(50)
             ->get()
             ->map(function ($member) {
-                $isActive = $member->validUntil !== null ? $member->validUntil->gte(now()) : false;
+                $isApproved = $member->decision === ApplicationDecision::APPROVED;
+                $isActive = $isApproved && $member->validUntil !== null && $member->validUntil->gte(now());
+                $user = $member->applicant;
+                $photoDoc = $member->documents->firstWhere('type', 'PASSPORT_PHOTO');
+                $status = $member->membershipStatus?->value
+                    ?? ($isApproved
+                        ? ($isActive ? \App\Enums\MembershipStatus::GOOD_STANDING->value : \App\Enums\MembershipStatus::EXPIRED->value)
+                        : \App\Enums\MembershipStatus::PENDING->value);
                 return [
-                    'fullName' => $member->fullName,
+                    'fullName' => $member->fullName ?: $user?->fullName,
+                    'firstName' => $user?->firstName,
+                    'lastName' => $user?->lastName,
                     'email' => $member->email,
+                    'phone' => $member->phone ?: $user?->phone,
+                    'nationalId' => $member->nationalIdNumber ?: $user?->nationalId,
+                    'title' => $user?->title,
+                    'gender' => $member->gender ?? $user?->gender,
+                    'dateOfBirth' => $user?->dateOfBirth ? (string) $user->dateOfBirth : null,
+                    'discipline' => $user?->discipline,
+                    'specialization' => $user?->specialization,
+                    'city' => $user?->city,
+                    'nationality' => $user?->nationality,
                     'membershipGrade' => $member->membershipGrade->value,
-                    'registrationNumber' => $member->registrationNumber,
-                    'certificateNumber' => $member->certificateNumber,
+                    'registrationNumber' => $isApproved ? $member->registrationNumber : null,
+                    'certificateNumber' => $isApproved ? $member->certificateNumber : null,
                     'validUntil' => $member->validUntil ? Iso8601::format($member->validUntil) : null,
-                    'status' => $isActive ? 'ACTIVE' : 'EXPIRED',
+                    'status' => $status,
+                    'photoUrl' => $photoDoc ? '/api/memberships/public-photo/' . $photoDoc->id : null,
                 ];
             });
 
-        // Emails of approved members to avoid duplicates in the user list
-        $approvedEmails = $approvedMembers->pluck('email')->filter()->all();
+        // Emails already covered by an application
+        $applicationEmails = $allApplications->pluck('email')->filter()->all();
 
-        // Second: registered users with role MEMBER (pending applicants)
+        // Second: registered users with role MEMBER (no application submitted yet).
+        // Search across fullName, email, phone, and nationalId.
         $pendingUsers = \App\Models\User::query()
             ->where('role', 'MEMBER')
-            ->select(['fullName', 'email'])
             ->where(function ($builder) use ($like): void {
                 $builder->where('fullName', 'like', $like)
-                    ->orWhere('email', 'like', $like);
+                    ->orWhere('firstName', 'like', $like)
+                    ->orWhere('lastName', 'like', $like)
+                    ->orWhere('email', 'like', $like)
+                    ->orWhere('phone', 'like', $like)
+                    ->orWhere('nationalId', 'like', $like);
             })
-            ->when(! empty($approvedEmails), function ($builder) use ($approvedEmails): void {
-                $builder->whereNotIn('email', $approvedEmails);
+            ->when(! empty($applicationEmails), function ($builder) use ($applicationEmails): void {
+                $builder->whereNotIn('email', $applicationEmails);
             })
             ->orderBy('fullName')
             ->limit(50)
             ->get()
             ->map(function ($user) {
+                // Some users may have started an application (with a photo) but not yet been indexed above.
+                $latestApp = $user->applications()
+                    ->with(['documents' => function ($q): void {
+                        $q->where('type', 'PASSPORT_PHOTO');
+                    }])
+                    ->orderByDesc('createdAt')
+                    ->first();
+                $photoDoc = $latestApp?->documents->first();
+
                 return [
                     'fullName' => $user->fullName,
+                    'firstName' => $user->firstName,
+                    'lastName' => $user->lastName,
                     'email' => $user->email,
-                    'membershipGrade' => null,
+                    'phone' => $user->phone,
+                    'nationalId' => $user->nationalId,
+                    'title' => $user->title,
+                    'gender' => $user->gender,
+                    'dateOfBirth' => $user->dateOfBirth ? (string) $user->dateOfBirth : null,
+                    'discipline' => $user->discipline,
+                    'specialization' => $user->specialization,
+                    'city' => $user->city,
+                    'nationality' => $user->nationality,
+                    'membershipGrade' => $user->grade,
                     'registrationNumber' => null,
                     'certificateNumber' => null,
                     'validUntil' => null,
-                    'status' => 'PENDING',
+                    'status' => \App\Enums\MembershipStatus::PENDING->value,
+                    'photoUrl' => $photoDoc ? '/api/memberships/public-photo/' . $photoDoc->id : null,
                 ];
             });
 
-        $combined = $approvedMembers->concat($pendingUsers)->take(50);
+        $combined = $allApplications->concat($pendingUsers)->take(50);
 
         return [
             'total' => $combined->count(),
             'members' => $combined->values()->all(),
         ];
+    }
+
+    /** Serve a passport photo publicly (only for PASSPORT_PHOTO type documents). */
+    public function servePublicPhoto(string $documentId): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $document = MembershipDocument::query()->find($documentId);
+        if (! $document || $document->type !== 'PASSPORT_PHOTO') {
+            throw NestHttpException::notFound('Photo not found');
+        }
+
+        $safeFileName = basename($document->fileName);
+        $fullPath = $this->membershipDocumentStorage->resolveExistingPath($safeFileName);
+
+        if ($fullPath === null) {
+            throw NestHttpException::notFound('Photo file not found');
+        }
+
+        return response()->file($fullPath, [
+            'Cache-Control' => 'public, max-age=3600',
+        ]);
     }
 
     public function verifyMembershipPublic(array $lookup): array

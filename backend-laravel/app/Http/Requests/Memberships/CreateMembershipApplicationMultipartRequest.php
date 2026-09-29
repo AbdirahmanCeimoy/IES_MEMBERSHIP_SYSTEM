@@ -88,7 +88,7 @@ class CreateMembershipApplicationMultipartRequest extends BaseNestFormRequest
             'nationalIdNumber.string' => 'nationalIdNumber must be a string',
             'nationalIdNumber.regex' => 'National ID / Passport must be 7 to 11 characters (letters and digits).',
             'membershipGrade.string' => 'membershipGrade must be a string',
-            'membershipGrade.in' => 'membershipGrade must be one of the following values: STUDENT, GRADUATE, ASSOCIATE, CORPORATE, SENIOR, FELLOW',
+            'membershipGrade.in' => 'membershipGrade must be one of the following values: STUDENT, GRADUATE, ASSOCIATE, CORPORATE, SENIOR, FELLOW, GRAD_TECHNICIAN, GRAD_TECHNOLOGIST',
             'organizationName.string' => 'organizationName must be a string',
             'yearsOfExperience.integer' => 'yearsOfExperience must be an integer number',
             'yearsOfExperience.min' => 'yearsOfExperience must not be less than 0',

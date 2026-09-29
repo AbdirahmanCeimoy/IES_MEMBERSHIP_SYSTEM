@@ -16,17 +16,24 @@ const maskEmail = (email: string): string => {
 export const VerifyEmailClient = () => {
   const router = useRouter();
   const params = useSearchParams();
-  const email = (params.get('email') ?? '').trim();
+  const initialEmail = (params.get('email') ?? '').trim();
   const grade = params.get('grade') ?? '';
   const phone = params.get('phone') ?? '';
   const nid = params.get('nid') ?? '';
 
+  // Email is stateful so it can be corrected inline if the signup email was mistyped.
+  const [email, setEmail] = useState(initialEmail);
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [resendCountdown, setResendCountdown] = useState(300);
+
+  // Inline "change email" affordance.
+  const [showChangeEmail, setShowChangeEmail] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [changeLoading, setChangeLoading] = useState(false);
 
   useEffect(() => {
     if (resendCountdown <= 0) return;
@@ -88,6 +95,43 @@ export const VerifyEmailClient = () => {
     }
   };
 
+  const handleChangeEmail = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError('');
+    setNotice('');
+    const target = newEmail.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(target)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    if (target === email.toLowerCase()) {
+      setError('That is the same email — enter a different one.');
+      return;
+    }
+    setChangeLoading(true);
+    try {
+      const res = await apiJsonRequest<{ success?: boolean; message?: string }>(
+        '/auth/email/change-pending',
+        'POST',
+        { currentEmail: email, newEmail: target },
+      );
+      if (!res.ok) {
+        setError(res.data?.message || 'Failed to update email.');
+      } else {
+        setEmail(target);
+        setNewEmail('');
+        setShowChangeEmail(false);
+        setOtp('');
+        setResendCountdown(300);
+        setNotice('Email updated. A new verification code has been sent.');
+      }
+    } catch {
+      setError('Network error. Please try again.');
+    } finally {
+      setChangeLoading(false);
+    }
+  };
+
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden bg-white px-4 py-6">
       {/* Decorative blobs */}
@@ -122,10 +166,67 @@ export const VerifyEmailClient = () => {
         <h1 className="mb-2 text-center text-3xl font-extrabold text-[#022D5A]">
           Verify your email
         </h1>
-        <p className="mb-6 text-center text-sm text-slate-500">
+        <p className="mb-1 text-center text-sm text-slate-500">
           Enter the verification code sent to{' '}
           <span className="font-semibold text-[#022D5A]">{maskEmail(email)}</span>.
         </p>
+        <div className="mb-5 flex justify-center">
+          {!showChangeEmail ? (
+            <button
+              type="button"
+              onClick={() => {
+                setShowChangeEmail(true);
+                setNewEmail('');
+                setError('');
+                setNotice('');
+              }}
+              className="text-xs font-semibold text-[#035CB3] hover:underline"
+            >
+              Wrong email? Change it
+            </button>
+          ) : (
+            <form
+              onSubmit={handleChangeEmail}
+              className="mt-3 flex w-full flex-col gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3"
+            >
+              <label htmlFor="new-email" className="text-xs font-semibold text-[#022D5A]">
+                Enter the correct email
+              </label>
+              <input
+                id="new-email"
+                type="email"
+                autoComplete="email"
+                value={newEmail}
+                onChange={(e) => {
+                  setNewEmail(e.target.value);
+                  setError('');
+                }}
+                placeholder="you@gmail.com"
+                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+              />
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  disabled={changeLoading}
+                  className="flex-1 rounded-lg bg-[#035CB3] px-3 py-2 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#48C184] disabled:opacity-50"
+                >
+                  {changeLoading ? 'Updating…' : 'Update & Resend code'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowChangeEmail(false);
+                    setNewEmail('');
+                    setError('');
+                  }}
+                  className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
 
         <form onSubmit={handleVerify} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">

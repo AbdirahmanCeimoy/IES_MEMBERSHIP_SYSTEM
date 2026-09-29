@@ -86,6 +86,16 @@ class AuthController extends Controller
         );
     }
 
+    public function changePendingEmail(Request $request): JsonResponse
+    {
+        $currentEmail = (string) $request->input('currentEmail', '');
+        $newEmail = (string) $request->input('newEmail', '');
+        return response()->json(
+            $this->authService->changePendingEmail($currentEmail, $newEmail),
+            200
+        );
+    }
+
     public function me(Request $request): JsonResponse
     {
         $auth = $request->attributes->get('auth');

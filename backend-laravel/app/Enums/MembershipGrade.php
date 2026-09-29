@@ -10,4 +10,6 @@ enum MembershipGrade: string
     case CORPORATE = 'CORPORATE';
     case SENIOR = 'SENIOR';
     case FELLOW = 'FELLOW';
+    case GRAD_TECHNICIAN = 'GRAD_TECHNICIAN';
+    case GRAD_TECHNOLOGIST = 'GRAD_TECHNOLOGIST';
 }

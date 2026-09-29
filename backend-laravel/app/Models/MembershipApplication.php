@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ApplicationDecision;
 use App\Enums\ApplicationStage;
 use App\Enums\MembershipGrade;
+use App\Enums\MembershipStatus;
 use App\Models\Concerns\SerializesDatesToUtcIso8601;
 use App\Models\Concerns\UsesStringPrimaryKey;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +39,7 @@ class MembershipApplication extends Model
         'bio',
         'stage',
         'decision',
+        'membershipStatus',
         'rejectionReason',
         'registrationNumber',
         'certificateNumber',
@@ -50,6 +52,7 @@ class MembershipApplication extends Model
             'membershipGrade' => MembershipGrade::class,
             'stage' => ApplicationStage::class,
             'decision' => ApplicationDecision::class,
+            'membershipStatus' => MembershipStatus::class,
             'declarationAccepted' => 'boolean',
             'yearsOfExperience' => 'integer',
             'createdAt' => 'datetime',

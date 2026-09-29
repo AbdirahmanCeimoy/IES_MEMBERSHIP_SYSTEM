@@ -4,7 +4,8 @@ import { useEffect, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { clearAuthSession, getAuthToken, getStoredUser } from '@/lib/authSession';
+import { buildAuthHeader, clearAuthSession, getAuthToken, getStoredUser } from '@/lib/authSession';
+import { apiRequest } from '@/lib/apiClient';
 import { site } from '@/config/site';
 import { routes } from '@/config/routes';
 import { cn } from '@/lib/cn';
@@ -15,11 +16,99 @@ interface StoredUser {
   fullName?: string;
   firstName?: string;
   lastName?: string;
+  middleName?: string;
   email?: string;
   role?: string;
   grade?: string;
   gradeLabel?: string;
+  title?: string;
+  gender?: string;
+  dateOfBirth?: string;
+  discipline?: string;
+  phone?: string;
+  nationalId?: string;
+  city?: string;
+  nationality?: string;
 }
+
+interface MembershipApp {
+  id?: string;
+  decision?: string;
+  membershipGrade?: string;
+  registrationNumber?: string | null;
+  membershipStatus?: string | null;
+  validUntil?: string | null;
+  documents?: Array<{ id?: string }>;
+}
+
+type MembershipStatus =
+  | 'GOOD_STANDING'
+  | 'NOT_IN_GOOD_STANDING'
+  | 'SUSPENDED'
+  | 'INACTIVE'
+  | 'PENDING'
+  | 'EXPIRED'
+  | 'RESIGNED'
+  | 'TERMINATED';
+
+const STATUS_LABELS: Record<MembershipStatus, string> = {
+  GOOD_STANDING: 'Good Standing',
+  NOT_IN_GOOD_STANDING: 'Not in Good Standing',
+  SUSPENDED: 'Suspended',
+  INACTIVE: 'Inactive',
+  PENDING: 'Pending',
+  EXPIRED: 'Expired',
+  RESIGNED: 'Resigned',
+  TERMINATED: 'Terminated',
+};
+
+const STATUS_STYLES: Record<MembershipStatus, string> = {
+  GOOD_STANDING: 'bg-[#48C184] text-white',
+  NOT_IN_GOOD_STANDING: 'bg-amber-500 text-white',
+  SUSPENDED: 'bg-orange-500 text-white',
+  INACTIVE: 'bg-slate-400 text-white',
+  PENDING: 'bg-amber-200 text-amber-900',
+  EXPIRED: 'bg-rose-200 text-rose-900',
+  RESIGNED: 'bg-slate-500 text-white',
+  TERMINATED: 'bg-red-600 text-white',
+};
+
+/** Derive the current status from the latest application if the backend does not send one. */
+const deriveStatus = (app?: MembershipApp): MembershipStatus => {
+  if (!app) return 'INACTIVE';
+  if (app.membershipStatus && app.membershipStatus in STATUS_LABELS) {
+    return app.membershipStatus as MembershipStatus;
+  }
+  if (app.decision === 'APPROVED') {
+    const validUntil = app.validUntil ? new Date(app.validUntil).getTime() : 0;
+    return validUntil > Date.now() ? 'GOOD_STANDING' : 'EXPIRED';
+  }
+  if (app.decision === 'REJECTED') return 'INACTIVE';
+  return 'PENDING';
+};
+
+/**
+ * Profile completion in 30% steps + 10% for approval:
+ *   Step 1 — Profile filled       : 30%
+ *   Step 2 — Documents uploaded   : 30%
+ *   Step 3 — Payment / Application submitted: 30%
+ *   Step 4 — Approved by IES      : 10%
+ */
+const calculateProfileCompletion = (user: StoredUser | null, applications: MembershipApp[] = []): number => {
+  if (!user) return 0;
+  const required = [
+    user.title, user.firstName, user.lastName, user.gender, user.dateOfBirth,
+    user.discipline, user.grade, user.email, user.phone, user.nationalId,
+  ];
+  const profileFilled = required.every((v) => v && String(v).trim() !== '');
+  const latest = applications[0];
+  let pct = 0;
+  if (profileFilled) pct += 30;
+  if (latest && (latest.documents?.length ?? 0) > 0) pct += 30;
+  if (latest) pct += 30;
+  if (latest?.decision === 'APPROVED') pct += 10;
+  return pct;
+};
 
 interface MenuItem {
   label: string;
@@ -30,27 +119,11 @@ interface MenuItem {
 
 const MENU: MenuItem[] = [
   {
-    label: 'Overview',
+    label: 'Dashboard',
     href: '/member',
     roles: ['MEMBER', 'ADMIN'],
     icon: (
       <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 10l7-6 7 6M5 9v7h10V9" strokeLinecap="round" strokeLinejoin="round" /></svg>
-    ),
-  },
-  {
-    label: 'My Application',
-    href: '/member/application',
-    roles: ['MEMBER', 'ADMIN'],
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 3h6l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 3v4h4M8 12h4M8 15h5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-    ),
-  },
-  {
-    label: 'Documents',
-    href: '/member/documents',
-    roles: ['MEMBER', 'ADMIN'],
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 3h8l4 4v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 3v4h4" strokeLinecap="round" strokeLinejoin="round" /><path d="M10 15l-2-2m0 0l-2 2m2-2v-4" strokeLinecap="round" strokeLinejoin="round" /></svg>
     ),
   },
   {
@@ -62,15 +135,31 @@ const MENU: MenuItem[] = [
     ),
   },
   {
-    label: 'CPD Activities',
-    href: '/member/cpd',
+    label: 'My Application',
+    href: '/member/application',
     roles: ['MEMBER', 'ADMIN'],
     icon: (
-      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 5h12l-1 12H5L4 5zM8 3h4v2" strokeLinecap="round" strokeLinejoin="round" /><path d="M8 9v4M12 9v4" strokeLinecap="round" /></svg>
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 3h6l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 3v4h4M8 12h4M8 15h5" strokeLinecap="round" strokeLinejoin="round" /></svg>
     ),
   },
   {
-    label: 'Events',
+    label: 'Payments',
+    href: '/member/payments',
+    roles: ['MEMBER', 'ADMIN'],
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="5" width="16" height="11" rx="2" /><path d="M2 9h16M6 13h3" strokeLinecap="round" /></svg>
+    ),
+  },
+  {
+    label: 'Bills',
+    href: '/member/bills',
+    roles: ['MEMBER', 'ADMIN'],
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 2h10v16l-2.5-1.5L10 18l-2.5-1.5L5 18V2z" strokeLinejoin="round" /><path d="M8 7h4M8 10h4M8 13h3" strokeLinecap="round" /></svg>
+    ),
+  },
+  {
+    label: 'IES Events',
     href: '/member/events',
     roles: ['MEMBER', 'ADMIN'],
     icon: (
@@ -93,7 +182,9 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
   const [user] = useState<StoredUser | null>(() =>
     typeof window === 'undefined' ? null : getStoredUser<StoredUser>() ?? {},
   );
+  const [applications, setApplications] = useState<MembershipApp[]>([]);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
     return window.localStorage.getItem('member.sidebar.collapsed') === '1';
@@ -114,6 +205,32 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
       router.replace(routes.auth.login);
     }
   }, [router]);
+
+  useEffect(() => {
+    const token = getAuthToken();
+    if (!token) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiRequest<unknown>('/memberships/my-applications', {
+          headers: buildAuthHeader(token),
+        });
+        if (cancelled || !res.ok) return;
+        const raw = res.data as unknown;
+        const list = Array.isArray(raw)
+          ? raw
+          : ((raw as { applications?: unknown[]; items?: unknown[] })?.applications
+              ?? (raw as { applications?: unknown[]; items?: unknown[] })?.items
+              ?? []);
+        setApplications(Array.isArray(list) ? (list as MembershipApp[]) : []);
+      } catch {
+        /* ignore — header shows 0% when unknown */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleLogout = () => {
     clearAuthSession();
@@ -239,8 +356,9 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
 
       {/* Main content */}
       <div className="flex min-w-0 flex-1 flex-col">
+        {/* Top strip: IEK-style. Left = hamburger + Reg/Category/Status pills. Right = incomplete-profile + notifications + user dropdown. */}
         <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 lg:px-6">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 lg:gap-6">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
@@ -249,18 +367,153 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h12M4 10h12M4 14h12" strokeLinecap="round" /></svg>
             </button>
-            <div className="text-sm text-slate-500">
-              <span className="font-semibold text-[#022D5A]">Member</span>
-              {' / '}
-              {MENU.find((m) => m.href === pathname)?.label ?? 'Overview'}
+            {(() => {
+              const latest = applications[0];
+              const status = deriveStatus(latest);
+              const regNo = latest?.registrationNumber ?? user.username ?? '- -';
+              const category = user.gradeLabel ?? latest?.membershipGrade ?? '- -';
+              return (
+                <div className="hidden items-center gap-5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 md:flex">
+                  <span className="flex items-center gap-1.5">
+                    Registration No:
+                    <span className="font-mono text-[#022D5A]">{regNo}</span>
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    Category:
+                    <span className="text-[#022D5A]">{category}</span>
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    Membership Status:
+                    <span className={cn('rounded-full px-2.5 py-0.5 text-[10px] font-bold', STATUS_STYLES[status])}>
+                      {STATUS_LABELS[status]}
+                    </span>
+                  </span>
+                </div>
+              );
+            })()}
+          </div>
+          <div className="flex items-center gap-2">
+            {(() => {
+              const pct = calculateProfileCompletion(user, applications);
+              const isComplete = pct === 100;
+              return (
+                <Link
+                  href="/member/profile"
+                  className={cn(
+                    'hidden items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors sm:inline-flex',
+                    isComplete
+                      ? 'bg-[#48C184]/15 text-[#3AA870] hover:bg-[#48C184]/25'
+                      : 'bg-rose-100 text-rose-600 hover:bg-rose-200',
+                  )}
+                  title={`Profile ${pct}% complete`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 36 36" aria-hidden="true">
+                    <path
+                      d="M18 2.5 a 15.5 15.5 0 0 1 0 31 a 15.5 15.5 0 0 1 0 -31"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      opacity="0.3"
+                    />
+                    <path
+                      d="M18 2.5 a 15.5 15.5 0 0 1 0 31 a 15.5 15.5 0 0 1 0 -31"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeDasharray={`${pct}, 100`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  {isComplete ? `Profile Complete` : `Incomplete Profile — ${pct}%`}
+                </Link>
+              );
+            })()}
+            {/* Notification bell */}
+            <button
+              type="button"
+              className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#022D5A]"
+              aria-label="Notifications"
+            >
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M10 3a5 5 0 0 0-5 5v3l-2 2h14l-2-2V8a5 5 0 0 0-5-5z" strokeLinejoin="round" /><path d="M8 16a2 2 0 0 0 4 0" strokeLinecap="round" /></svg>
+              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
+            </button>
+            {/* User dropdown: Profile, Settings, Sign out */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setUserMenuOpen((v) => !v)}
+                className="inline-flex h-9 items-center gap-2 rounded-full px-1 pr-3 text-slate-600 transition-colors hover:bg-slate-100"
+                aria-label="Open user menu"
+                aria-expanded={userMenuOpen}
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#035CB3] text-xs font-bold text-white">
+                  {(user.firstName?.[0] ?? user.fullName?.[0] ?? user.username?.[0] ?? 'M').toUpperCase()}
+                </span>
+                <span className="hidden max-w-[120px] truncate text-xs font-semibold text-[#022D5A] sm:inline">
+                  {displayName}
+                </span>
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className={cn('transition-transform', userMenuOpen && 'rotate-180')} aria-hidden="true">
+                  <path d="M5 8l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              {userMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-20"
+                    onClick={() => setUserMenuOpen(false)}
+                    aria-hidden="true"
+                  />
+                  <div
+                    role="menu"
+                    className="absolute right-0 top-11 z-30 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
+                  >
+                    <div className="border-b border-slate-100 px-3 py-3">
+                      <p className="truncate text-sm font-bold text-[#022D5A]">{displayName}</p>
+                      <p className="truncate text-[11px] text-slate-500">{user.email ?? ''}</p>
+                    </div>
+                    <div className="flex flex-col p-1 text-sm">
+                      <Link
+                        href="/member/profile"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-[#035CB3]"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="10" cy="7" r="3" /><path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" strokeLinecap="round" /></svg>
+                        Profile
+                      </Link>
+                      <Link
+                        href="/member/settings"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-[#035CB3]"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="10" cy="10" r="3" /><path d="M10 2v2M10 16v2M4.9 4.9l1.4 1.4M13.7 13.7l1.4 1.4M2 10h2M16 10h2M4.9 15.1l1.4-1.4M13.7 6.3l1.4-1.4" strokeLinecap="round" /></svg>
+                        Settings
+                      </Link>
+                    </div>
+                    <div className="border-t border-slate-100 p-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUserMenuOpen(false);
+                          handleLogout();
+                        }}
+                        className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-rose-600 hover:bg-rose-50"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M8 4H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3M12 7l4 3-4 3M16 10H8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
-          {user.gradeLabel && (
-            <span className="hidden rounded-full bg-[#035CB3]/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#035CB3] sm:inline-block">
-              {user.gradeLabel}
-            </span>
-          )}
         </header>
+        {/* Breadcrumb under the top strip */}
+        <div className="border-b border-slate-100 bg-white px-4 py-2 text-xs text-slate-500 lg:px-6">
+          <span className="font-semibold text-[#022D5A]">Member</span>
+          {' / '}
+          {MENU.find((m) => m.href === pathname)?.label ?? 'Dashboard'}
+        </div>
         <main className="flex-1 p-4 lg:p-6">{children}</main>
       </div>
     </div>

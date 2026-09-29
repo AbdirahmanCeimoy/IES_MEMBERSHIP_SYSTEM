@@ -25,6 +25,7 @@ Route::prefix('auth')->group(function (): void {
     Route::post('forgot-password/reset-with-token', [AuthController::class, 'resetPasswordWithToken']);
     Route::post('email/send-verification', [AuthController::class, 'sendEmailVerification']);
     Route::post('email/verify', [AuthController::class, 'verifyEmail']);
+    Route::post('email/change-pending', [AuthController::class, 'changePendingEmail']);
 
     Route::middleware('jwt.auth')->group(function (): void {
         Route::get('me', [AuthController::class, 'me']);
@@ -38,6 +39,7 @@ Route::prefix('memberships')->group(function (): void {
     Route::get('verify/{registrationNumber}', [MembershipsPublicController::class, 'verifyByRegistration']);
     Route::get('verify', [MembershipsPublicController::class, 'verify']);
     Route::get('search', [MembershipsPublicController::class, 'search']);
+    Route::get('public-photo/{documentId}', [MembershipsPublicController::class, 'publicPhoto']);
 
     Route::middleware('jwt.auth')->group(function (): void {
         Route::post('applications', [MembershipsController::class, 'create'])->middleware('role:MEMBER,ADMIN');

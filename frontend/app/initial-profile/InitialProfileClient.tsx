@@ -33,6 +33,7 @@ interface FormState {
   nationality: string;
   city: string;
   discipline: string;
+  specialization: string;
   hasDisability: boolean;
   disabilityDetails: string;
   photo: File | null;
@@ -49,6 +50,7 @@ const INITIAL: FormState = {
   nationality: 'Somalia',
   city: '',
   discipline: '',
+  specialization: '',
   hasDisability: false,
   disabilityDetails: '',
   photo: null,
@@ -148,7 +150,12 @@ export const InitialProfileClient = () => {
         title: form.title,
         dateOfBirth: form.dateOfBirth,
         discipline: form.discipline,
+        specialization: form.specialization,
         grade,
+        phone,
+        nationalId,
+        city: form.city,
+        nationality: form.nationality,
       }, {
         headers: buildAuthHeader(getAuthToken()),
       });
@@ -159,11 +166,17 @@ export const InitialProfileClient = () => {
     patchStoredUser({
       fullName,
       firstName: form.firstName,
+      middleName: form.middleName,
       lastName: form.lastName,
+      title: form.title,
       grade,
       gradeLabel: gradeLabelMap[grade] ?? grade,
       discipline: form.discipline,
+      specialization: form.specialization,
       gender: form.gender,
+      dateOfBirth: form.dateOfBirth,
+      city: form.city,
+      nationality: form.nationality,
       phone,
       nationalId,
     });
@@ -382,7 +395,7 @@ export const InitialProfileClient = () => {
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
-            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A] md:col-span-2">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Discipline *
               <select
                 required
@@ -395,6 +408,17 @@ export const InitialProfileClient = () => {
                   <option key={division} value={division}>{division}</option>
                 ))}
               </select>
+            </label>
+            <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+              Specialization
+              <input
+                type="text"
+                value={form.specialization}
+                onChange={(event) => update('specialization', event.target.value)}
+                placeholder="e.g. Structural, Power Systems, Networks"
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                maxLength={150}
+              />
             </label>
 
             <div className="md:col-span-2">

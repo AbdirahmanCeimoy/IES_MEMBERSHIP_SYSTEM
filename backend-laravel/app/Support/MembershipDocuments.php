@@ -163,7 +163,7 @@ final class MembershipDocuments
             $docs[] = DocumentType::TRANSCRIPT;
         }
 
-        if (in_array($grade, [MembershipGrade::GRADUATE, MembershipGrade::CORPORATE, MembershipGrade::SENIOR, MembershipGrade::FELLOW], true)) {
+        if (in_array($grade, [MembershipGrade::GRADUATE, MembershipGrade::CORPORATE, MembershipGrade::SENIOR, MembershipGrade::FELLOW, MembershipGrade::GRAD_TECHNICIAN, MembershipGrade::GRAD_TECHNOLOGIST], true)) {
             $docs[] = DocumentType::DEGREE;
         }
 

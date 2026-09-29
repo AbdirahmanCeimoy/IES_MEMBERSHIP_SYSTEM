@@ -19,7 +19,15 @@ class UpdateMeRequest extends BaseNestFormRequest
             'lastName' => ['sometimes', 'nullable', 'string', 'max:100'],
             'dateOfBirth' => ['sometimes', 'nullable', 'date'],
             'discipline' => ['sometimes', 'nullable', 'string', 'max:100'],
-            'grade' => ['sometimes', 'nullable', 'string', 'in:STUDENT,GRADUATE,ASSOCIATE,CORPORATE,SENIOR,FELLOW'],
+            'specialization' => ['sometimes', 'nullable', 'string', 'max:150'],
+            'grade' => ['sometimes', 'nullable', 'string', 'in:STUDENT,GRADUATE,ASSOCIATE,CORPORATE,SENIOR,FELLOW,GRAD_TECHNICIAN,GRAD_TECHNOLOGIST'],
+            'phone' => ['sometimes', 'nullable', 'string', 'max:30'],
+            'alternativePhone' => ['sometimes', 'nullable', 'string', 'max:30'],
+            'nationalId' => ['sometimes', 'nullable', 'string', 'max:30'],
+            'city' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'address' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'district' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'nationality' => ['sometimes', 'nullable', 'string', 'max:100'],
         ];
     }
 

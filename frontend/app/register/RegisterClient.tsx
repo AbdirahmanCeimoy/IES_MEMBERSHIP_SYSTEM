@@ -28,9 +28,8 @@ const gradeLabels: Record<string, string> = {
 
 const buildUsernameFromEmail = (email: string): string => {
   const local = email.split('@')[0] ?? '';
-  const cleaned = local.replace(/[^a-z0-9]/g, '').slice(0, 20);
-  const suffix = Math.random().toString(36).slice(2, 6);
-  return `${cleaned}${suffix}`;
+  // Keep only alphanumerics — email local part is unique across Gmail so this stays unique.
+  return local.replace(/[^a-z0-9]/g, '').slice(0, 30);
 };
 
 const isValidPassword = (value: string): boolean => {
@@ -115,6 +114,8 @@ export const RegisterClient = () => {
         fullName: username,
         email: form.email,
         grade,
+        phone: form.phone,
+        nationalId: form.nationalId,
       });
 
       if (!response.ok || !response.data?.token) {

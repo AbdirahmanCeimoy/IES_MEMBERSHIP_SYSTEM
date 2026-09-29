@@ -55,4 +55,9 @@ class MembershipsPublicController extends Controller
             200
         );
     }
+
+    public function publicPhoto(string $documentId): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        return $this->membershipsService->servePublicPhoto($documentId);
+    }
 }
