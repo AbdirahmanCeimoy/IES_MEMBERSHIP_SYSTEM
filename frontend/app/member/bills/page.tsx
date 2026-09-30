@@ -6,7 +6,7 @@ export default function BillsPage() {
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-[#022D5A]">Bills</h1>
+            <h1 className="text-xl font-bold text-[#035CB3]">Bills</h1>
             <p className="mt-1 text-sm text-slate-500">Outstanding fees and invoices.</p>
           </div>
           <span className="rounded-full bg-amber-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">

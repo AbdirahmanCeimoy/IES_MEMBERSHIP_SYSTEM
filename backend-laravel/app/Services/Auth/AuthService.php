@@ -18,7 +18,7 @@ use Throwable;
 
 class AuthService
 {
-    private const PROFILE_UPDATE_COOLDOWN_MONTHS = 2;
+    private const PROFILE_UPDATE_COOLDOWN_DAYS = 7;
 
     public function __construct(
         private readonly JwtTokenService $jwtTokenService,
@@ -312,7 +312,7 @@ class AuthService
 
         return [
             'token' => $this->jwtTokenService->issue($user),
-            'user' => $this->safeUser($user),
+            'user' => $this->safeUserWithTimestamps($user),
         ];
     }
 
@@ -335,16 +335,29 @@ class AuthService
             throw NestHttpException::unauthorized('Invalid username/email or password.');
         }
 
+        // Return the FULL profile (grade, discipline, phone, …) so the client
+        // does not have to fall back to defaults after a re-login.
         return [
             'token' => $this->jwtTokenService->issue($user),
-            'user' => $this->safeUser($user),
+            'user' => $this->safeUserWithTimestamps($user),
         ];
     }
 
     public function me(string $userId): array
     {
+        // Load every column the safe payload exposes — otherwise `safeUserWithTimestamps`
+        // reads null for grade / phone / discipline / … and the client falls back to
+        // 'GRADUATE' for the sidebar and dashboard, effectively turning every user
+        // into a Graduate on refresh.
         $user = User::query()
-            ->select(['id', 'username', 'fullName', 'email', 'role', 'createdAt', 'updatedAt'])
+            ->select([
+                'id', 'username', 'fullName', 'email', 'role',
+                'gender', 'title', 'firstName', 'lastName', 'dateOfBirth',
+                'discipline', 'specialization', 'grade',
+                'phone', 'alternativePhone', 'nationalId',
+                'city', 'address', 'district', 'nationality',
+                'createdAt', 'updatedAt',
+            ])
             ->find($userId);
 
         if (! $user) {
@@ -407,7 +420,7 @@ class AuthService
 
         $hasAnyChange = $hasUsernameChange || $hasFullNameChange || $hasEmailChange || $hasExtraChange;
 
-        $nextProfileUpdateAt = $this->addMonths($existing->updatedAt, self::PROFILE_UPDATE_COOLDOWN_MONTHS);
+        $nextProfileUpdateAt = $this->addDays($existing->updatedAt, self::PROFILE_UPDATE_COOLDOWN_DAYS);
         $isFirstSelfEditWindow = abs($existing->updatedAt->getTimestampMs() - $existing->createdAt->getTimestampMs()) < 1000;
 
         if (! $hasAnyChange) {
@@ -422,7 +435,7 @@ class AuthService
         $identityChanged = $hasUsernameChange || $hasFullNameChange || $hasEmailChange;
         if ($identityChanged && ! $isFirstSelfEditWindow && now()->lt($nextProfileUpdateAt)) {
             throw NestHttpException::badRequest(
-                'Profile can be updated once every 2 months. Next update is available on '
+                'Profile can be updated once every 7 days. Next update is available on '
                 . $nextProfileUpdateAt->format('Y-m-d')
                 . '.'
             );
@@ -468,7 +481,7 @@ class AuthService
         return [
             'user' => $this->safeUserWithTimestamps($existing),
             'nextProfileUpdateAt' => Iso8601::format(
-                $this->addMonths($existing->updatedAt, self::PROFILE_UPDATE_COOLDOWN_MONTHS)
+                $this->addDays($existing->updatedAt, self::PROFILE_UPDATE_COOLDOWN_DAYS)
             ),
         ];
     }
@@ -493,12 +506,12 @@ class AuthService
             );
         }
 
-        $nextProfileUpdateAt = $this->addMonths($existing->updatedAt, self::PROFILE_UPDATE_COOLDOWN_MONTHS);
+        $nextProfileUpdateAt = $this->addDays($existing->updatedAt, self::PROFILE_UPDATE_COOLDOWN_DAYS);
         $isFirstSelfEditWindow = abs($existing->updatedAt->getTimestampMs() - $existing->createdAt->getTimestampMs()) < 1000;
 
         if (! $isFirstSelfEditWindow && now()->lt($nextProfileUpdateAt)) {
             throw NestHttpException::badRequest(
-                'Password can be updated once every 2 months. Next update is available on '
+                'Password can be updated once every 7 days. Next update is available on '
                 . $nextProfileUpdateAt->format('Y-m-d')
                 . '.'
             );
@@ -511,7 +524,7 @@ class AuthService
         return [
             'message' => 'Password updated successfully.',
             'nextProfileUpdateAt' => Iso8601::format(
-                $this->addMonths($existing->updatedAt, self::PROFILE_UPDATE_COOLDOWN_MONTHS)
+                $this->addDays($existing->updatedAt, self::PROFILE_UPDATE_COOLDOWN_DAYS)
             ),
         ];
     }
@@ -653,6 +666,18 @@ class AuthService
 
     private function safeUserWithTimestamps(User $user): array
     {
+        $gradeLabels = [
+            'STUDENT' => 'Student Member (SMIES)',
+            'GRADUATE' => 'Graduate Member (GMIES)',
+            'ASSOCIATE' => 'Associate Member (AMIES)',
+            'CORPORATE' => 'Corporate Member (CMIES)',
+            'SENIOR' => 'Senior Member (SenMIES)',
+            'FELLOW' => 'Fellow Member (FMIES)',
+            'GRAD_TECHNICIAN' => 'Graduate Engineering Technician',
+            'GRAD_TECHNOLOGIST' => 'Graduate Engineering Technologist',
+        ];
+        $grade = $user->grade ?? null;
+
         return [
             'id' => $user->id,
             'username' => $user->username,
@@ -666,7 +691,8 @@ class AuthService
             'dateOfBirth' => $user->dateOfBirth ?? null,
             'discipline' => $user->discipline ?? null,
             'specialization' => $user->specialization ?? null,
-            'grade' => $user->grade ?? null,
+            'grade' => $grade,
+            'gradeLabel' => $grade && isset($gradeLabels[$grade]) ? $gradeLabels[$grade] : null,
             'phone' => $user->phone ?? null,
             'alternativePhone' => $user->alternativePhone ?? null,
             'nationalId' => $user->nationalId ?? null,
@@ -708,6 +734,11 @@ class AuthService
     private function addMonths(\DateTimeInterface $date, int $months): CarbonImmutable
     {
         return CarbonImmutable::instance($date)->addMonths($months);
+    }
+
+    private function addDays(\DateTimeInterface $date, int $days): CarbonImmutable
+    {
+        return CarbonImmutable::instance($date)->addDays($days);
     }
 
     private function isUniqueConstraintError(QueryException $exception): bool

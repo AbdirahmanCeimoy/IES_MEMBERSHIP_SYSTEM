@@ -18,7 +18,7 @@ function PersonIcon({ className = '' }: { className?: string }) {
 
 function StaffCard({ title }: { title: string }) {
   return (
-    <div className="flex flex-col items-center overflow-hidden rounded-2xl border border-slate-200 bg-white text-center transition-all hover:-translate-y-0.5 hover:shadow-md">
+    <div className="flex flex-col items-center overflow-hidden rounded-2xl border border-slate-200 bg-black text-center transition-all hover:-translate-y-0.5 hover:shadow-md">
       <div className="flex h-44 w-full items-center justify-center bg-slate-100">
         <PersonIcon className="h-20 w-20 text-[#035CB3]" />
       </div>
@@ -37,41 +37,45 @@ export default function SecretariatPage() {
       <PageHero
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About', href: routes.about.root }, { label: 'Secretariat' }]} />}
         eyebrow="About IES"
-        title="Discover The IES Secretariat"
+        title="IES Secretariat"
+        description="Discover our IES Secretariat"
       />
 
       <Section>
         <SiteContainer>
-          <p className="mx-auto max-w-4xl text-center text-sm leading-relaxed text-slate-700 sm:text-base">
-            The Secretariat, headed by the Chief Executive Officer (CEO), supports the operations of the Institution of Engineers Somalia (IES). The Secretariat is responsible for the day-to-day administration and management of the Institution, ensuring the effective implementation of its mandate, policies, programmes, and strategic objectives.
+      <p className="w-full mt-4 text-left text-sm leading-relaxed text-slate-700 sm:text-base">            
+          The Secretariat, headed by the Chief Executive Officer (CEO), supports the operations of the Institution of Engineers Somalia (IES). The Secretariat is responsible for the day-to-day administration and management of the Institution, ensuring the effective implementation of its mandate, policies, programmes, and strategic objectives.
           </p>
-          <p className="mx-auto mt-4 max-w-3xl text-center text-sm leading-relaxed text-slate-600 sm:text-base">
+          <p className="w-full mt-4 text-left  text-sm leading-relaxed text-slate-700 sm:text-base">
             The IES Secretariat works collaboratively with the Institution&apos;s leadership, members, government institutions, development partners, professional organizations, and other stakeholders to advance the engineering profession and contribute to Somalia&apos;s sustainable development.
+          </p>
+          <p className="w-full mt-4 text-left text-sm leading-relaxed text-slate-700 sm:text-base">
+            The IES Secretariat section is currently under development. Member profiles and photographs will be published here shortly.
           </p>
         </SiteContainer>
       </Section>
 
       {/* Secretariat Staff */}
-      <section className="border-t border-slate-200 bg-white py-12 sm:py-16">
-        <SiteContainer>
-          <h2 className="mb-2 text-center text-2xl font-extrabold text-[#022D5A] sm:text-3xl">
-            Secretariat Staff
+      {/* <section className="border-t border-slate-200 bg-white py-12 sm:py-16"> */}
+        {/* <SiteContainer> */}
+          <h2 className="mb-2 text-center text-2xl font-extrabold text-[#035CB3] sm:text-3xl">
+            {/* Secretariat Staff */}
           </h2>
-          <div className="mx-auto mb-10 h-1 w-12 rounded-full bg-[#035CB3]" />
+          {/* <div className="mx-auto mb-10 h-1 w-12 rounded-full bg-[#035CB3]" /> */}
 
           {/* CEO - centered alone */}
-          <div className="mx-auto mb-8 max-w-xs">
+          {/* <div className="mx-auto mb-8 max-w-xs">
             <StaffCard title={ceo} />
-          </div>
+          </div> */}
 
           {/* Rest of staff - 4 columns */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {/* <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {staff.map((title) => (
               <StaffCard key={title} title={title} />
             ))}
-          </div>
-        </SiteContainer>
-      </section>
+          </div> */}
+        {/* </SiteContainer> */}
+      {/* </section> */}
 
     </>
   );

@@ -1,9 +1,13 @@
 import type { NewsItem } from '@/components/public/NewsCard';
 import { routes } from '@/config/routes';
 
-/** IES DECISION REQUIRED: replace with dynamic API-driven news feed. */
-export const featuredNews: NewsItem[] = [
-   {
+/**
+ * Announcements sit in their own section on the homepage ("Latest
+ * Announcements") — they are calls to action from IES or its partners,
+ * not routine news items.
+ */
+export const latestAnnouncements: NewsItem[] = [
+  {
     title: '2027 WFEO Hackathon Registration Is Now Open!',
     excerpt:
       'The WFEO Hackathon returns as part of the 2027 World Engineering Day for Sustainable Development. Engineering students and young engineers worldwide are invited to develop innovative solutions to sustainable transport challenges.',
@@ -12,6 +16,10 @@ export const featuredNews: NewsItem[] = [
     category: 'Announcement',
     image: '/PARTNER-WFOE.jpeg',
   },
+];
+
+/** IES DECISION REQUIRED: replace with dynamic API-driven news feed. */
+export const featuredNews: NewsItem[] = [
    {
     title: 'IES Participated in SORECA and Ministry of Public Works Meeting on Infrastructure and Urban Development',
     excerpt:

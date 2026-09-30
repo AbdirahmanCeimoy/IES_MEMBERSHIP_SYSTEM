@@ -239,7 +239,8 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
 
   const role = (user?.role as 'MEMBER' | 'ADMIN') ?? 'MEMBER';
   const items = MENU.filter((item) => item.roles.includes(role));
-  const displayName = user?.fullName || [user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.username || 'Member';
+  // Never surface `username` as the display name — the app hides it everywhere.
+  const displayName = user?.fullName || [user?.firstName, user?.lastName].filter(Boolean).join(' ') || 'Member';
 
   if (!user) return null;
 
@@ -247,7 +248,7 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
     <div className="flex min-h-screen bg-slate-50">
       <aside
         className={cn(
-          'group/aside fixed inset-y-0 left-0 z-40 flex shrink-0 flex-col border-r border-white/10 bg-[#022D5A] text-slate-100 transition-[width,transform] duration-200 lg:static lg:translate-x-0',
+          'group/aside fixed inset-y-0 left-0 z-40 flex shrink-0 flex-col border-r border-white/10 bg-[#035CB3] text-slate-100 transition-[width,transform] duration-200 lg:static lg:translate-x-0',
           collapsed ? 'w-[68px]' : 'w-64',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
         )}
@@ -269,7 +270,7 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
           type="button"
           onClick={toggleCollapsed}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="absolute -right-3 top-20 z-10 hidden h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-white text-[#022D5A] shadow-md transition-all hover:scale-110 hover:bg-[#48C184] lg:flex"
+          className="absolute -right-3 top-20 z-10 hidden h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-white text-[#035CB3] shadow-md transition-all hover:scale-110 hover:bg-[#48C184] lg:flex"
         >
           <svg
             width="12"
@@ -317,7 +318,7 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
 
         <div className={cn('border-t border-white/10', collapsed ? 'p-2' : 'p-3')}>
           <div className={cn('mb-2 flex items-center rounded-lg bg-white/5', collapsed ? 'justify-center p-2' : 'gap-2 px-2 py-2')}>
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#48C184] text-xs font-bold text-[#022D5A]">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#48C184] text-xs font-bold text-[#035CB3]">
               {(user.firstName?.[0] ?? user.fullName?.[0] ?? user.username?.[0] ?? 'M').toUpperCase()}
             </div>
             {!collapsed && (
@@ -369,91 +370,69 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
             </button>
             {(() => {
               const latest = applications[0];
+              const hasReg = !!latest?.registrationNumber;
+              const hasCategory = !!(user.gradeLabel ?? latest?.membershipGrade);
+              const hasStatus = !!latest?.membershipStatus
+                || latest?.decision === 'APPROVED';
+              const regNo = latest?.registrationNumber;
+              const category = user.gradeLabel ?? latest?.membershipGrade;
               const status = deriveStatus(latest);
-              const regNo = latest?.registrationNumber ?? user.username ?? '- -';
-              const category = user.gradeLabel ?? latest?.membershipGrade ?? '- -';
               return (
                 <div className="hidden items-center gap-5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 md:flex">
                   <span className="flex items-center gap-1.5">
                     Registration No:
-                    <span className="font-mono text-[#022D5A]">{regNo}</span>
+                    {hasReg ? (
+                      <span className="font-mono text-[#035CB3]">{regNo}</span>
+                    ) : (
+                      <span className="text-slate-400">-- --</span>
+                    )}
                   </span>
                   <span className="flex items-center gap-1.5">
                     Category:
-                    <span className="text-[#022D5A]">{category}</span>
+                    {hasCategory ? (
+                      <span className="text-[#035CB3]">{category}</span>
+                    ) : (
+                      <span className="text-slate-400">-- --</span>
+                    )}
                   </span>
                   <span className="flex items-center gap-1.5">
                     Membership Status:
-                    <span className={cn('rounded-full px-2.5 py-0.5 text-[10px] font-bold', STATUS_STYLES[status])}>
-                      {STATUS_LABELS[status]}
-                    </span>
+                    {hasStatus ? (
+                      <span className={cn('rounded-full px-2.5 py-0.5 text-[10px] font-bold', STATUS_STYLES[status])}>
+                        {STATUS_LABELS[status]}
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center rounded-full bg-orange-500 px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                        -- --
+                      </span>
+                    )}
                   </span>
                 </div>
               );
             })()}
           </div>
           <div className="flex items-center gap-2">
-            {(() => {
-              const pct = calculateProfileCompletion(user, applications);
-              const isComplete = pct === 100;
-              return (
-                <Link
-                  href="/member/profile"
-                  className={cn(
-                    'hidden items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors sm:inline-flex',
-                    isComplete
-                      ? 'bg-[#48C184]/15 text-[#3AA870] hover:bg-[#48C184]/25'
-                      : 'bg-rose-100 text-rose-600 hover:bg-rose-200',
-                  )}
-                  title={`Profile ${pct}% complete`}
-                >
-                  <svg width="20" height="20" viewBox="0 0 36 36" aria-hidden="true">
-                    <path
-                      d="M18 2.5 a 15.5 15.5 0 0 1 0 31 a 15.5 15.5 0 0 1 0 -31"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      opacity="0.3"
-                    />
-                    <path
-                      d="M18 2.5 a 15.5 15.5 0 0 1 0 31 a 15.5 15.5 0 0 1 0 -31"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeDasharray={`${pct}, 100`}
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  {isComplete ? `Profile Complete` : `Incomplete Profile — ${pct}%`}
-                </Link>
-              );
-            })()}
             {/* Notification bell */}
             <button
               type="button"
-              className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#022D5A]"
+              className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#035CB3]"
               aria-label="Notifications"
             >
               <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M10 3a5 5 0 0 0-5 5v3l-2 2h14l-2-2V8a5 5 0 0 0-5-5z" strokeLinejoin="round" /><path d="M8 16a2 2 0 0 0 4 0" strokeLinecap="round" /></svg>
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
             </button>
-            {/* User dropdown: Profile, Settings, Sign out */}
+            {/* User dropdown: minimal avatar-only trigger (Profile / Settings / Sign out) */}
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((v) => !v)}
-                className="inline-flex h-9 items-center gap-2 rounded-full px-1 pr-3 text-slate-600 transition-colors hover:bg-slate-100"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#035CB3]"
                 aria-label="Open user menu"
                 aria-expanded={userMenuOpen}
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#035CB3] text-xs font-bold text-white">
-                  {(user.firstName?.[0] ?? user.fullName?.[0] ?? user.username?.[0] ?? 'M').toUpperCase()}
-                </span>
-                <span className="hidden max-w-[120px] truncate text-xs font-semibold text-[#022D5A] sm:inline">
-                  {displayName}
-                </span>
-                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className={cn('transition-transform', userMenuOpen && 'rotate-180')} aria-hidden="true">
-                  <path d="M5 8l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <circle cx="10" cy="7" r="3" />
+                  <path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" strokeLinecap="round" />
                 </svg>
               </button>
               {userMenuOpen && (
@@ -468,7 +447,7 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
                     className="absolute right-0 top-11 z-30 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
                   >
                     <div className="border-b border-slate-100 px-3 py-3">
-                      <p className="truncate text-sm font-bold text-[#022D5A]">{displayName}</p>
+                      <p className="truncate text-sm font-bold text-[#035CB3]">{displayName}</p>
                       <p className="truncate text-[11px] text-slate-500">{user.email ?? ''}</p>
                     </div>
                     <div className="flex flex-col p-1 text-sm">
@@ -510,7 +489,7 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
         </header>
         {/* Breadcrumb under the top strip */}
         <div className="border-b border-slate-100 bg-white px-4 py-2 text-xs text-slate-500 lg:px-6">
-          <span className="font-semibold text-[#022D5A]">Member</span>
+          <span className="font-semibold text-[#035CB3]">Member</span>
           {' / '}
           {MENU.find((m) => m.href === pathname)?.label ?? 'Dashboard'}
         </div>

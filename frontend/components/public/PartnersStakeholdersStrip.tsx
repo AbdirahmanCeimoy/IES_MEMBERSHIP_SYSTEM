@@ -9,22 +9,20 @@ export const PartnersStakeholdersStrip = () => {
   return (
     <section className="bg-white py-8 sm:py-10">
       <SiteContainer>
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.6fr] lg:items-center">
-          <div>
-            <h2 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">
-              Sponsors &amp; Stakeholders
-            </h2>
-            <Link
-              href="/about/partners-stakeholders"
-              className="mt-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#035CB3] transition-colors hover:text-[#024A8F]"
-            >
-              View All
-              <span aria-hidden>→</span>
-            </Link>
-          </div>
-          <p className="text-sm leading-relaxed text-slate-600 lg:text-right">
+        <div className="relative flex flex-col items-center gap-3 text-center">
+          <h2 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">
+            Sponsors &amp; Stakeholders
+          </h2>
+          <p className="mx-auto max-w-3xl text-sm leading-relaxed text-slate-600">
             We collaborate with sponsors and stakeholders to advance shared goals, strengthen our collective impact, and support the sustainable development of the engineering profession in Somalia.
           </p>
+          <Link
+            href="/about/partners-stakeholders"
+            className="mt-1 inline-flex items-center gap-2 self-center text-xs font-bold uppercase tracking-widest text-[#035CB3] transition-colors hover:text-[#024A8F] sm:absolute sm:right-0 sm:top-0 sm:self-auto"
+          >
+            View All
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       </SiteContainer>
 

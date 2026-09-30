@@ -116,7 +116,8 @@ export default function MemberOverviewPage() {
 
   const profilePct = calculateProfileCompletion(user, applications);
   const isComplete = profilePct === 100;
-  const displayName = user?.fullName || [user?.title, user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.username || 'Member';
+  // `username` is intentionally excluded — the app hides usernames everywhere.
+  const displayName = user?.fullName || [user?.title, user?.firstName, user?.lastName].filter(Boolean).join(' ') || 'Member';
   const latestApp = applications[0];
   const registrationNo = latestApp?.registrationNumber ?? '-';
   const category = user?.gradeLabel ?? user?.grade ?? '-';
@@ -132,11 +133,11 @@ export default function MemberOverviewPage() {
       <div className="grid gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-4">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Registration No</p>
-          <p className="mt-1 font-mono text-sm font-bold text-[#022D5A]">{registrationNo}</p>
+          <p className="mt-1 font-mono text-sm font-bold text-[#035CB3]">{registrationNo}</p>
         </div>
         <div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Category</p>
-          <p className="mt-1 text-sm font-bold text-[#022D5A]">{category}</p>
+          <p className="mt-1 text-sm font-bold text-[#035CB3]">{category}</p>
         </div>
         <div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Membership Status</p>
@@ -186,7 +187,7 @@ export default function MemberOverviewPage() {
       </div>
 
       <div>
-        <h1 className="text-2xl font-bold text-[#022D5A]">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-[#035CB3]">Dashboard</h1>
         <p className="text-sm text-slate-600">
           Welcome{displayName ? `, ${displayName}` : ''}. Here&apos;s an overview of your membership.
         </p>
@@ -196,7 +197,7 @@ export default function MemberOverviewPage() {
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Membership Status</p>
-          <p className="mt-2 text-lg font-semibold text-[#022D5A]">
+          <p className="mt-2 text-lg font-semibold text-[#035CB3]">
             {membershipStatus === 'ACTIVE' ? 'Good Standing' : membershipStatus === 'UNDER REVIEW' ? 'Under Review' : 'Not in Good Standing'}
           </p>
           <Badge tone={membershipStatus === 'ACTIVE' ? 'success' : membershipStatus === 'REJECTED' ? 'warning' : 'warning'} className="mt-2">
@@ -205,7 +206,7 @@ export default function MemberOverviewPage() {
         </Card>
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Applied Grade</p>
-          <p className="mt-2 text-lg font-semibold text-[#022D5A]">
+          <p className="mt-2 text-lg font-semibold text-[#035CB3]">
             {user?.gradeLabel ?? '-'}
           </p>
           <p className="mt-1 text-xs text-slate-500">
@@ -214,12 +215,12 @@ export default function MemberOverviewPage() {
         </Card>
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">CPD Hours (2026)</p>
-          <p className="mt-2 text-lg font-semibold text-[#022D5A]">0</p>
+          <p className="mt-2 text-lg font-semibold text-[#035CB3]">0</p>
           <p className="mt-1 text-xs text-slate-500">Log your first activity</p>
         </Card>
         <Card padded>
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Notifications</p>
-          <p className="mt-2 text-lg font-semibold text-[#022D5A]">0</p>
+          <p className="mt-2 text-lg font-semibold text-[#035CB3]">0</p>
           <p className="mt-1 text-xs text-slate-500">No new notifications</p>
         </Card>
       </div>
@@ -247,7 +248,7 @@ export default function MemberOverviewPage() {
                 );
               })()}
             </div>
-            <p className="text-center text-sm font-bold uppercase tracking-wider text-[#022D5A]">
+            <p className="text-center text-sm font-bold uppercase tracking-wider text-[#035CB3]">
               {displayName}
             </p>
             {user?.gradeLabel && (
@@ -293,7 +294,7 @@ export default function MemberOverviewPage() {
                 )}
                 {applications.map((app) => (
                   <tr key={app.id} className="border-b border-slate-100">
-                    <td className="px-3 py-3 font-mono text-xs text-[#022D5A]">
+                    <td className="px-3 py-3 font-mono text-xs text-[#035CB3]">
                       {app.id ? `IES-${app.id.slice(0, 8).toUpperCase()}` : '-'}
                     </td>
                     <td className="px-3 py-3 text-sm text-slate-700">{app.membershipGrade ?? '-'}</td>
@@ -329,7 +330,7 @@ export default function MemberOverviewPage() {
           {quickLinks.map((link) => (
             <Card key={link.href} padded interactive>
               <Link href={link.href}>
-                <h3 className="text-sm font-semibold text-[#022D5A]">{link.title}</h3>
+                <h3 className="text-sm font-semibold text-[#035CB3]">{link.title}</h3>
                 <p className="mt-1 text-xs text-slate-600">{link.body}</p>
                 <p className="mt-3 text-xs font-semibold text-[#035CB3]">Open ›</p>
               </Link>
@@ -344,6 +345,6 @@ export default function MemberOverviewPage() {
 const Detail = ({ label, value, mono }: { label: string; value: string; mono?: boolean }) => (
   <div className="flex items-center justify-between gap-3 py-2">
     <p className="text-xs font-semibold text-slate-500">{label}</p>
-    <p className={'text-right text-sm text-[#022D5A] ' + (mono ? 'font-mono' : '')}>{value}</p>
+    <p className={'text-right text-sm text-[#035CB3] ' + (mono ? 'font-mono' : '')}>{value}</p>
   </div>
 );

@@ -71,7 +71,7 @@ interface ApplicationSummary {
 const Field = ({ label, value }: { label: string; value?: string | null }) => (
   <div>
     <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{label}</p>
-    <p className="mt-1 text-sm font-semibold text-[#022D5A]">
+    <p className="mt-1 text-sm font-semibold text-[#035CB3]">
       {value && String(value).trim() !== '' ? value : '—'}
     </p>
   </div>
@@ -87,7 +87,7 @@ const QualTable = ({
   <div className="overflow-x-auto">
     <table className="w-full text-sm">
       <thead>
-        <tr className="border-b border-slate-100 text-[11px] uppercase tracking-wider text-slate-500">
+        <tr className="border-b border-slate-100 text-[11px] tracking-wide text-slate-500">
           <th className="px-4 py-2 text-left font-semibold">Institution</th>
           <th className="px-4 py-2 text-left font-semibold">Certificate</th>
           <th className="px-4 py-2 text-left font-semibold">Certificate No.</th>
@@ -106,7 +106,7 @@ const QualTable = ({
         )}
         {rows.map((r) => (
           <tr key={r.id} className="border-b border-slate-50 last:border-b-0">
-            <td className="px-4 py-2 text-sm text-[#022D5A]">{r.institution}</td>
+            <td className="px-4 py-2 text-sm text-[#035CB3]">{r.institution}</td>
             <td className="px-4 py-2 text-sm text-slate-700">{r.certificate}</td>
             <td className="px-4 py-2 text-xs font-mono text-slate-700">{r.certificateNo}</td>
             <td className="px-4 py-2 text-xs text-slate-600">{r.startDate}</td>
@@ -138,7 +138,7 @@ const EmptyPanel = ({ title, hint }: { title: string; hint: string }) => (
         <path d="M3 8h14M7 12h6" strokeLinecap="round" />
       </svg>
     </div>
-    <p className="text-sm font-semibold text-[#022D5A]">{title}</p>
+    <p className="text-sm font-semibold text-[#035CB3]">{title}</p>
     <p className="max-w-xs text-xs text-slate-500">{hint}</p>
   </div>
 );
@@ -163,6 +163,17 @@ interface ContactsForm {
   district: string;
   city: string;
   nationality: string;
+}
+
+interface WorkContact {
+  id: string;
+  email: string;
+  phone: string;
+  alternativePhone: string;
+  address: string;
+  district: string;
+  city: string;
+  country: string;
 }
 
 type QualificationCategory = 'ACADEMIC' | 'OTHER';
@@ -747,9 +758,13 @@ export default function MyProfilePage() {
   const [docSubmitting, setDocSubmitting] = useState(false);
   const [docSubmitOk, setDocSubmitOk] = useState(false);
 
-  const gradeCode = ((user?.grade ?? 'GRADUATE').toUpperCase() as GradeCode);
-  const gradeSpec = gradeRequirements[gradeCode] ?? gradeRequirements.GRADUATE;
-  const gradeDocs: DocumentField[] = gradeDocuments[gradeCode] ?? gradeDocuments.GRADUATE;
+  // NEVER default to GRADUATE on the client — that used to overwrite the real
+  // grade after re-login. Use whatever the backend stored; if it is truly
+  // missing (brand-new signup, still on Category → Register step), the tab
+  // waits for a real value instead of pretending the user is a Graduate.
+  const gradeCode = (user?.grade ?? '').toUpperCase() as GradeCode | '';
+  const gradeSpec = gradeCode ? gradeRequirements[gradeCode as GradeCode] : null;
+  const gradeDocs: DocumentField[] = gradeCode ? (gradeDocuments[gradeCode as GradeCode] ?? []) : [];
 
   const setDoc = (key: string, file: File | null) => {
     setDocs((prev) => ({ ...prev, [key]: file }));
@@ -759,6 +774,10 @@ export default function MyProfilePage() {
 
   const submitSupportingDocs = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!gradeCode) {
+      setDocErrors(['Your membership category is not set. Complete the Select Category step first.']);
+      return;
+    }
     const missing = gradeDocs
       .filter((f) => f.required && !docs[f.key])
       .map((f) => `${f.label} is required`);
@@ -986,6 +1005,132 @@ export default function MyProfilePage() {
     }
   };
 
+  // Work contacts (localStorage-backed until backend endpoint lands)
+  const [workContacts, setWorkContacts] = useState<WorkContact[]>([]);
+  const [workModalOpen, setWorkModalOpen] = useState(false);
+  const [editingWorkId, setEditingWorkId] = useState<string | null>(null);
+  const [workForm, setWorkForm] = useState({
+    email: '',
+    phone: '',
+    alternativePhone: '',
+    address: '',
+    district: '',
+    city: '',
+    country: '',
+  });
+  const [workError, setWorkError] = useState<string | null>(null);
+
+  const workContactsKey = useMemo(
+    () => `ies:work-contacts:${user?.id ?? user?.username ?? 'anon'}`,
+    [user?.id, user?.username],
+  );
+
+  useEffect(() => {
+    if (!user) return;
+    try {
+      const raw = window.localStorage.getItem(workContactsKey);
+      setWorkContacts(raw ? (JSON.parse(raw) as WorkContact[]) : []);
+    } catch {
+      setWorkContacts([]);
+    }
+  }, [user, workContactsKey]);
+
+  const persistWorkContacts = (next: WorkContact[]) => {
+    setWorkContacts(next);
+    try {
+      window.localStorage.setItem(workContactsKey, JSON.stringify(next));
+    } catch {
+      /* storage unavailable */
+    }
+  };
+
+  const openAddWorkContact = () => {
+    setWorkForm({
+      email: '',
+      phone: '',
+      alternativePhone: '',
+      address: '',
+      district: '',
+      city: '',
+      country: '',
+    });
+    setEditingWorkId(null);
+    setWorkError(null);
+    setWorkModalOpen(true);
+  };
+
+  const openEditWorkContact = (wc: WorkContact) => {
+    setWorkForm({
+      email: wc.email,
+      phone: wc.phone,
+      alternativePhone: wc.alternativePhone,
+      address: wc.address,
+      district: wc.district,
+      city: wc.city,
+      country: wc.country,
+    });
+    setEditingWorkId(wc.id);
+    setWorkError(null);
+    setWorkModalOpen(true);
+  };
+
+  const closeWorkModal = () => {
+    setWorkModalOpen(false);
+    setEditingWorkId(null);
+    setWorkError(null);
+  };
+
+  const submitWorkContact = (event: React.FormEvent) => {
+    event.preventDefault();
+    // Alternative Phone Number is optional — do NOT enforce.
+    const requiredFields: (keyof typeof workForm)[] = ['email', 'phone', 'address', 'district', 'city', 'country'];
+    for (const f of requiredFields) {
+      if (!workForm[f].trim()) {
+        setWorkError('All fields marked * are required.');
+        return;
+      }
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(workForm.email.trim())) {
+      setWorkError('Please enter a valid email address.');
+      return;
+    }
+    if (editingWorkId) {
+      const next = workContacts.map((w) => (
+        w.id === editingWorkId
+          ? {
+              ...w,
+              email: workForm.email.trim(),
+              phone: workForm.phone.trim(),
+              alternativePhone: workForm.alternativePhone.trim(),
+              address: workForm.address.trim(),
+              district: workForm.district.trim(),
+              city: workForm.city.trim(),
+              country: workForm.country.trim(),
+            }
+          : w
+      ));
+      persistWorkContacts(next);
+    } else {
+      const entry: WorkContact = {
+        id: `wc_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`,
+        email: workForm.email.trim(),
+        phone: workForm.phone.trim(),
+        alternativePhone: workForm.alternativePhone.trim(),
+        address: workForm.address.trim(),
+        district: workForm.district.trim(),
+        city: workForm.city.trim(),
+        country: workForm.country.trim(),
+      };
+      persistWorkContacts([...workContacts, entry]);
+    }
+    closeWorkModal();
+  };
+
+  const deleteWorkContact = (id: string) => {
+    if (!window.confirm('Delete this work contact?')) return;
+    persistWorkContacts(workContacts.filter((w) => w.id !== id));
+  };
+
   const handleDeleteContacts = async () => {
     const ok = window.confirm('Clear all your personal contact details (phone, address, city, country)?');
     if (!ok) return;
@@ -1069,21 +1214,14 @@ export default function MyProfilePage() {
 
   const fullName = [user.firstName, user.middleName, user.lastName].filter(Boolean).join(' ')
     || user.fullName
-    || user.username
     || 'Member';
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-4">
-      {/* Header title */}
-      <div>
-        <h1 className="text-xl font-bold text-[#022D5A]">Profile</h1>
-        <p className="text-xs text-slate-500">Manage your personal information and membership details.</p>
-      </div>
-
-      {/* Tabs card */}
+    <div className="mx-auto -mt-2 flex max-w-6xl flex-col gap-2">
+      {/* Tabs card (breadcrumb above already reads "Member / Profile") */}
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        {/* Tabs strip */}
-        <div className="flex flex-wrap gap-1 border-b border-slate-200 bg-slate-50/60 px-3 pt-3">
+        {/* Tabs strip — single horizontal row, scrolls on narrow screens */}
+        <div className="flex gap-0.5 overflow-x-auto whitespace-nowrap border-b border-slate-200 bg-slate-50/60 px-2 pt-3 scrollbar-none">
           {TABS.map((t) => {
             const active = t.key === tab;
             return (
@@ -1092,10 +1230,10 @@ export default function MyProfilePage() {
                 type="button"
                 onClick={() => setTab(t.key)}
                 className={
-                  'relative rounded-t-lg px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors ' +
+                  'relative shrink-0 rounded-t-lg px-3 py-2 text-[11px] font-bold uppercase tracking-wider transition-colors ' +
                   (active
                     ? 'bg-white text-[#035CB3] shadow-[0_-1px_0_0_#035CB3_inset]'
-                    : 'text-slate-500 hover:text-[#022D5A]')
+                    : 'text-slate-500 hover:text-[#035CB3]')
                 }
               >
                 {t.label}
@@ -1172,7 +1310,7 @@ export default function MyProfilePage() {
                     </div>
                   )}
                 </div>
-                <p className="text-center text-xs font-bold uppercase tracking-wider text-[#022D5A]">
+                <p className="text-center text-xs font-bold uppercase tracking-wider text-[#035CB3]">
                   {fullName}
                 </p>
                 {user.gradeLabel && (
@@ -1233,8 +1371,8 @@ export default function MyProfilePage() {
                 <div className="flex flex-col gap-4">
                   {/* Row 1 — Names */}
                   <div className="grid gap-3 sm:grid-cols-3">
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                      First Name *
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                      First Name <span className="text-rose-500">*</span>
                       <input
                         type="text"
                         required
@@ -1244,8 +1382,8 @@ export default function MyProfilePage() {
                         className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                       />
                     </label>
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                      Middle Name *
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                      Middle Name <span className="text-rose-500">*</span>
                       <input
                         type="text"
                         placeholder="Enter Your Middle Name"
@@ -1254,8 +1392,8 @@ export default function MyProfilePage() {
                         className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                       />
                     </label>
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                      Last Name *
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                      Last Name <span className="text-rose-500">*</span>
                       <input
                         type="text"
                         required
@@ -1269,8 +1407,8 @@ export default function MyProfilePage() {
 
                   {/* Row 2 — Gender / Title / DOB */}
                   <div className="grid gap-3 sm:grid-cols-3">
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                      Gender *
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                      Gender <span className="text-rose-500">*</span>
                       <select
                         required
                         value={form.gender}
@@ -1282,8 +1420,8 @@ export default function MyProfilePage() {
                         <option value="FEMALE">Female</option>
                       </select>
                     </label>
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                      Title *
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                      Title <span className="text-rose-500">*</span>
                       <select
                         required
                         value={form.title}
@@ -1300,8 +1438,8 @@ export default function MyProfilePage() {
                         <option value="Eng.">Eng.</option>
                       </select>
                     </label>
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                      Date of Birth *
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                      Date of Birth <span className="text-rose-500">*</span>
                       <input
                         type="date"
                         required
@@ -1315,8 +1453,8 @@ export default function MyProfilePage() {
 
                   {/* Row 3 — National ID (read-only) / Nationality */}
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                      National ID / Passport No. *
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                      National ID / Passport No. <span className="text-rose-500">*</span>
                       <input
                         type="text"
                         value={user.nationalId ?? ''}
@@ -1324,8 +1462,8 @@ export default function MyProfilePage() {
                         className="cursor-not-allowed rounded-lg border border-slate-200 bg-slate-100 px-3 py-2 text-sm font-normal text-slate-600"
                       />
                     </label>
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                      Nationality *
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                      Nationality <span className="text-rose-500">*</span>
                       <select
                         required
                         value={form.nationality}
@@ -1342,7 +1480,7 @@ export default function MyProfilePage() {
 
                   {/* Row 4 — City / Discipline */}
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                       City / Town
                       <input
                         type="text"
@@ -1352,8 +1490,8 @@ export default function MyProfilePage() {
                         className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                       />
                     </label>
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                      Discipline *
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                      Discipline <span className="text-rose-500">*</span>
                       <select
                         required
                         value={form.discipline}
@@ -1370,7 +1508,7 @@ export default function MyProfilePage() {
 
                   {/* Row 5 — Specialization */}
                   <div className="grid gap-3">
-                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                    <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                       Specialization
                       <input
                         type="text"
@@ -1384,7 +1522,7 @@ export default function MyProfilePage() {
                   </div>
 
                   <p className="text-[10px] italic text-slate-500">
-                    ID / Passport number and membership category cannot be changed here. Contact IES support to update them.
+                    ID/Passport number and membership category cannot be changed here. Contact IES support to update them.
                   </p>
                 </div>
               )}
@@ -1409,7 +1547,7 @@ export default function MyProfilePage() {
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
               {/* Header */}
               <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-3">
-                <h3 className="text-sm font-bold text-[#022D5A]">Personal Contact</h3>
+                <h3 className="text-sm font-bold text-[#035CB3]">Personal Contact</h3>
                 <div className="flex items-center gap-2">
                   <span className="inline-flex items-center rounded-full bg-[#48C184] px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
                     Active
@@ -1472,8 +1610,8 @@ export default function MyProfilePage() {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Email</p>
-                      <p className="mt-0.5 truncate text-sm font-medium text-[#022D5A]">{user.email ?? '—'}</p>
+                      <p className="text-[11px] font-semibold tracking-wide text-slate-500">Email</p>
+                      <p className="mt-0.5 truncate text-sm font-medium text-[#035CB3]">{user.email ?? '—'}</p>
                     </div>
                   </div>
                   {/* Phone */}
@@ -1484,8 +1622,8 @@ export default function MyProfilePage() {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Phone</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#022D5A]">{user.phone ?? '—'}</p>
+                      <p className="text-[11px] font-semibold tracking-wide text-slate-500">Phone</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.phone ?? '—'}</p>
                     </div>
                   </div>
                   {/* Alternative Phone */}
@@ -1496,8 +1634,8 @@ export default function MyProfilePage() {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Alternative Phone Number</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#022D5A]">{user.alternativePhone ?? '—'}</p>
+                      <p className="text-[11px] font-semibold tracking-wide text-slate-500">Alternative Phone Number</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.alternativePhone ?? '—'}</p>
                     </div>
                   </div>
                   {/* Address */}
@@ -1508,8 +1646,8 @@ export default function MyProfilePage() {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Address</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#022D5A]">{user.address ?? '—'}</p>
+                      <p className="text-[11px] font-semibold tracking-wide text-slate-500">Address</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.address ?? '—'}</p>
                     </div>
                   </div>
                   {/* District */}
@@ -1520,8 +1658,8 @@ export default function MyProfilePage() {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">District</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#022D5A]">{user.district ?? '—'}</p>
+                      <p className="text-[11px] font-semibold tracking-wide text-slate-500">District</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.district ?? '—'}</p>
                     </div>
                   </div>
                   {/* City */}
@@ -1532,8 +1670,8 @@ export default function MyProfilePage() {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">City</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#022D5A]">{user.city ?? '—'}</p>
+                      <p className="text-[11px] font-semibold tracking-wide text-slate-500">City</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.city ?? '—'}</p>
                     </div>
                   </div>
                   {/* Country */}
@@ -1544,65 +1682,60 @@ export default function MyProfilePage() {
                       </svg>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Country</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#022D5A]">{user.nationality ?? '—'}</p>
+                      <p className="text-[11px] font-semibold tracking-wide text-slate-500">Country</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.nationality ?? '—'}</p>
                     </div>
                   </div>
                 </div>
               ) : (
                 <form onSubmit={handleSaveContacts} className="grid gap-3 p-4 md:grid-cols-2">
-                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                    Phone
+                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                    Phone No.
                     <input
                       type="tel"
                       value={contactsForm.phone}
                       onChange={(e) => updateContact('phone', e.target.value.replace(/[^\d+\s-]/g, ''))}
-                      placeholder="e.g. +252612074217"
                       className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                     />
                   </label>
-                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                     Alternative Phone Number
                     <input
                       type="tel"
                       value={contactsForm.alternativePhone}
                       onChange={(e) => updateContact('alternativePhone', e.target.value.replace(/[^\d+\s-]/g, ''))}
-                      placeholder="e.g. +252612345678"
                       className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                     />
                   </label>
-                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A] md:col-span-2">
+                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3] md:col-span-2">
                     Address
                     <input
                       type="text"
                       value={contactsForm.address}
                       onChange={(e) => updateContact('address', e.target.value)}
-                      placeholder="Street name, house/office number"
                       maxLength={255}
                       className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                     />
                   </label>
-                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                     District
                     <input
                       type="text"
                       value={contactsForm.district}
                       onChange={(e) => updateContact('district', sanitizeName(e.target.value))}
-                      placeholder="e.g. Hamar Weyne"
                       className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                     />
                   </label>
-                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                     City
                     <input
                       type="text"
                       value={contactsForm.city}
                       onChange={(e) => updateContact('city', sanitizeName(e.target.value))}
-                      placeholder="e.g. Mogadishu"
                       className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                     />
                   </label>
-                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A] md:col-span-2">
+                  <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3] md:col-span-2">
                     Country
                     <select
                       value={contactsForm.nationality}
@@ -1616,36 +1749,220 @@ export default function MyProfilePage() {
                     </select>
                   </label>
                   {/* Read-only identity fields */}
-                  <div className="md:col-span-2 mt-1 grid gap-3 rounded-lg border border-slate-100 bg-slate-50/60 p-3 md:grid-cols-2">
+                  <div className="md:col-span-2 mt-1 rounded-lg border border-slate-100 bg-slate-50/60 p-3">
                     <Field label="Email" value={user.email} />
-                    <Field label="Username" value={user.username} />
-                    <p className="md:col-span-2 text-[10px] italic text-slate-500">
-                      Email and username cannot be changed here. Contact IES support to update them.
+                    <p className="mt-2 text-[10px] italic text-slate-500">
+                      Email cannot be changed here. Contact IES support to update it.
                     </p>
                   </div>
                 </form>
               )}
             </div>
+
+            {/* + Add Work Contact — placed right under the Personal Contact card, aligned right (below the Edit / Delete icons). */}
+            <div className="mt-2 flex justify-end">
+              <button
+                type="button"
+                onClick={openAddWorkContact}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[#035CB3] px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-[#035CB3] transition-colors hover:bg-[#035CB3] hover:text-white"
+              >
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M10 4v12M4 10h12" />
+                </svg>
+                Add Work Contact
+              </button>
+            </div>
+
+            {/* Existing work contacts — same rows as Personal Contact for consistency */}
+            {workContacts.length > 0 && (
+              <div className="mt-4 flex flex-col gap-4">
+                {workContacts.map((wc, idx) => (
+                  <div key={wc.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+                    <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-3">
+                      <h3 className="text-sm font-bold text-[#035CB3]">
+                        Work Contact {workContacts.length > 1 ? `#${idx + 1}` : ''}
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center rounded-full bg-[#48C184] px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                          Active
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => openEditWorkContact(wc)}
+                          aria-label="Edit work contact"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#035CB3]/10 text-[#035CB3] hover:bg-[#035CB3] hover:text-white"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M14 3l3 3-9 9H5v-3l9-9z" />
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => deleteWorkContact(wc.id)}
+                          aria-label="Delete work contact"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-rose-100 text-rose-600 hover:bg-rose-600 hover:text-white"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M4 6h12M8 6V4h4v2M6 6l1 12h6l1-12" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="divide-y divide-slate-100">
+                      {[
+                        { label: 'Email', value: wc.email, icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 5h12v10H4z" strokeLinejoin="round" /><path d="M4 5l6 5 6-5" strokeLinecap="round" strokeLinejoin="round" /></svg>) },
+                        { label: 'Phone', value: wc.phone, icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="6" y="2" width="8" height="16" rx="1.5" /><path d="M9 15h2" strokeLinecap="round" /></svg>) },
+                        { label: 'Alternative Phone Number', value: wc.alternativePhone, icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="10" cy="7" r="3" /><path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" strokeLinecap="round" /></svg>) },
+                        { label: 'Address', value: wc.address, icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6z" strokeLinejoin="round" /><circle cx="10" cy="8" r="2" /></svg>) },
+                        { label: 'District', value: wc.district, icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 17h14M5 17V9l5-3 5 3v8M8 17v-4h4v4" strokeLinecap="round" strokeLinejoin="round" /></svg>) },
+                        { label: 'City', value: wc.city, icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="4" y="8" width="12" height="9" /><rect x="7" y="11" width="2" height="2" /><rect x="11" y="11" width="2" height="2" /><path d="M4 8L10 4l6 4" strokeLinejoin="round" /></svg>) },
+                        { label: 'Country', value: wc.country, icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="10" cy="10" r="7" /><path d="M3 10h14M10 3a11 11 0 010 14M10 3a11 11 0 000 14" /></svg>) },
+                      ].map((row) => (
+                        <div key={row.label} className="flex items-start gap-4 px-4 py-3">
+                          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+                            {row.icon}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-[11px] font-semibold tracking-wide text-slate-500">{row.label}</p>
+                            <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{row.value || '—'}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Add / Edit Work Contact modal — mirrors the Personal Contact fields */}
+            {workModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+                <form onSubmit={submitWorkContact} className="w-full max-w-2xl overflow-hidden rounded-xl bg-white shadow-xl">
+                  <div className="bg-[#035CB3] px-5 py-3">
+                    <h3 className="text-sm font-bold text-white">
+                      {editingWorkId ? 'Edit Work Contact' : 'Add Work Contact'}
+                    </h3>
+                  </div>
+                  <div className="p-5">
+                    {workError && (
+                      <div className="mb-3 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700">
+                        {workError}
+                      </div>
+                    )}
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                        Email <span className="text-rose-500">*</span>
+                        <input
+                          type="email"
+                          required
+                          value={workForm.email}
+                          onChange={(e) => setWorkForm((f) => ({ ...f, email: e.target.value }))}
+                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                        Phone <span className="text-rose-500">*</span>
+                        <input
+                          type="tel"
+                          required
+                          value={workForm.phone}
+                          onChange={(e) => setWorkForm((f) => ({ ...f, phone: e.target.value.replace(/[^\d+\s-]/g, '') }))}
+                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3] sm:col-span-2">
+                        Alternative Phone Number
+                        <input
+                          type="tel"
+                          value={workForm.alternativePhone}
+                          onChange={(e) => setWorkForm((f) => ({ ...f, alternativePhone: e.target.value.replace(/[^\d+\s-]/g, '') }))}
+                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3] sm:col-span-2">
+                        Address <span className="text-rose-500">*</span>
+                        <input
+                          type="text"
+                          required
+                          value={workForm.address}
+                          onChange={(e) => setWorkForm((f) => ({ ...f, address: e.target.value }))}
+                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                        District <span className="text-rose-500">*</span>
+                        <input
+                          type="text"
+                          required
+                          value={workForm.district}
+                          onChange={(e) => setWorkForm((f) => ({ ...f, district: e.target.value }))}
+                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                        City <span className="text-rose-500">*</span>
+                        <input
+                          type="text"
+                          required
+                          value={workForm.city}
+                          onChange={(e) => setWorkForm((f) => ({ ...f, city: e.target.value }))}
+                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                        />
+                      </label>
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3] sm:col-span-2">
+                        Country <span className="text-rose-500">*</span>
+                        <select
+                          required
+                          value={workForm.country}
+                          onChange={(e) => setWorkForm((f) => ({ ...f, country: e.target.value }))}
+                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
+                        >
+                          <option value="">Select country…</option>
+                          {countries.map((c) => (
+                            <option key={c} value={c}>{c}</option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex justify-end gap-2 border-t border-slate-100 bg-slate-50 px-5 py-3">
+                    <button
+                      type="button"
+                      onClick={closeWorkModal}
+                      className="rounded-lg border border-slate-200 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-600 hover:bg-slate-100"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="rounded-lg bg-[#035CB3] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#48C184]"
+                    >
+                      {editingWorkId ? 'Update' : 'Save'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
           </div>
         )}
 
         {tab === 'ACADEMIC' && (
           <div className="p-6">
             {/* Warning banner */}
-            <div className="mb-5 flex items-start gap-2 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs italic text-rose-700">
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className="mt-0.5 shrink-0">
+            {/* <div className="mb-5 flex items-start gap-2 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs italic text-rose-700"> */}
+              {/* <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className="mt-0.5 shrink-0">
                 <path d="M10 2L2 17h16L10 2z" strokeLinejoin="round" />
                 <path d="M10 8v4M10 15h.01" strokeLinecap="round" />
               </svg>
               <span>
                 All documents should be scanned certified colour copy. Certification to be done by the Commissioner of Oaths whose names and address are fully displayed on the Rubber Stamp.
-              </span>
-            </div>
+              </span> */}
+            {/* </div> */}
 
             {/* Academic qualifications section */}
             <section className="mb-6 rounded-xl border border-slate-200 bg-white">
               <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-                <h3 className="text-sm font-bold text-[#022D5A]">ACADEMIC QUALIFICATIONS</h3>
+                <h3 className="text-sm font-bold text-[#035CB3]">ACADEMIC QUALIFICATIONS</h3>
                 <button
                   type="button"
                   onClick={() => openAddQual('ACADEMIC')}
@@ -1663,7 +1980,7 @@ export default function MyProfilePage() {
             {/* Other qualifications section */}
             <section className="rounded-xl border border-slate-200 bg-white">
               <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-                <h3 className="text-sm font-bold text-[#022D5A]">OTHER QUALIFICATIONS <span className="text-slate-400 font-normal">(e.g O Level, )</span></h3>
+                <h3 className="text-sm font-bold text-[#035CB3]">OTHER QUALIFICATIONS <span className="text-slate-400 font-normal">(e.g O Level, )</span></h3>
                 <button
                   type="button"
                   onClick={() => openAddQual('OTHER')}
@@ -1672,7 +1989,7 @@ export default function MyProfilePage() {
                   <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                     <path d="M10 4v12M4 10h12" />
                   </svg>
-                  Add Other
+                  Add Other QUALIFICATIONS
                 </button>
               </div>
               <QualTable rows={otherList} onDelete={deleteQual} />
@@ -1682,7 +1999,7 @@ export default function MyProfilePage() {
             {modalCategory && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
                 <form onSubmit={submitQual} className="w-full max-w-2xl overflow-hidden rounded-xl bg-white shadow-xl">
-                  <div className="bg-[#022D5A] px-5 py-3">
+                  <div className="bg-[#035CB3] px-5 py-3">
                     <h3 className="text-sm font-bold text-white">
                       {modalCategory === 'ACADEMIC' ? 'Add Qualification' : 'Add Other Qualification'}
                     </h3>
@@ -1694,7 +2011,7 @@ export default function MyProfilePage() {
                       </div>
                     )}
                     <div className="grid gap-3 sm:grid-cols-3">
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Institution <span className="text-rose-500">*</span>
                         <input
                           type="text"
@@ -1704,7 +2021,7 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Certificate Awarded <span className="text-rose-500">*</span>
                         <select
                           required
@@ -1712,13 +2029,13 @@ export default function MyProfilePage() {
                           onChange={(e) => setQualForm((f) => ({ ...f, certificate: e.target.value }))}
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         >
-                          <option value="">Select…</option>
+                          <option value="">Select</option>
                           {(modalCategory === 'ACADEMIC' ? CERTIFICATE_OPTIONS : OTHER_CERTIFICATE_OPTIONS).map((c) => (
                             <option key={c} value={c}>{c}</option>
                           ))}
                         </select>
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Start Date <span className="text-rose-500">*</span>
                         <input
                           type="date"
@@ -1728,7 +2045,7 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         End Date <span className="text-rose-500">*</span>
                         <input
                           type="date"
@@ -1738,7 +2055,7 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A] sm:col-span-2">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3] sm:col-span-2">
                         Certificate No. <span className="text-rose-500">*</span>
                         <input
                           type="text"
@@ -1785,11 +2102,11 @@ export default function MyProfilePage() {
           <div className="p-6">
             <section className="rounded-xl border border-slate-200 bg-white">
               <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-                <h3 className="text-sm font-bold text-[#022D5A]">My Institution Membership</h3>
+                <h3 className="text-sm font-bold text-[#035CB3]">My Institution Membership</h3>
                 <button
                   type="button"
                   onClick={openAddInstitution}
-                  className="inline-flex items-center gap-1 rounded-lg border border-[#035CB3] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#035CB3] transition-colors hover:bg-[#035CB3] hover:text-white"
+                  className="inline-flex items-center gap-1 rounded-lg border border-[#035CB3] px-3 py-1 text-[11px] font-bold  tracking-wider text-[#035CB3] transition-colors hover:bg-[#035CB3] hover:text-white"
                 >
                   <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                     <path d="M10 4v12M4 10h12" />
@@ -1800,9 +2117,9 @@ export default function MyProfilePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-100 text-[11px] uppercase tracking-wider text-slate-500">
+                    <tr className="border-b border-slate-100 text-[11px]  tracking-wider text-slate-500">
                       <th className="px-4 py-2 text-left font-semibold">Institution</th>
-                      <th className="px-4 py-2 text-left font-semibold">Registration No</th>
+                      <th className="px-4 py-2 text-left font-semibold">Registration No.</th>
                       <th className="px-4 py-2 text-left font-semibold">Membership Type</th>
                       <th className="px-4 py-2 text-left font-semibold">Year of Registration</th>
                       <th className="px-4 py-2 text-left font-semibold">Certificate</th>
@@ -1819,7 +2136,7 @@ export default function MyProfilePage() {
                     )}
                     {institutions.map((i) => (
                       <tr key={i.id} className="border-b border-slate-50 last:border-b-0">
-                        <td className="px-4 py-2 text-sm text-[#022D5A]">{i.institution}</td>
+                        <td className="px-4 py-2 text-sm text-[#035CB3]">{i.institution}</td>
                         <td className="px-4 py-2 text-xs font-mono text-slate-700">{i.registrationNo}</td>
                         <td className="px-4 py-2 text-sm text-slate-700">{i.membershipType}</td>
                         <td className="px-4 py-2 text-xs text-slate-600">{i.yearOfRegistration}</td>
@@ -1863,7 +2180,7 @@ export default function MyProfilePage() {
             {instModalOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
                 <form onSubmit={submitInstitution} className="w-full max-w-2xl overflow-hidden rounded-xl bg-white shadow-xl">
-                  <div className="bg-[#022D5A] px-5 py-3">
+                  <div className="bg-[#035CB3] px-5 py-3">
                     <h3 className="text-sm font-bold text-white">Add Institution</h3>
                   </div>
                   <div className="p-5">
@@ -1873,7 +2190,7 @@ export default function MyProfilePage() {
                       </div>
                     )}
                     <div className="grid gap-3 sm:grid-cols-3">
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Institution <span className="text-rose-500">*</span>
                         <input
                           type="text"
@@ -1884,8 +2201,8 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                        Registration No <span className="text-rose-500">*</span>
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                        Registration No. <span className="text-rose-500">*</span>
                         <input
                           type="text"
                           required
@@ -1894,7 +2211,7 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Membership Type <span className="text-rose-500">*</span>
                         <select
                           required
@@ -1908,7 +2225,7 @@ export default function MyProfilePage() {
                           ))}
                         </select>
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Year of Registration <span className="text-rose-500">*</span>
                         <input
                           type="number"
@@ -1921,7 +2238,7 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A] sm:col-span-2">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3] sm:col-span-2">
                         Attach membership certificate <span className="text-rose-500">*</span>
                         <input
                           type="file"
@@ -1965,11 +2282,11 @@ export default function MyProfilePage() {
           <div className="p-6">
             <section className="rounded-xl border border-slate-200 bg-white">
               <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-                <h3 className="text-sm font-bold text-[#022D5A]">My Experience</h3>
+                <h3 className="text-sm font-bold text-[#035CB3]">My Experience</h3>
                 <button
                   type="button"
                   onClick={openAddExperience}
-                  className="inline-flex items-center gap-1 rounded-lg border border-[#035CB3] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#035CB3] transition-colors hover:bg-[#035CB3] hover:text-white"
+                  className="inline-flex items-center gap-1 rounded-lg border border-[#035CB3] px-3 py-1 text-[11px] font-bold  tracking-wider text-[#035CB3] transition-colors hover:bg-[#035CB3] hover:text-white"
                 >
                   <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                     <path d="M10 4v12M4 10h12" />
@@ -1980,7 +2297,7 @@ export default function MyProfilePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-100 text-[11px] uppercase tracking-wider text-slate-500">
+                    <tr className="border-b border-slate-100 text-[11px] text-slate-500">
                       <th className="px-4 py-2 text-left font-semibold">Position Held</th>
                       <th className="px-4 py-2 text-left font-semibold">Sector</th>
                       <th className="px-4 py-2 text-left font-semibold">Responsibilities</th>
@@ -2000,7 +2317,7 @@ export default function MyProfilePage() {
                     )}
                     {experiences.map((e) => (
                       <tr key={e.id} className="border-b border-slate-50 last:border-b-0 align-top">
-                        <td className="px-4 py-2 text-sm text-[#022D5A]">{e.positionHeld}</td>
+                        <td className="px-4 py-2 text-sm text-[#035CB3]">{e.positionHeld}</td>
                         <td className="px-4 py-2 text-sm text-slate-700">{e.sector}</td>
                         <td className="px-4 py-2 text-xs text-slate-600 max-w-[280px]">
                           <span className="line-clamp-3 whitespace-pre-line">{e.responsibilities}</span>
@@ -2039,7 +2356,7 @@ export default function MyProfilePage() {
             {expModalOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
                 <form onSubmit={submitExperience} className="w-full max-w-3xl overflow-hidden rounded-xl bg-white shadow-xl">
-                  <div className="bg-[#022D5A] px-5 py-3">
+                  <div className="bg-[#035CB3] px-5 py-3">
                     <h3 className="text-sm font-bold text-white">Add Experience</h3>
                   </div>
                   <div className="p-5">
@@ -2049,18 +2366,18 @@ export default function MyProfilePage() {
                       </div>
                     )}
                     <div className="grid gap-3 sm:grid-cols-3">
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                        Employer <span className="text-rose-500">*</span>
+                      <label className="col gap-1 text-xs font-semibold text-[#035CB3]">
+                        Employer <span className="text-rose-500"> *</span>
                         <input
                           type="text"
                           required
                           value={expForm.employer}
                           onChange={(e) => setExpForm((f) => ({ ...f, employer: e.target.value }))}
-                          placeholder="Company / Organization name"
+                          placeholder="Company/Organization Name"
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="gap-1 text-xs font-semibold text-[#035CB3]">
                         Sector <span className="text-rose-500">*</span>
                         <select
                           required
@@ -2074,19 +2391,19 @@ export default function MyProfilePage() {
                           ))}
                         </select>
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="gap-1 text-xs font-semibold text-[#035CB3]">
                         Position Held <span className="text-rose-500">*</span>
                         <input
                           type="text"
                           required
                           value={expForm.positionHeld}
                           onChange={(e) => setExpForm((f) => ({ ...f, positionHeld: e.target.value }))}
-                          placeholder="e.g. Site Engineer"
+                          placeholder="e.g; Project Manager"
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
 
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         From Date <span className="text-rose-500">*</span>
                         <input
                           type="date"
@@ -2099,7 +2416,7 @@ export default function MyProfilePage() {
 
                       {/* To Date — hidden when Current is on */}
                       {!expForm.current && (
-                        <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                        <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                           To Date <span className="text-rose-500">*</span>
                           <input
                             type="date"
@@ -2116,7 +2433,7 @@ export default function MyProfilePage() {
                         'flex items-center gap-3 rounded-lg border px-3 py-2 text-xs font-semibold ' +
                         (expForm.current
                           ? 'border-[#48C184] bg-[#48C184]/10 text-[#3AA870]'
-                          : 'border-slate-300 text-[#022D5A]')
+                          : 'border-slate-300 text-[#035CB3]')
                       }>
                         <button
                           type="button"
@@ -2135,19 +2452,19 @@ export default function MyProfilePage() {
                             }
                           />
                         </button>
-                        <span>Currently working here</span>
+                        <span>Current</span>
                       </label>
                     </div>
 
                     {/* Key Responsibilities */}
-                    <label className="mt-3 flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                    <label className="mt-3 flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                       Key Responsibilities <span className="text-rose-500">*</span>
                       <textarea
                         required
                         rows={4}
                         value={expForm.responsibilities}
                         onChange={(e) => setExpForm((f) => ({ ...f, responsibilities: e.target.value }))}
-                        placeholder="Describe your main responsibilities and achievements…"
+                        placeholder="Describe your key responsibilities and achievements."
                         className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                       />
                     </label>
@@ -2177,7 +2494,7 @@ export default function MyProfilePage() {
           <div className="p-6">
             <section className="rounded-xl border border-slate-200 bg-white">
               <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-                <h3 className="text-sm font-bold text-[#022D5A]">My Referees</h3>
+                <h3 className="text-sm font-bold text-[#035CB3]">My Referees</h3>
                 <button
                   type="button"
                   onClick={openAddReferee}
@@ -2192,14 +2509,14 @@ export default function MyProfilePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-100 text-[11px] uppercase tracking-wider text-slate-500">
+                    <tr className="border-b border-slate-100 text-[11px]  tracking-wider text-slate-500">
                       <th className="px-4 py-2 text-left font-semibold">Name</th>
                       <th className="px-4 py-2 text-left font-semibold">Address</th>
                       <th className="px-4 py-2 text-left font-semibold">Email</th>
-                      <th className="px-4 py-2 text-left font-semibold">Phone No</th>
+                      <th className="px-4 py-2 text-left font-semibold">Phone No.</th>
                       <th className="px-4 py-2 text-left font-semibold">Place of Work</th>
                       <th className="px-4 py-2 text-left font-semibold">Designation</th>
-                      <th className="px-4 py-2 text-left font-semibold">Member No</th>
+                      <th className="px-4 py-2 text-left font-semibold">Member No.</th>
                       <th className="px-4 py-2 text-left font-semibold">Referee Type</th>
                       <th className="px-4 py-2 text-right font-semibold">Actions</th>
                     </tr>
@@ -2214,7 +2531,7 @@ export default function MyProfilePage() {
                     )}
                     {referees.map((r) => (
                       <tr key={r.id} className="border-b border-slate-50 last:border-b-0 align-top">
-                        <td className="px-4 py-2 text-sm text-[#022D5A]">{r.name}</td>
+                        <td className="px-4 py-2 text-sm text-[#035CB3]">{r.name}</td>
                         <td className="px-4 py-2 text-xs text-slate-600">{r.address || '—'}</td>
                         <td className="px-4 py-2 text-xs text-slate-600">{r.email}</td>
                         <td className="px-4 py-2 text-xs text-slate-600">{r.phone}</td>
@@ -2245,7 +2562,7 @@ export default function MyProfilePage() {
             {refModalOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
                 <form onSubmit={submitReferee} className="w-full max-w-3xl overflow-hidden rounded-xl bg-white shadow-xl">
-                  <div className="bg-[#022D5A] px-5 py-3">
+                  <div className="bg-[#035CB3] px-5 py-3">
                     <h3 className="text-sm font-bold text-white">Add Referee</h3>
                   </div>
                   <div className="p-5">
@@ -2257,13 +2574,13 @@ export default function MyProfilePage() {
 
                     {/* Search by Member Number */}
                     <div className="mb-4">
-                      <label className="text-xs font-semibold text-[#022D5A]">Search by Member Number</label>
+                      <label className="text-xs font-semibold text-[#035CB3]">Search by Member Number</label>
                       <div className="mt-1 flex gap-2">
                         <input
                           type="text"
                           value={refSearchTerm}
                           onChange={(e) => setRefSearchTerm(e.target.value)}
-                          placeholder="Enter member number or email…"
+                          placeholder="Enter Member Number or Email"
                           className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                         <button
@@ -2289,7 +2606,7 @@ export default function MyProfilePage() {
                     </div>
 
                     <div className="grid gap-3 sm:grid-cols-3">
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Name <span className="text-rose-500">*</span>
                         <input
                           type="text"
@@ -2299,18 +2616,18 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                        Phone No <span className="text-rose-500">*</span>
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                        Phone No. <span className="text-rose-500">*</span>
                         <input
                           type="tel"
                           required
                           value={refForm.phone}
                           onChange={(e) => setRefForm((f) => ({ ...f, phone: e.target.value.replace(/[^\d+\s-]/g, '') }))}
-                          placeholder="e.g. +252612074217"
+                          // placeholder="e.g. +252612074217"
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Email <span className="text-rose-500">*</span>
                         <input
                           type="email"
@@ -2320,7 +2637,7 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Address
                         <input
                           type="text"
@@ -2329,7 +2646,7 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Place of Work
                         <input
                           type="text"
@@ -2338,7 +2655,7 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                         Designation
                         <input
                           type="text"
@@ -2347,8 +2664,8 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                        Member No
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
+                        Member No.
                         <input
                           type="text"
                           value={refForm.memberNo}
@@ -2356,7 +2673,7 @@ export default function MyProfilePage() {
                           className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                         />
                       </label>
-                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A] sm:col-span-2">
+                      <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3] sm:col-span-2">
                         Referee Type <span className="text-rose-500">*</span>
                         <select
                           required
@@ -2395,35 +2712,11 @@ export default function MyProfilePage() {
 
         {tab === 'ATTACHMENTS' && (
           <div className="p-6">
-            {/* Requirements headline + numbered blue-circle list */}
-            <section className="mb-6 rounded-xl border border-slate-200 bg-white p-6">
-              <h2 className="text-xl font-extrabold text-[#022D5A] sm:text-2xl">
-                {gradeSpec.headline}
-              </h2>
-              <ul className="mt-5 flex flex-col gap-3">
-                {gradeSpec.requirements.map((req, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#035CB3] text-xs font-bold text-white">
-                      {idx + 1}
-                    </span>
-                    <span className="text-sm leading-relaxed text-slate-700">{req}</span>
-                  </li>
-                ))}
-              </ul>
-              {gradeSpec.notes && gradeSpec.notes.length > 0 && (
-                <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-                  {gradeSpec.notes.map((n, i) => (
-                    <p key={i}>{n}</p>
-                  ))}
-                </div>
-              )}
-            </section>
-
             {/* Already-submitted documents (if any) */}
             {app?.documents && app.documents.length > 0 && (
               <section className="mb-6 rounded-xl border border-slate-200 bg-white">
                 <div className="border-b border-slate-100 px-4 py-3">
-                  <h3 className="text-sm font-bold text-[#022D5A]">Documents already on file</h3>
+                  <h3 className="text-sm font-bold text-[#035CB3]">Documents already on file</h3>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
@@ -2437,7 +2730,7 @@ export default function MyProfilePage() {
                     <tbody className="divide-y divide-slate-100">
                       {app.documents.map((doc) => (
                         <tr key={doc.id}>
-                          <td className="px-4 py-3 text-[#022D5A]">{doc.type.replace(/_/g, ' ')}</td>
+                          <td className="px-4 py-3 text-[#035CB3]">{doc.type.replace(/_/g, ' ')}</td>
                           <td className="px-4 py-3 text-slate-600">{doc.fileName ?? '-'}</td>
                           <td className="px-4 py-3 text-right">
                             <a
@@ -2456,10 +2749,15 @@ export default function MyProfilePage() {
             )}
 
             {/* Required documents upload grid */}
+            {!gradeSpec ? (
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center text-sm text-amber-800">
+                Select a membership category first — required documents will appear here once your grade is set.
+              </div>
+            ) : (
             <section className="rounded-xl border border-slate-200 bg-white">
               <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
                 <div>
-                  <h3 className="text-sm font-bold text-[#022D5A]">Required Documents</h3>
+                  <h3 className="text-sm font-bold text-[#035CB3]">Required Documents</h3>
                   <p className="mt-0.5 text-xs text-slate-500">
                     Attach the documents required for your{' '}
                     <span className="font-bold text-[#035CB3]">{gradeSpec.label}</span> application.
@@ -2492,10 +2790,10 @@ export default function MyProfilePage() {
                     const file = docs[field.key];
                     return (
                       <label key={field.key + field.label} className="rounded-lg border border-slate-200 bg-slate-50/50 p-3 transition-colors hover:border-[#035CB3]/40">
-                        <span className="mb-1 flex items-center justify-between text-[11px] font-bold text-[#022D5A]">
+                        <span className="mb-1 flex items-center justify-between text-[11px] font-bold text-[#035CB3]">
                           <span className="truncate">
                             {field.label}
-                            {field.required ? ' *' : ' (optional)'}
+                            {field.required && (<> <span className="text-rose-500">*</span></>)}
                           </span>
                           {file && (
                             <span className="ml-2 shrink-0 rounded-full bg-[#48C184]/15 px-1.5 py-0.5 text-[9px] font-bold uppercase text-[#3AA870]">
@@ -2522,7 +2820,7 @@ export default function MyProfilePage() {
 
                 <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
                   <p className="text-[11px] italic text-slate-500">
-                    All documents marked * are required for your grade.
+                   All documents marked with an asterisk (*) are required for your membership grade.
                   </p>
                   <button
                     type="submit"
@@ -2537,6 +2835,7 @@ export default function MyProfilePage() {
                 </div>
               </form>
             </section>
+            )}
           </div>
         )}
       </div>

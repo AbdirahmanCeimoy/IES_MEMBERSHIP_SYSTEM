@@ -141,9 +141,8 @@ export default function AboutPage() {
             About Us
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-blue-100 sm:text-base">
-            Discover our history and contributions to the engineering community.
-            <br />
-            Advancing engineering through knowledge, innovation, and service for the benefit of humanity.
+            Discover our history and contributions to the engineering community
+            {/* <br /> */}
           </p>
         </SiteContainer>
       </section>
@@ -152,15 +151,15 @@ export default function AboutPage() {
       <Section spacing="default">
         <SiteContainer>
           <div className="mx-auto max-w-4xl text-center">
-            <p className="text-xs font-bold  tracking-widest sm:text-4xl text-[#035CB3]">About IES</p>
+            <p className="text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">About IES</p>
           </div>
           <div className="mt-8 flex flex-col gap-4 text-left text-sm leading-relaxed text-slate-700 sm:text-base">
             <p>
-              The Institution of Engineers Somalia (IES) was established in 2024 as the national professional body representing engineers across all engineering disciplines in Somalia. IES collaborates with national and international institutions to advance engineering for the benefit of society, promote the growth and development of the engineering profession, and support the adoption of international standards and global best practices.
-            </p>
+            The Institution of Engineers Somalia (IES) was established in 2024 as the national professional body representing engineers across all engineering disciplines in Somalia. IES collaborates with national and international institutions to advance engineering for the benefit of society, promote the growth and development of the engineering profession, and support the adoption of international standards and global best practices.</p>
             <p>
-              IES is committed to strengthening the engineering profession by promoting networking, public awareness, engineering education, knowledge sharing, research, and innovation. It also works to establish and promote recognized standards, uphold ethical conduct and integrity, and protect the rights, welfare, and interests of engineers across all disciplines in Somalia.
-            </p>
+           IES is committed to strengthening the engineering profession by promoting networking, public awareness, engineering education, knowledge sharing, research, and innovation. It also works to establish and promote recognized standards, uphold ethical conduct and professional integrity, and protect the rights, welfare, and interests of engineers across all engineering disciplines in Somalia.</p>
+           <p>The Institution also represents Somalia within international and regional engineering organizations, including the World Federation of Engineering Organizations (WFEO), the Federation of African Engineering Organisations (FAEO), and the Eastern Africa Federation of Engineering Organisations (EAFEO). Through these engagements, IES promotes professional cooperation, goodwill, and fellowship among engineers in Somalia, across Africa, and internationally.</p>
+           <p>IES is committed to advancing the recognition and status of the engineering profession and strengthening the contribution of engineers to national development. Through closer collaboration with government institutions, industry, academia, development partners, professional organizations, and other stakeholders, IES seeks to create greater opportunities for engineers and contribute to sustainable development and the well-being of society.</p>
           </div>
 
           {/* Vision & Mission cards */}

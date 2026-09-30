@@ -36,7 +36,10 @@ export default function MemberDocumentsPage() {
     typeof window === 'undefined' ? null : getStoredUser<StoredUser>() ?? {},
   );
 
-  const grade = (user?.grade ?? 'GRADUATE').toUpperCase();
+  // Do not fall back to GRADUATE — that used to overwrite the real category
+  // whenever the stored user did not include the grade (e.g. immediately after
+  // a fresh re-login). Wait for a real grade instead.
+  const grade = (user?.grade ?? '').toUpperCase();
   const [docs, setDocs] = useState<Record<string, File | null>>({});
   const [errors, setErrors] = useState<string[]>([]);
   const [showErrors, setShowErrors] = useState(false);
@@ -44,8 +47,8 @@ export default function MemberDocumentsPage() {
   const [success, setSuccess] = useState(false);
 
   const gradeDocs = useMemo<DocumentField[]>(() => {
-    const g = grade as GradeCode;
-    return gradeDocuments[g] ?? gradeDocuments.GRADUATE;
+    if (!grade) return [];
+    return gradeDocuments[grade as GradeCode] ?? [];
   }, [grade]);
 
   const setDoc = (key: string, file: File | null) => {
@@ -118,7 +121,7 @@ export default function MemberDocumentsPage() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold text-[#022D5A]">Documents</h1>
+        <h1 className="text-2xl font-bold text-[#035CB3]">Documents</h1>
         <p className="text-sm text-slate-600">
           Upload the required documents for your{' '}
           <span className="font-semibold text-[#035CB3]">
@@ -152,10 +155,10 @@ export default function MemberDocumentsPage() {
               const file = docs[field.key];
               return (
                 <label key={field.key + field.label} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                  <span className="mb-1 flex items-center justify-between text-[11px] font-semibold text-[#022D5A]">
+                  <span className="mb-1 flex items-center justify-between text-[11px] font-semibold text-[#035CB3]">
                     <span className="truncate">
                       {field.label}
-                      {field.required ? ' *' : ' (optional)'}
+                      {field.required && (<> <span className="text-rose-500">*</span></>)}
                     </span>
                     {file && (
                       <span className="ml-2 shrink-0 rounded-full bg-[#48C184]/15 px-1.5 text-[9px] font-bold uppercase text-[#3AA870]">

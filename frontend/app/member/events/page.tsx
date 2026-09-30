@@ -44,7 +44,7 @@ export default function MemberEventsPage() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold text-[#022D5A]">Upcoming Events</h1>
+        <h1 className="text-2xl font-bold text-[#035CB3]">Upcoming Events</h1>
         <p className="text-sm text-slate-600">
           Register for IES conferences, seminars and CPD workshops.
           {loading && ' Loading...'}
@@ -72,7 +72,7 @@ export default function MemberEventsPage() {
                   <Badge tone="primary">{event.type}</Badge>
                   <Badge tone="accent">CPD: {event.cpdHours}h</Badge>
                 </div>
-                <h3 className="text-sm font-semibold text-[#022D5A]">{event.title}</h3>
+                <h3 className="text-sm font-semibold text-[#035CB3]">{event.title}</h3>
                 <div className="mt-2 flex flex-col gap-1 text-xs text-slate-600">
                   <p>Date: {event.date}</p>
                   {event.location && <p>Location: {event.location}</p>}
@@ -89,7 +89,7 @@ export default function MemberEventsPage() {
                       'inline-flex items-center rounded-lg px-4 py-1.5 text-xs font-semibold transition-colors ' +
                       (isRegistered
                         ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
-                        : 'bg-[#48C184] text-[#022D5A] hover:bg-[#3AA870] disabled:opacity-50')
+                        : 'bg-[#48C184] text-[#035CB3] hover:bg-[#3AA870] disabled:opacity-50')
                     }
                   >
                     {isRegistered ? '✓ Registered' : busyId === event.id ? 'Registering...' : 'Register'}

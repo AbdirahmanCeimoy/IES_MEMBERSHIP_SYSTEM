@@ -178,7 +178,7 @@ export const DocumentsUploadClient = () => {
                   <span className="mb-1 flex items-center justify-between text-[11px] font-semibold text-[#022D5A]">
                     <span className="truncate">
                       {field.label}
-                      {field.required ? ' *' : ' (optional)'}
+                      {field.required && (<> <span className="text-rose-500">*</span></>)}
                     </span>
                     {file && (
                       <span className="ml-2 shrink-0 rounded-full bg-[#48C184]/15 px-1.5 text-[9px] font-bold uppercase text-[#3AA870]">

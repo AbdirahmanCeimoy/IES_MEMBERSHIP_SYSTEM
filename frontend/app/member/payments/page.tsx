@@ -6,7 +6,7 @@ export default function PaymentsPage() {
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-[#022D5A]">Payments</h1>
+            <h1 className="text-xl font-bold text-[#035CB3]">Payments</h1>
             <p className="mt-1 text-sm text-slate-500">Your payment history with IES.</p>
           </div>
           <span className="rounded-full bg-[#48C184]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#3AA870]">

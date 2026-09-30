@@ -27,8 +27,8 @@ export const acceptAttr = (a: DocumentAccept) => ACCEPT_MAP[a];
 
 const passportPhoto: DocumentField = {
   key: 'passportPhotoFileName',
-  label: 'Passport-size colored photo',
-  helper: 'JPG or PNG',
+  label: 'Passport-Size Photograph',
+  helper: 'JPG or PNG Image',
   accept: 'image',
   required: true,
 };
@@ -36,7 +36,7 @@ const passportPhoto: DocumentField = {
 const idOrPassport: DocumentField = {
   key: 'idOrPassportFileName',
   label: 'National ID or Passport',
-  helper: 'PDF or JPG scan',
+  helper: 'Certified by Commissioner for Oaths (NB: not advocates)',
   accept: 'pdf-image',
   required: true,
 };
@@ -44,23 +44,15 @@ const idOrPassport: DocumentField = {
 const cv: DocumentField = {
   key: 'cvFileName',
   label: 'Updated Curriculum Vitae (CV)',
-  helper: 'PDF preferred',
-  accept: 'pdf',
-  required: true,
-};
-
-const declaration: DocumentField = {
-  key: 'declarationFileName',
-  label: 'Signed Declaration',
-  helper: 'PDF - signed IES declaration form',
+  helper: 'PDF Preferred',
   accept: 'pdf',
   required: true,
 };
 
 const paymentProof: DocumentField = {
   key: 'paymentProofFileName',
-  label: 'Payment Proof',
-  helper: 'Screenshot or receipt of application fee',
+  label: 'Proof of Payment',
+  helper: 'Screenshot or Receipt of Application Fee Payment',
   accept: 'pdf-image',
   required: true,
 };
@@ -68,15 +60,15 @@ const paymentProof: DocumentField = {
 const enrollmentProof: DocumentField = {
   key: 'enrollmentProofFileName',
   label: 'Student Enrollment Proof',
-  helper: 'University student ID or letter from the Dean',
+  helper: 'University Student ID Card or Official Letter from the Dean confirming current enrollment',
   accept: 'pdf-image',
   required: true,
 };
 
 const secondaryCert: DocumentField = {
   key: 'transcriptFileName',
-  label: 'Secondary School Completion Certificate',
-  helper: 'Certified by Commissioner for Oaths',
+  label: 'Secondary School Completion Certificate ',
+  helper: 'Certified by Commissioner for Oaths (NB: not advocates)',
   accept: 'pdf-image',
   required: true,
 };
@@ -84,7 +76,7 @@ const secondaryCert: DocumentField = {
 const degree: DocumentField = {
   key: 'degreeFileName',
   label: 'Degree Certificate',
-  helper: 'Certified by Commissioner for Oaths (not advocates)',
+  helper: 'Certified by Commissioner for Oaths (NB: not advocates)',
   accept: 'pdf-image',
   required: true,
 };
@@ -107,8 +99,8 @@ const transcript: DocumentField = {
 
 const experienceLetter: DocumentField = {
   key: 'experienceLetterFileName',
-  label: 'Experience Letter',
-  helper: 'Employer letter confirming engineering responsibility',
+  label: 'Employment/Experience Letters',
+  helper: 'Employer Letter Confirming Engineering Responsibilities',
   accept: 'pdf-image',
   required: true,
 };
@@ -123,34 +115,24 @@ const employerReference: DocumentField = {
 
 const projectPortfolio: DocumentField = {
   key: 'projectPortfolioFileName',
-  label: 'Project / Leadership Portfolio',
+  label: 'Project/Leadership Portfolio',
   helper: 'PDF describing your key engineering projects and roles',
   accept: 'pdf',
   required: true,
 };
 
-const graduateLetter: DocumentField = {
-  key: 'degreeFileName',
-  label: 'IES Graduate Letter or Certificate',
-  helper: 'Confirmation of Graduate Member status',
-  accept: 'pdf-image',
-  required: true,
-};
-
-const refereeOne: DocumentField = {
+/**
+ * IES Graduate Certificate — repurposes `refereeOneFileName` (unused since
+ * referees moved to Profile → Referees tab) so it does not clash with the
+ * Degree Certificate slot which owns `degreeFileName`. Optional across all
+ * grades that use it (Corporate + Associate) — applicants can skip it.
+ */
+const iesGraduateCert: DocumentField = {
   key: 'refereeOneFileName',
-  label: 'Referee 1 (Proposer)',
-  helper: 'Paid-up Corporate or Fellow member',
-  accept: 'pdf',
-  required: true,
-};
-
-const refereeTwo: DocumentField = {
-  key: 'refereeTwoFileName',
-  label: 'Referee 2 (Seconder)',
-  helper: 'Paid-up Corporate or Fellow member',
-  accept: 'pdf',
-  required: true,
+  label: 'IES Graduate Certificate',
+  helper: 'Confirmation of your IES Graduate Member status',
+  accept: 'pdf-image',
+  required: false,
 };
 
 const fellowNomination: DocumentField = {
@@ -163,27 +145,31 @@ const fellowNomination: DocumentField = {
 
 const csrPortfolio: DocumentField = {
   key: 'projectPortfolioFileName',
-  label: 'CSR & Engineering Contribution Portfolio',
-  helper: 'PDF evidencing CSR activities and engineering contribution',
+  label: 'CSR & Engineering Contributions',
+  helper: 'PDF Evidencing CSR Activities & Engineering Contribution',
   accept: 'pdf',
-  required: true,
+  required: false,
 };
 
 const shortBio: DocumentField = {
   key: 'achievementProfileFileName',
   label: 'Short Biography',
-  helper: 'PDF (max 2 pages) - your IES + CSR involvement',
+  helper: 'PDF Preferred (Maximum 2 Pages) – IES & CSR Involvement',
   accept: 'pdf',
   required: true,
 };
 
+/**
+ * Upload buttons per grade. These MUST mirror the wording in
+ * `grade-requirements.ts` — anything captured elsewhere (referees, years of
+ * experience, IES involvement) is not repeated here as an upload slot.
+ */
 export const gradeDocuments: Record<GradeCode, DocumentField[]> = {
   STUDENT: [
     passportPhoto,
     idOrPassport,
-    enrollmentProof,
     secondaryCert,
-    declaration,
+    enrollmentProof,
     paymentProof,
   ],
   GRADUATE: [
@@ -192,32 +178,39 @@ export const gradeDocuments: Record<GradeCode, DocumentField[]> = {
     cv,
     degree,
     secondaryCert,
-    refereeOne,
-    refereeTwo,
-    declaration,
+    paymentProof,
+  ],
+  GRAD_TECHNICIAN: [
+    passportPhoto,
+    idOrPassport,
+    cv,
+    degree,
+    secondaryCert,
+    paymentProof,
+  ],
+  GRAD_TECHNOLOGIST: [
+    passportPhoto,
+    idOrPassport,
+    cv,
+    degree,
+    secondaryCert,
     paymentProof,
   ],
   ASSOCIATE: [
     passportPhoto,
     idOrPassport,
     cv,
-    hnd,
-    { ...transcript, required: false, helper: 'Transcript OR provide Experience Letter' },
-    { ...experienceLetter, required: false, helper: 'Experience Letter OR provide Transcript' },
-    refereeOne,
-    refereeTwo,
-    declaration,
+    degree,
+    { ...secondaryCert, required: false },
+    iesGraduateCert,
     paymentProof,
   ],
   CORPORATE: [
     passportPhoto,
     idOrPassport,
     cv,
-    graduateLetter,
-    experienceLetter,
-    refereeOne,
-    refereeTwo,
-    declaration,
+    degree,
+    iesGraduateCert,
     paymentProof,
   ],
   SENIOR: [
@@ -225,12 +218,8 @@ export const gradeDocuments: Record<GradeCode, DocumentField[]> = {
     idOrPassport,
     cv,
     degree,
-    experienceLetter,
-    projectPortfolio,
-    employerReference,
-    refereeOne,
-    refereeTwo,
-    declaration,
+    shortBio,
+    csrPortfolio,
     paymentProof,
   ],
   FELLOW: [
@@ -238,13 +227,8 @@ export const gradeDocuments: Record<GradeCode, DocumentField[]> = {
     idOrPassport,
     cv,
     degree,
-    experienceLetter,
-    csrPortfolio,
     shortBio,
-    fellowNomination,
-    refereeOne,
-    refereeTwo,
-    declaration,
+    csrPortfolio,
     paymentProof,
   ],
 };

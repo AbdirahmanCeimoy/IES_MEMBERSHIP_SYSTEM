@@ -255,7 +255,7 @@ export const InitialProfileClient = () => {
             </div>
             <p className="text-center text-[11px] text-slate-500">Attach passport-size colored photo</p>
             <label className="w-full">
-              <span className="mb-1 block text-[11px] font-semibold text-[#022D5A]">Attach Photo *</span>
+              <span className="mb-1 block text-[11px] font-semibold text-[#022D5A]">Attach Photo <span className="text-rose-500">*</span></span>
               <input
                 type="file"
                 accept=".jpg,.jpeg,.png"
@@ -265,7 +265,7 @@ export const InitialProfileClient = () => {
               <span className="mt-1 block text-[10px] text-slate-500">PNG and JPEG images only</span>
             </label>
             <label className="w-full">
-              <span className="mb-1 block text-[11px] font-semibold text-[#022D5A]">Attach ID/Passport *</span>
+              <span className="mb-1 block text-[11px] font-semibold text-[#022D5A]">Attach ID/Passport <span className="text-rose-500">*</span></span>
               <input
                 type="file"
                 accept=".pdf"
@@ -281,10 +281,10 @@ export const InitialProfileClient = () => {
             {/* Names row: First / Middle / Last in one row */}
             <div className="grid gap-3 md:col-span-2 md:grid-cols-3">
               <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                First Name *
+                First Name <span className="text-rose-500">*</span>
                 <input
                   type="text"
-                   placeholder="Enter Your First Name"
+                   placeholder="Enter your First Name"
                   required
                   value={form.firstName}
                   onChange={(event) => update('firstName', sanitizeName(event.target.value))}
@@ -292,20 +292,20 @@ export const InitialProfileClient = () => {
                 />
               </label>
               <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                Middle Name *
+                Middle Name <span className="text-rose-500">*</span>
                 <input
                   type="text"
-                  placeholder="Enter Your Middle Name"
+                  placeholder="Enter your Middle Name"
                   value={form.middleName}
                   onChange={(event) => update('middleName', sanitizeName(event.target.value))}
                   className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 />
               </label>
               <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                Last Name *
+                Last Name <span className="text-rose-500">*</span>
                 <input
                   type="text"
-                   placeholder="Enter Your Last Name"
+                   placeholder="Enter your Last Name"
                   required
                   value={form.lastName}
                   onChange={(event) => update('lastName', sanitizeName(event.target.value))}
@@ -316,27 +316,27 @@ export const InitialProfileClient = () => {
 
             <div className="grid grid-cols-2 gap-3">
               <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                Gender *
+                Gender <span className="text-rose-500">*</span>
                 <select
                   required
                   value={form.gender}
                   onChange={(event) => update('gender', event.target.value)}
                   className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 >
-                  <option value="">Select Your Gender</option>
+                  <option value="">Select your Gender</option>
                   <option value="MALE">Male</option>
                   <option value="FEMALE">Female</option>
                 </select>
               </label>
               <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                Title *
+                Title <span className="text-rose-500">*</span>
                 <select
                   required
                   value={form.title}
                   onChange={(event) => update('title', event.target.value)}
                   className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 >
-                  <option value="">Select Your Title</option>
+                  <option value="">Select your Title</option>
                   <option>Eng.</option>
                   <option>Dr.</option>
                   <option>Prof.</option>
@@ -347,7 +347,7 @@ export const InitialProfileClient = () => {
               </label>
             </div>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              Date of Birth *
+              Date of Birth <span className="text-rose-500">*</span>
               <input
                 type="date"
                 required
@@ -360,21 +360,21 @@ export const InitialProfileClient = () => {
               <span className="text-[10px] font-normal text-slate-500">Must be at least 16 years old</span>
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              National ID/Passport No. *
+              National ID/Passport No. <span className="text-rose-500">*</span>
               <input
                 type="text"
-                 placeholder="Enter Your National ID/Passport No"
+                 placeholder="Enter your National ID/Passport No"
                 value={nationalId}
                 readOnly
                 className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-normal text-slate-600"
               />
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              Nationality *
+              Nationality <span className="text-rose-500">*</span>
               <input
                 type="text"
                 list="nationality-countries"
-                placeholder="Search or Select Your Country (e.g., Somalia)"
+                placeholder="Search or Select your Country (e.g., Somalia)"
                 value={form.nationality}
                 onChange={(event) => update('nationality', sanitizeName(event.target.value))}
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
@@ -391,19 +391,19 @@ export const InitialProfileClient = () => {
                 type="text"
                 value={form.city}
                 onChange={(event) => update('city', sanitizeName(event.target.value))}
-                placeholder="Enter Your City/Town (e.g; Mogadishu)"
+                placeholder="Enter your City/Town (e.g; Mogadishu)"
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-              Discipline *
+              Discipline <span className="text-rose-500">*</span>
               <select
                 required
                 value={form.discipline}
                 onChange={(event) => update('discipline', event.target.value)}
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               >
-                <option value="">Select Your Engineering Discipline</option>
+                <option value="">Select your Engineering Discipline</option>
                 {engineeringDivisions.map((division) => (
                   <option key={division} value={division}>{division}</option>
                 ))}
@@ -415,7 +415,7 @@ export const InitialProfileClient = () => {
                 type="text"
                 value={form.specialization}
                 onChange={(event) => update('specialization', event.target.value)}
-                placeholder="e.g. Structural, Power Systems, Networks"
+                placeholder="Enter your Area of Specialization"
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
                 maxLength={150}
               />
@@ -433,7 +433,7 @@ export const InitialProfileClient = () => {
               </label>
               {form.hasDisability && (
                 <textarea
-                  placeholder="Please Specify Your Disability"
+                  placeholder="Please Specify your Disability"
                   value={form.disabilityDetails}
                   onChange={(event) => update('disabilityDetails', event.target.value)}
                   rows={2}

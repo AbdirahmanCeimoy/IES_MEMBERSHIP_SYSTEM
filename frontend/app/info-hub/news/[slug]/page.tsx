@@ -55,9 +55,11 @@ export default async function NewsArticlePage({ params }: { params: Promise<Para
         <div className="mx-auto max-w-4xl">
           {/* Compact title above article content */}
           <div className="mb-6 text-center">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">
-              {article.date}
-            </p>
+            {article.date && (
+              <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">
+                {article.date}
+              </p>
+            )}
             <h1 className="mt-2 text-2xl font-extrabold leading-tight text-[#022D5A] sm:text-3xl">
               {article.title}
             </h1>
@@ -142,9 +144,13 @@ export default async function NewsArticlePage({ params }: { params: Promise<Para
             </div>
           )}
 
-          {/* Back link - always at bottom */}
+          {/* Back link - always at bottom (announcements return to the Announcements index) */}
           <div className="mt-8 flex justify-center">
-            <Button href={routes.infoHub.news} variant="secondary" size="sm">‹ All News</Button>
+            {article.kind === 'announcement' ? (
+              <Button href={routes.infoHub.announcements} variant="secondary" size="sm">‹ All Announcements</Button>
+            ) : (
+              <Button href={routes.infoHub.news} variant="secondary" size="sm">‹ All News</Button>
+            )}
           </div>
         </div>
       </Section>

@@ -96,7 +96,7 @@ export default function DivisionsPage() {
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About', href: routes.about.root }, { label: 'Divisions' }]} />}
         eyebrow="About IES"
         title="Our Engineering Divisions"
-        description="Specialist groups established by IES to further the aims and objectives of the Institution and to promote professional excellence within specific engineering disciplines."
+        description="Specialist groups established by IES to further the aims and objectives of the Institution and to promote professional excellence within specific engineering disciplines"
       />
       <Section>
         <SiteContainer>
@@ -113,7 +113,7 @@ export default function DivisionsPage() {
           </div>
 
           <div className="text-center">
-            <h2 className="text-2xl font-extrabold tracking-tight text-[#022D5A] sm:text-3xl">Available Divisions</h2>
+            <h2 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">Available Divisions</h2>
             <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-[#48C184]" />
           </div>
 
@@ -123,7 +123,7 @@ export default function DivisionsPage() {
                 key={division.title}
                 className="group flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-6 text-center transition-all hover:-translate-y-0.5 hover:shadow-lg"
               >
-                <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#035CB3] to-[#022D5A] shadow-md transition-transform group-hover:scale-105">
+                <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-[#035CB3] -to-br from-[#035CB3] to-[#022D5A] shadow-md transition-transform group-hover:scale-105">
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     {division.icon}
                   </svg>

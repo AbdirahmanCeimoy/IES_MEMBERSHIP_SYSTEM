@@ -14,7 +14,7 @@ export default function HonourBoardPage() {
         eyebrow="About IES"
         title="Honour Board (Past Presidents)"
         
-        description="Discover our contributions to the engineering community."
+        description="Discover our contributions to the engineering community"
       />
 
       <Section>

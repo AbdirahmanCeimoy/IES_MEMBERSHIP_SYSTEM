@@ -126,20 +126,20 @@ export const engineeringDivisions: string[] = [
 ];
 
 export const secretariatPositions: string[] = [
-  'Chief Executive Officer (CEO)',
-  'Executive Office Assistant',
-  'Membership and Training Manager',
-  'Admin and Finance Manager',
-  'Policy, Research and Advocacy Manager',
-  'Relationships and Partnerships Manager',
-  'Communication and Marketing Officer',
-  'Human Resources and Welfare Officer',
-  'Capacity Building Officer',
-  'Membership Officer',
-  'Research and Publications Officer',
-  'ICT Officer',
-  'Assistant ICT Officer',
-  'Admin & Finance Officer',
+  // 'Chief Executive Officer (CEO)',
+  // 'Executive Office Assistant',
+  // 'Membership and Training Manager',
+  // 'Admin and Finance Manager',
+  // 'Policy, Research and Advocacy Manager',
+  // 'Relationships and Partnerships Manager',
+  // 'Communication and Marketing Officer',
+  // 'Human Resources and Welfare Officer',
+  // 'Capacity Building Officer',
+  // 'Membership Officer',
+  // 'Research and Publications Officer',
+  // 'ICT Officer',
+  // 'Assistant ICT Officer',
+  // 'Admin & Finance Officer',
 ];
 
 import type { Partner } from '@/components/public/PartnerCard';

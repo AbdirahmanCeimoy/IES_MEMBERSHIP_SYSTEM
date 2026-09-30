@@ -12,15 +12,15 @@ const localPartners = partners.filter((p) => p.scope === 'Local');
 export default function LocalAffiliationPage() {
   return (
     <>
-      <section className="bg-[#e8f0fe] border-b border-[#035CB3]/10">
+      <section className="bg-[#035CB3] text-white">
         <SiteContainer className="py-8 sm:py-12">
           <div className="flex flex-col items-center text-center gap-4">
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#035CB3]">Local Affiliation & Partners</span>
-            <h1 className="text-3xl font-bold tracking-tight text-[#022D5A] sm:text-4xl lg:text-5xl">
+            <span className="text-xs font-semibold uppercase tracking-widest text-white/80">Local Affiliation & Partners</span>
+            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
               IES National Collaborating Organizations
             </h1>
-            <p className="mx-auto max-w-3xl text-sm text-slate-600 sm:text-base">
-              The Institution of Engineers Somalia (IES) collaborates with national institutions and organizations that seek to promote and advance the engineering profession and professional best practices in Somalia. Explore the organizations below to learn more about our national collaboration and partnerships.
+            <p className="mx-auto max-w-3xl text-sm text-blue-100 sm:text-base">
+              The Institution of Engineers Somalia (IES) collaborates with national institutions and organizations that seek to promote and advance the engineering profession and professional best practices in Somalia. Explore the organizations below to learn more about our national collaboration and partnerships
             </p>
           </div>
         </SiteContainer>

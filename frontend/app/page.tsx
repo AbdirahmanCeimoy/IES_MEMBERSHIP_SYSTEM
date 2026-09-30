@@ -8,12 +8,10 @@ import { PartnersStakeholdersStrip } from '@/components/public/PartnersStakehold
 import { routes } from '@/config/routes';
 import { site } from '@/config/site';
 import {
-  institutionSummary,
-  institutionSummaryExtended,
   missionStatement,
   visionStatement,
 } from '@/data/institution';
-import { featuredNews } from '@/data/news';
+import { featuredNews, latestAnnouncements } from '@/data/news';
 
 export default function HomePage() {
   return (
@@ -49,16 +47,12 @@ export default function HomePage() {
 
       {/* About preview: mission / vision / values */}
       <Section tone="muted" spacing="default">
-        <div>
+        <div className="text-center">
           <p className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-2xl">About IES</p>
-         
+
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-2xl">
             The Voice of Engineers in Somalia
           </h2>
-        </div>
-        <div className="mt-4 flex flex-col gap-3 text-left text-sm leading-relaxed text-slate-700 sm:text-base">
-          <p>{institutionSummary}</p>
-          <p>{institutionSummaryExtended}</p>
         </div>
 
         {/* Vision & Mission */}
@@ -101,7 +95,7 @@ export default function HomePage() {
 
         {/* Core Values */}
         <div className="mt-14 text-center">
-          <h3 className="text-2xl font-extrabold tracking-tight text-left text-[#035CB3] sm:text-4xl">Our Core Values</h3>
+          <h3 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">Our Core Values</h3>
           <div className="mx-auto mt-8 grid grid-cols-3 gap-6 sm:grid-cols-6">
             {[
               { label: 'Integrity', icon: <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></> },
@@ -129,7 +123,7 @@ export default function HomePage() {
 
       {/* President's Message */}
       <Section tone="default" spacing="default">
-        <div className="mb-8">
+        <div className="mb-8 text-center">
           {/* <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">Leadership</p> */}
           <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">
             President&apos;s Message
@@ -162,7 +156,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-white">Eng. Omar Abdi Arab, CE</p>
-                  <p className="text-xs text-blue-200">President, CE<br></br> The Institution of Engineers Somalia (IES)</p>
+                  <p className="text-xs text-blue-200">President, <br></br> The Institution of Engineers Somalia (IES)</p>
                 </div>
               </div>
               <Button href="/about/president-message" variant="accent" size="sm" className="mt-6 w-fit">
@@ -173,21 +167,36 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Latest news */}
-      <Section tone="muted" spacing="default">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      {/* Latest Announcements */}
+      <Section tone="muted" spacing="compact" className="pb-6 sm:pb-8">
+        <div className="flex flex-col items-center gap-4 text-center">
           <div>
-            <p className="text-xs font-bold  tracking-widest text-[#035CB3] sm:text-1.5xl ">Info Hub</p>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">
-             Latest News &amp; Update 
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#48C184] px-4 py-1 text-[20px] font-black tracking-wide text-white shadow-sm">
+              <span aria-hidden="true">—</span>
+              Stay Informed
+              <span aria-hidden="true">—</span>
+            </span>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">
+              Latest Announcements
             </h2>
-            {/* <p className="mt-2 max-w-2xl text-sm text-slate-600 sm:text-base">
-              Recent announcements and partnerships from the Institution of Engineers of Somalia.
-            </p> */}
           </div>
-          <Button href={routes.infoHub.news} variant="secondary" size="sm">All news</Button>
+          <Button href={routes.infoHub.announcements} variant="secondary" size="sm">All announcements</Button>
         </div>
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 text-[#035CB3]">
+          {latestAnnouncements.map((item) => (
+            <NewsCard key={item.href} item={item} />
+          ))}
+        </div>
+      </Section>
+
+      {/* Latest news — small gap above so it sits close to Announcements without touching. */}
+      <Section tone="default" spacing="compact" className="pt-6 sm:pt-8">
+        <div className="flex flex-col items-center text-center">
+          <h2 className="text-3xl font-extrabold tracking-tight gap-2 text-[#035CB3] sm:text-4xl">
+            Latest News &amp; Update
+          </h2>
+        </div>
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 text-[#035CB3]">
           {featuredNews.map((item) => (
             <NewsCard key={item.href} item={item} />
           ))}

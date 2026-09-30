@@ -23,8 +23,10 @@ export default function NewsIndexPage() {
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Info Hub', href: routes.infoHub.root }, { label: 'News' }]} />}
         eyebrow="News"
         title="Latest News & Updates"
-        // description="Announcements, partnerships and updates from the Institution of Engineers of Somalia."
-      />
+      >
+        <p className="mx-auto mt-3 max-w-2xl text-xs text-blue-100 sm:text-sm">
+ Discover our Latest News, & Organizational Updates        </p>
+      </PageHero>
       <Section>
         <ContentGrid columns={3}>
           {items.map((n) => (

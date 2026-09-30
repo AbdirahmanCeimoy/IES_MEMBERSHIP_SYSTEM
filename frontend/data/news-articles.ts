@@ -17,6 +17,9 @@ export interface NewsArticle {
   hideSignature?: boolean;
   /** Hide the "The MoU establishes a framework..." lead-in and the areas list. */
   hideAreas?: boolean;
+  /** What kind of item this is — decides which index page the "Back" link
+   *  returns to and which navigation section highlights. Defaults to 'news'. */
+  kind?: 'news' | 'announcement';
 }
 
 export const newsArticles: NewsArticle[] = [
@@ -127,8 +130,9 @@ export const newsArticles: NewsArticle[] = [
   },
   {
     slug: 'wfeo-hackathon-2027',
+    kind: 'announcement',
     title: '2027 WFEO Hackathon Registration Is Now Open!',
-    date: '22 September 2026',
+    date: '',
     author: { name: 'WFEO', role: 'World Federation of Engineering Organizations' },
     hashtags: ['WFEOHackathon', 'WED', 'WorldEngineeringDay', 'SustainableDevelopment', 'SustainableTransport', 'YoungEngineers', 'EngineeringStudents', 'Innovation'],
     image: '/PARTNER-WFOE.jpeg',

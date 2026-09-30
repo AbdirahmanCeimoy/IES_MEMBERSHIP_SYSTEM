@@ -13,7 +13,7 @@ export default function AdvisoryCouncilPage() {
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About', href: routes.about.root }, { label: 'Advisory Council' }]} />}
         eyebrow="About IES"
         title="IES Advisory Council"
-        description="The Advisory Council supports the IES Council with strategic guidance and independent expertise."
+        description="The Advisory Council supports the IES Council with strategic guidance and independent expertise"
       />
       <Section>
         <EmptyState
