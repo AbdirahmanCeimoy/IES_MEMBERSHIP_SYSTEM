@@ -1,30 +1,20 @@
 import { PageHero } from '@/components/layout/PageHero';
 import { Section } from '@/components/layout/Section';
-import { EmptyState } from '@/components/ui/EmptyState';
-import { Button } from '@/components/ui/Button';
-import { routes } from '@/config/routes';
 
-export const metadata = { title: 'Other Programmes' };
+export const metadata = { title: 'Site Visits' };
 
 export default function OtherProgrammesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Programmes"
-        title="Other Programmes"
-        description="Additional professional activities and programmes organised by the Institution of Engineers Somalia."
+        eyebrow="Programmes · Visits"
+        title="Site Visits"
+        description="Organised site visits to engineering projects and facilities across Somalia"
       />
-
-      <Section>
-        <EmptyState
-          title="Other programmes"
-          description="Upcoming programmes will be listed here. Check back soon or contact info@iesomalia.org.so for more information."
-          action={
-            <Button href={routes.events.programmes.root} variant="secondary" size="sm">
-              Back to Programmes
-            </Button>
-          }
-        />
+      <Section spacing="compact">
+        <p className="text-left text-xs leading-relaxed text-slate-700 sm:text-sm">
+          Gain practical experience and enhance your understanding of engineering projects through organized site visits.
+        </p>
       </Section>
     </>
   );

@@ -1,8 +1,5 @@
 import { PageHero } from '@/components/layout/PageHero';
 import { Section } from '@/components/layout/Section';
-import { EmptyState } from '@/components/ui/EmptyState';
-import { Button } from '@/components/ui/Button';
-import { routes } from '@/config/routes';
 
 export const metadata = { title: 'CPD Courses' };
 
@@ -10,21 +7,14 @@ export default function CPDCoursesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Programmes"
+        eyebrow="IES Programmes"
         title="CPD Courses"
-        description="Continuing Professional Development courses designed to keep engineers aligned with emerging technologies, standards and best practices."
+        description="Continuing Professional Development courses designed to keep engineers aligned with emerging technologies, standards and best practices"
       />
-
-      <Section>
-        <EmptyState
-          title="CPD courses"
-          description="Upcoming CPD courses will be listed here. Check back soon or contact info@iesomalia.org.so for more information."
-          action={
-            <Button href={routes.events.programmes.root} variant="secondary" size="sm">
-              Back to Programmes
-            </Button>
-          }
-        />
+      <Section spacing="compact">
+        <p className="text-left text-xs leading-relaxed text-slate-700 sm:text-sm">
+          Strengthen your professional competence through Continuing Professional Development (CPD) courses tailored to the needs of engineers.
+        </p>
       </Section>
     </>
   );

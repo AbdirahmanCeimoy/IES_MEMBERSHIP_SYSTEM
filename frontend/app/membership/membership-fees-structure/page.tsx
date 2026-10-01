@@ -45,7 +45,7 @@ export default function FeesPage() {
         }
         eyebrow="Membership"
         title="IES Membership Fees Structure"
-        description="Discover IES Membership Fees Structure"
+        description="Discover our Membership Fees Structure"
       />
 
       {/* <section className="bg-white py-4 sm:py-5">

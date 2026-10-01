@@ -95,8 +95,8 @@ export default function DivisionsPage() {
       <PageHero
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About', href: routes.about.root }, { label: 'Divisions' }]} />}
         eyebrow="About IES"
-        title="Our Engineering Divisions"
-        description="Specialist groups established by IES to further the aims and objectives of the Institution and to promote professional excellence within specific engineering disciplines"
+        title="IES Engineering Divisions"
+        description="Discover our Engineering Divisions"
       />
       <Section>
         <SiteContainer>

@@ -15,9 +15,9 @@ export default function AwardsPage() {
         // description="Recognizing excellence in engineering and outstanding contributions to the profession."
       />
 
-      <Section>
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-base leading-relaxed text-slate-600">
+      <Section spacing="compact" className="!py-2">
+        <div className="w-full text-left">
+          <p className="text-base font-medium leading-relaxed text-slate-700 sm:text-lg mt-4 mb-4">
             This section will feature the recipients of IES Awards, recognizing outstanding contributions and achievements in the engineering profession. Award details and recipient profiles will be published here as they become available.
           </p>
         </div>

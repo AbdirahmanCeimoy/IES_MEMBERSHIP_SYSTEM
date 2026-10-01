@@ -31,7 +31,6 @@ export const publicNavigation: NavigationEntry[] = [
       { label: 'Nominations by IES to Boards', href: routes.about.boardNominations },
       {
         label: 'Governance Instruments',
-        href: routes.about.governance.root,
         children: [
           { label: 'IES Constitution', href: routes.about.governance.constitution2026 },
           { label: 'IES By-Laws', href: routes.about.governance.iesDocuments.byLaws },
@@ -41,7 +40,6 @@ export const publicNavigation: NavigationEntry[] = [
       },
       {
         label: 'IES Key Documents',
-        href: routes.about.governance.iesDocuments.root,
         children: [
           { label: 'IES Brochure', href: routes.about.governance.brochure },
           { label: 'IES Strategic Plan 2026–2030', href: routes.about.governance.strategicPlan2026_2030 },
@@ -61,11 +59,10 @@ export const publicNavigation: NavigationEntry[] = [
       { label: 'IES Membership Benefits', href: routes.membership.benefits },
       { label: 'IES Membership Requirements', href: routes.membership.requirements },
       { label: 'IES Membership Fees Structure', href: routes.membership.fees },
-      { label: 'Online Application Guidelines (Account Creation)', href: routes.membership.applicationGuidelines },
+      { label: 'Online Application Guidelines (Account Creation)' },
       { label: 'Member Check', href: routes.membership.memberCheck },
       {
         label: 'Professional Development',
-        href: routes.membership.professionalDevelopment.root,
         children: [
           { label: 'IES Events Calendar 2026', href: routes.membership.professionalDevelopment.eventsCalendar2026 },
           { label: 'IES Training Calendar 2026', href: routes.membership.professionalDevelopment.trainingCalendar2026 },
@@ -76,16 +73,13 @@ export const publicNavigation: NavigationEntry[] = [
   },
   {
     label: 'Events',
-    href: routes.events.root,
     layout: 'dropdown',
     children: [
       {
         label: 'IES Annual Events',
-        href: routes.events.annualEvents.root,
         children: [
           {
             label: 'World Engineering Day (WED)',
-            href: routes.events.annualEvents.worldEngineeringDay.root,
             children: [
               { label: '2025', href: routes.events.annualEvents.worldEngineeringDay.year2025 },
               { label: '2026', href: routes.events.annualEvents.worldEngineeringDay.year2026 },
@@ -94,25 +88,23 @@ export const publicNavigation: NavigationEntry[] = [
           },
           {
             label: 'International Women in Engineering Day (INWED)',
-            href: routes.events.annualEvents.internationalWomenInEngineeringDay.root,
             children: [
               { label: '2025', href: routes.events.annualEvents.internationalWomenInEngineeringDay.year2025 },
               { label: '2026', href: routes.events.annualEvents.internationalWomenInEngineeringDay.year2026 },
               { label: '2027', href: routes.events.annualEvents.internationalWomenInEngineeringDay.year2027 },
             ],
           },
-          { label: 'Others', href: routes.events.annualEvents.others },
         ],
       },
       {
         label: 'IES Programmes',
-        href: routes.events.programmes.root,
         children: [
           { label: 'Seminars', href: routes.events.programmes.seminars },
           { label: 'Training', href: routes.events.programmes.training },
           { label: 'Conferences', href: routes.events.programmes.conferences },
           { label: 'CPD Courses', href: routes.events.programmes.cpdCourses },
-          { label: 'Others', href: routes.events.programmes.others },
+          { label: 'Visits', href: routes.events.programmes.visits.siteVisits },
+          { label: 'Others' },
         ],
       },
     ],
@@ -136,7 +128,6 @@ export const publicNavigation: NavigationEntry[] = [
   },
   {
     label: 'Gallery',
-    href: routes.gallery.root,
     layout: 'dropdown',
     children: [
       { label: 'Photos', href: routes.gallery.photos },
@@ -145,12 +136,10 @@ export const publicNavigation: NavigationEntry[] = [
   },
   {
     label: 'Opportunities',
-    href: routes.opportunities.root,
     layout: 'dropdown',
     children: [
       {
         label: 'Jobs',
-        href: routes.opportunities.jobs.root,
         children: [
           { label: 'IES Career', href: routes.opportunities.jobs.iesCareer },
           { label: 'Partner Organization Careers', href: routes.opportunities.jobs.partnerOrganizationCareers },
@@ -159,7 +148,6 @@ export const publicNavigation: NavigationEntry[] = [
       { label: 'Internships', href: routes.opportunities.internships },
       {
         label: 'Tenders',
-        href: routes.opportunities.tenders.root,
         children: [
           { label: 'IES Tenders', href: routes.opportunities.tenders.iesTenders },
           { label: 'Partner Organization Tenders', href: routes.opportunities.tenders.partnerOrganizationTenders },
@@ -167,7 +155,6 @@ export const publicNavigation: NavigationEntry[] = [
       },
       {
         label: 'CV Repository',
-        href: routes.opportunities.cvRepository.root,
         children: [
           { label: 'Submit CV', href: 'https://docs.google.com/forms/d/e/1FAIpQLScIQ-7jIfvY-QQWUuoLuTpRMuxy-X3KQPjSEf_V3aaNfX2OFQ/viewform?usp=publish-editor', external: true },
           { label: 'View CVs', href: routes.opportunities.cvRepository.viewCVs },

@@ -1,7 +1,5 @@
 import { PageHero } from '@/components/layout/PageHero';
 import { Section } from '@/components/layout/Section';
-import { EmptyState } from '@/components/ui/EmptyState';
-import { Button } from '@/components/ui/Button';
 
 export const metadata = { title: 'Partner Organization Careers' };
 
@@ -9,16 +7,22 @@ export default function PartnerOrganizationCareersPage() {
   return (
     <>
       <PageHero
-        eyebrow="Partner Careers"
+        eyebrow="OPPORTUNITIES/JOBS"
         title="Partner Organization Careers"
-        description="Career opportunities from organizations partnering with IES."
+        description="Career opportunities from organizations partnering with IES"
       />
-      <Section>
-        <EmptyState
-          title="No partner openings listed"
-          description="Career opportunities from IES partner organizations will be listed here."
-          action={<Button href="mailto:info@iesomalia.org.so" variant="secondary" size="sm">Contact IES</Button>}
-        />
+      <Section spacing="compact">
+        <div className="flex flex-col gap-3 text-left text-xs leading-relaxed text-slate-700 sm:text-sm">
+          <p>
+            IES works with government institutions, international organizations, professional bodies, private-sector organizations, and other partners across the engineering and development sectors.
+          </p>
+          <p>
+            This section provides career opportunities shared by IES partner organizations that may be relevant to engineers and other professionals.
+          </p>
+          <p>
+            Members and visitors are encouraged to check this section regularly for new opportunities from our partner organizations.
+          </p>
+        </div>
       </Section>
     </>
   );

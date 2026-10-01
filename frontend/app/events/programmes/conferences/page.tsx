@@ -1,8 +1,5 @@
 import { PageHero } from '@/components/layout/PageHero';
 import { Section } from '@/components/layout/Section';
-import { EmptyState } from '@/components/ui/EmptyState';
-import { Button } from '@/components/ui/Button';
-import { routes } from '@/config/routes';
 
 export const metadata = { title: 'Conferences' };
 
@@ -10,21 +7,14 @@ export default function ConferencesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Programmes"
+        eyebrow="IES Programmes"
         title="Conferences"
-        description="National and international engineering conferences hosted or supported by the Institution of Engineers Somalia."
+        description="National and international engineering conferences hosted or supported by the Institution of Engineers Somalia (IES)"
       />
-
-      <Section>
-        <EmptyState
-          title="Conferences"
-          description="Upcoming conferences will be listed here. Check back soon or contact info@iesomalia.org.so for more information."
-          action={
-            <Button href={routes.events.programmes.root} variant="secondary" size="sm">
-              Back to Programmes
-            </Button>
-          }
-        />
+      <Section spacing="compact">
+        <p className="text-left text-xs leading-relaxed text-slate-700 sm:text-sm">
+          Connect with engineering professionals, industry leaders, and experts through conferences that promote knowledge sharing and professional networking.
+        </p>
       </Section>
     </>
   );

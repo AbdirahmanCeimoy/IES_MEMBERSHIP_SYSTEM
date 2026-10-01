@@ -39,7 +39,7 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     applicationFee: '$5',
     requirements: [
       'Certified University Student ID Stamped and Signed by the Dean of School.',
-      'Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
+      'A Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
       'A copy of your secondary school completion certificate certified by Commissioner for Oaths (NB: not advocates).',
       'Two referees: One proposer and one seconder must be paid up Corporate or Fellow Members (Your application must be supported by two existing IES Members).',
       'Current Colored Passport Photo.',
@@ -56,7 +56,7 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     requirements: [
       'Updated Curriculum Vitae (CV).',
       'Degree certificate certified by Commissioner for Oaths (NB: not advocates).',
-      'Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
+      'A Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
       'A copy of your Secondary School Completion Certificate Certified by Commissioner for Oaths (NB: not advocates).',
       'Two referees: One proposer and one seconder must be paid up Corporate or Fellow Members (Your application must be supported by two existing IES Members).',
       'Current Colored Passport Photo.',
@@ -72,7 +72,7 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     requirements: [
       'Updated Curriculum Vitae (CV).',
       'Degree certificate certified by Commissioner for Oaths (NB: not advocates).',
-      'copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
+      'A Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
       'A copy of your secondary school completion certificate certified by Commissioner for Oaths (NB: not advocates).',
       'Two referees: One proposer and one seconder must be paid Corporate or Fellow members (Your application must be supported by two existing IES members).',
       'Current Colored Passport Photo.',
@@ -88,7 +88,7 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     requirements: [
       'Updated Curriculum Vitae (CV).',
       'Degree certificate certified by Commissioner for Oaths (NB: not advocates).',
-      'Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
+      'A Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
       'A copy of your secondary school completion certificate certified by Commissioner for Oaths (NB: not advocates).',
       'Two referees: One proposer and one seconder must be paid up Corporate or Fellow members (Your application must be supported by two existing IES members).',
       'Current Colored Passport Photo.',
@@ -105,7 +105,7 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     requirements: [
       'Updated Curriculum Vitae (CV).',
       'Degree certificate certified by Commissioner for Oaths (NB: not advocates).',
-      'Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
+      'A Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
       'A copy of your secondary school completion certificate certified by Commissioner for Oaths (NB: not advocates).',
       'A Copy of IES Graduate Certificate.',
       'At least 2 years of relevant experience as a Graduate Member.',
@@ -124,7 +124,7 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     requirements: [
       'Updated Curriculum Vitae (CV).',
       'Degree certificate certified by Commissioner for Oaths (NB: not advocates).',
-      'Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
+      'A Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
       'A Copy of IES Graduate Certificate.',
       'At least 3 years of relevant experience as a Graduate Member.',
       'Four referees: Two proposers and two seconders who are paid Corporate or Fellow members (Your application must be supported by two existing IES members).',
@@ -141,8 +141,8 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     applicationFee: '$30',
     requirements: [
       'Updated Curriculum Vitae (CV).',
-      'Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
-      'Copy of relevant engineering degree, professional qualification, or other recognized engineering qualifications.',
+      'A Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
+      'A Copy of relevant engineering degree, professional qualification, or other recognized engineering qualifications.',
       'Four Referees: Two proposers and two seconders who are paid up Fellows (Your application must be supported by two existing IES members).',
       'At least ten (10) years of relevant professional engineering experience.',
       'At least five (5) years of Corporate Membership with IES, or equivalent professional standing as determined by IES.',
@@ -162,8 +162,8 @@ export const gradeRequirements: Record<GradeCode, GradeRequirements> = {
     applicationFee: '$50',
     requirements: [
       'Updated Curriculum Vitae (CV).',
-      'Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
-      'Copy of relevant engineering degree, professional qualification, or other recognized engineering qualifications.',
+      'A Copy of National ID/Passport Certified by a Commissioner for Oaths (NB: not advocates).',
+      'A Copy of relevant engineering degree, professional qualification, or other recognized engineering qualifications.',
       'Four Referees: Two proposers and two seconders who are paid up Fellows (Your application must be supported by two existing IES members).',
       'At least seven (7) years of Corporate Membership with IES, or equivalent professional standing as determined by IES.',
       'At least fifteen (15) years of relevant professional engineering experience.',

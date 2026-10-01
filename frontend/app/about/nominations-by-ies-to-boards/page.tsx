@@ -60,7 +60,7 @@ export default function BoardNominationsPage() {
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About', href: routes.about.root }, { label: 'Board Nominations' }]} />}
         eyebrow="About IES"
         title="Nominations by IES to Boards"
-        description="Discover Members Nominated by the Institution of Engineers Somalia (IES) to Boards."
+        description="Discover Members Nominated by the Institution of Engineers Somalia (IES) to Boards"
       />
 
       <Section>
@@ -95,7 +95,7 @@ export default function BoardNominationsPage() {
               </tbody>
             </table> */}
           
-        <p className="mt-4 text-sm text-slate-500">
+        <p className="text-sm leading-relaxed text-slate-600 sm:text-bas mt-4">
         The list of nominations made by IES to various boards will be updated soon.</p>
         {/* </div>
         </div> */}
@@ -104,7 +104,7 @@ export default function BoardNominationsPage() {
       <Section tone="muted" spacing="compact">
         <p className="text-xstext-8xl font-bold uppercase tracking-widest text-[#035CB3]">Key Partner Organizations</p>
         <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-          While specific appointments are updated regularly, IES collaborates with several key partner organizations and professional bodies.
+          While specific appointments are updated regularly, IES collaborates with several key partner organizations and professional bodies
         </p>
         <ContentGrid columns={2} className="mt-6">
           {keyPartners.map((p) => (

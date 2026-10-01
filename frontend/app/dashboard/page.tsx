@@ -1490,7 +1490,7 @@ export default function DashboardPage() {
                     display: flex;
                     min-height: 100vh;
                     background: #f8fafc;
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                    font-family: inherit;
                     overflow-x: hidden;
                 }
 

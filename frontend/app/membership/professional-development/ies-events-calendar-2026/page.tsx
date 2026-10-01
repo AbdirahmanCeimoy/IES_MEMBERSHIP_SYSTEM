@@ -21,21 +21,20 @@ export default function IESEventsCalendar2026Page() {
         }
         eyebrow="Professional Development"
         title="IES Events Calendar"
-        description="Stay informed about upcoming events, activities, and engagements organized by the Institution of Engineers Somalia (IES)."
+        description="Stay informed about upcoming events, activities, and engagements organized by IES"
       />
 
       <Section spacing="compact">
-        <div className="mx-auto max-w-4xl">
-          <div className="flex flex-col gap-4 text-sm leading-relaxed text-slate-700 sm:text-base">
-            <p>
-              The IES Events Calendar provides members with information on conferences, seminars, networking events, professional gatherings, special occasions, and other activities throughout the year.
-            </p>
-            <p>
-              Check the calendar regularly to stay updated and take part in IES activities.
-            </p>
-          </div>
+        <div className="flex flex-col gap-3 text-left text-xs leading-relaxed text-slate-700 sm:text-sm">
+          <p>
+            The IES Events Calendar provides members with information on conferences, seminars, networking events, professional gatherings, special occasions, and other activities throughout the year.
+          </p>
+          <p>
+            Check the calendar regularly to stay updated and take part in IES activities.
+          </p>
+        </div>
 
-          <div className="mt-10 flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center">
+        <div className="mt-10 flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#035CB3]/10">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#035CB3" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -45,10 +44,9 @@ export default function IESEventsCalendar2026Page() {
               </svg>
             </div>
             <h3 className="text-base font-bold text-[#022D5A]">2026 Events Calendar Coming Soon</h3>
-            <p className="mt-2 max-w-md text-sm text-slate-600">
-              The full 2026 events schedule will be published here. In the meantime, check our news section for the latest announcements.
-            </p>
-          </div>
+          <p className="mt-2 max-w-md text-sm text-slate-600">
+            The full 2026 events schedule will be published here. In the meantime, check our news section for the latest announcements.
+          </p>
         </div>
       </Section>
     </>

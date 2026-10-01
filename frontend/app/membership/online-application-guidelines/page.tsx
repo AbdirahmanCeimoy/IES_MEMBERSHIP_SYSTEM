@@ -109,7 +109,7 @@ export default function ApplyPage() {
             {/* Main heading */}
             <div className="text-center">
               <h2 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">
-                Join Our Organization Membership
+                Join our Organizational Membership
               </h2>
             </div>
 
@@ -150,7 +150,7 @@ export default function ApplyPage() {
 
             {/* Membership Requirements */}
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="mb-3 text-lg font-bold text-[#035CB3]">Membership Requirements</h3>
+              <h3 className="mb-3 text-lg font-bold text-[#035CB3]">IES Organizational Membership Requirements</h3>
               <p className="mb-3 text-sm text-slate-700">Organizations applying for membership should:</p>
               <ul className="flex flex-col gap-2">
                 {[
@@ -169,22 +169,22 @@ export default function ApplyPage() {
 
             {/* Membership Fee */}
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="mb-3 text-lg font-bold text-[#035CB3]">Membership Fee</h3>
+              <h3 className="mb-3 text-lg font-bold text-[#035CB3]">IES Organizational Membership Fee</h3>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-lg bg-[#035CB3]/5 p-4">
                   <p className="text-xs font-bold uppercase tracking-widest text-[#035CB3]">Annual Subscription</p>
-                  <p className="mt-1 text-2xl font-extrabold text-[#022D5A]">USD 500</p>
+                  <p className="mt-1 text-2xl font-extrabold text-[#022D5A]">$ 500</p>
                 </div>
                 <div className="rounded-lg bg-[#48C184]/10 p-4">
                   <p className="text-xs font-bold uppercase tracking-widest text-[#3AA870]">Entrance Fee</p>
-                  <p className="mt-1 text-2xl font-extrabold text-[#022D5A]">None</p>
+                  <p className="mt-1 text-2xl font-extrabold text-[#022D5A]">$ 0</p>
                 </div>
               </div>
             </div>
 
             {/* Benefits */}
             <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-bold text-[#035CB3]">Benefits of Organization Membership</h3>
+              <h3 className="mb-4 text-lg font-bold text-[#035CB3]">IES Organizational Membership Benefits</h3>
               <div className="flex flex-col gap-5">
                 {[
                   {
@@ -252,18 +252,19 @@ export default function ApplyPage() {
                 Join IES as an Organization Member
               </h3>
               <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                Organizations interested in joining IES as an Organization Member can submit their application through the IES Membership Portal and provide the required registration and organizational information.
-              </p>
-              <Link
-                href="/contact"
+                Organizations interested in joining IES as an Organizational Member can apply by completing the IES Organizational Membership Form below and providing the required organizational and registration information.              </p>
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfOeDL1ZMm_FxPd58XY1TvrG5j4D9PdhLStUAarG6Ait-G1Uw/viewform?usp=header"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#022D5A] px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#035CB3]"
               >
-                Contact Us to Apply
+                Apply for IES Organizational Membership
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
-              </Link>
+              </a>
             </div>
           </div>
         )}

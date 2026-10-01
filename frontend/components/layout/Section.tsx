@@ -16,8 +16,8 @@ interface SectionProps {
 
 const spacingMap: Record<SectionSpacing, string> = {
   compact: 'py-4 sm:py-6',
-  default: 'py-8 sm:py-10',
-  relaxed: 'py-10 sm:py-12',
+  default: 'py-12 sm:py-16',
+  relaxed: 'py-16 sm:py-20',
 };
 
 const toneMap: Record<SectionTone, string> = {

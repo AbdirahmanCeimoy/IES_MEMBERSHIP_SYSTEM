@@ -27,7 +27,7 @@ export default function PartnersPage() {
         }
         eyebrow="Collaborations"
         title="Affiliations & Partners"
-        description="IES works with institutions and organizations that promote and develop the engineering profession, best practices, sustainable development and the welfare of engineers in Somalia and around the world."
+        description="IES works with institutions and organizations that promote and develop the engineering profession, best practices, sustainable development and the welfare of engineers in Somalia and around the world"
       />
 
       {/* Local Affiliations & Partners */}

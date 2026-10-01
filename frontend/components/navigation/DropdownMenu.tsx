@@ -45,7 +45,7 @@ const DropdownItem = ({
       onMouseEnter={() => hasChildren && setSubOpen(true)}
       onMouseLeave={() => hasChildren && setSubOpen(false)}
     >
-      {item.href && (
+      {item.href ? (
         item.external ? (
           <a
             href={item.href}
@@ -78,6 +78,35 @@ const DropdownItem = ({
             {hasChildren && <SubMenuChevron flip={flipLeft} />}
           </Link>
         )
+      ) : hasChildren ? (
+        <button
+          type="button"
+          onClick={(e) => e.preventDefault()}
+          className={cn(
+            'flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-slate-700 transition-colors',
+            'hover:bg-slate-50 hover:text-[#035CB3]',
+            'focus-visible:outline-none focus-visible:bg-slate-50 focus-visible:text-[#035CB3]',
+            !isLast && 'border-b border-slate-100',
+          )}
+          role="menuitem"
+          aria-haspopup="true"
+          aria-expanded={subOpen}
+        >
+          {item.label}
+          <SubMenuChevron flip={flipLeft} />
+        </button>
+      ) : (
+        <span
+          className={cn(
+            'flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700',
+            'hover:bg-slate-50',
+            !isLast && 'border-b border-slate-100',
+          )}
+          role="menuitem"
+          aria-disabled="true"
+        >
+          {item.label}
+        </span>
       )}
       {hasChildren && subOpen && (
         <div className={cn('absolute top-0 z-[70]', flipLeft ? 'right-full pr-1' : 'left-full pl-1')}>

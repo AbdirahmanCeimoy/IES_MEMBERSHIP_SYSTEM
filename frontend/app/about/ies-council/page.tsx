@@ -18,13 +18,17 @@ export default function CouncilPage() {
       <PageHero
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About', href: routes.about.root }, { label: 'Council' }]} />}
         eyebrow="About IES"
-        title="IES Council 2026 – 2028"
-        description="The principal governing body of the Institution of Engineers Somalia (IES)."
+        title="IES Council"
+        description="Discover our Council"
       />
 
       <Section>
+         <p className="mb-4 text-lg font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">
+           IES Council 2026 – 2028
+         </p>
         <div className="grid gap-6 lg:grid-cols-[3fr_2fr]">
           <div className="flex flex-col gap-3 text-sm leading-relaxed text-slate-700 sm:text-base">
+           
             <p>
              The governance and affairs of the Institution of Engineers Somalia (IES) are entrusted to the IES Council, which serves as the principal governing body of the Institution. The Council is responsible for providing strategic leadership, establishing policies, overseeing the implementation of the Institution’s objectives, and promoting the advancement of the engineering profession in Somalia.
             </p>

@@ -15,6 +15,8 @@ export default function InternationalAffiliationPage() {
       <section className="bg-[#035CB3] text-white">
         <SiteContainer className="py-8 sm:py-12">
           <div className="flex flex-col items-center text-center gap-4">
+                        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#48C184' }}>About IES</span>
+
             <span className="text-xs font-semibold uppercase tracking-widest text-white/80">International Affiliates</span>
             <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
               IES International Collaborating Organizations

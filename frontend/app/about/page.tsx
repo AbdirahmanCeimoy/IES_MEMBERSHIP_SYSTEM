@@ -323,11 +323,11 @@ export default function AboutPage() {
               <p className="mt-4 text-sm leading-relaxed text-slate-700 sm:text-base">
                 The interests of all members are represented by the Council of IES, which coordinates the activities of the institution&apos;s committees and associated bodies. The Council organizes national conferences, seminars, and represents IES members in various national and international committees.
               </p>
-              <p className="mt-3 text-sm text-slate-600">
-                IES committees and regional representatives play a vital role in:
-              </p>
             </div>
             <div className="flex flex-col gap-3">
+              <h3 className="text-base font-bold text-[#022D5A] sm:text-lg">
+                IES committees and regional representatives play a vital role in:
+              </h3>
               {councilRoles.map((role, i) => (
                 <div
                   key={i}

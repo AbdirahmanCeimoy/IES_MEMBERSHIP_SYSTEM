@@ -15,7 +15,7 @@ export default function CategoriesPage() {
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Membership', href: routes.membership.root }, { label: 'Categories' }]} />}
         eyebrow="Membership"
         title="IES Membership Categories"
-        description="Discover Our Membership Categories"
+        description="Discover our Membership Categories"
       />
       <Section>
         <p className="mb-8 text-sm leading-relaxed text-slate-700 sm:text-base">

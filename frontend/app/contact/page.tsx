@@ -96,7 +96,7 @@ const PhoneIcon = () => (
 const departments = [
   {
     title: 'Membership & Registration',
-    email: 'membership@iesomalia.org.so',
+    email: 'membershipcommittee@iesomalia.org.so',
     phone: '+252 612267137',
   },
   {

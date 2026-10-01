@@ -249,8 +249,8 @@ export default function BenefitsPage() {
           />
         }
         eyebrow="Membership"
-        title="Membership Benefits"
-        description="Discover Our Membership Benefits"
+        title="IES Membership Benefits"
+        description="Discover our Membership Benefits"
       />
 
       <Section spacing="compact">

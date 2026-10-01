@@ -70,7 +70,7 @@ export default function BecomeAMemberPage() {
   return (
     <>
       <PageHero
-        eyebrow="IES Membership"
+        eyebrow="Membership"
         title="Become a Member"
         description="Discover our Membership"
       />
