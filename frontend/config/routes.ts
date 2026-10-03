@@ -133,6 +133,9 @@ export const routes = {
       cpdCourses:
         '/events/programmes/cpd-courses',
 
+      panelDiscussions:
+        '/events/programmes/panel-discussions',
+
       visits: {
         siteVisits:
           '/events/programmes/visits/site-visits',

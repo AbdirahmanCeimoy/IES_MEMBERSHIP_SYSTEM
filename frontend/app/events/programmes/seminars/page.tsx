@@ -8,7 +8,11 @@ export const metadata = { title: 'Seminars' };
 
 const groupByMonth = (events: SeminarEvent[]) => {
   const groups: Record<string, SeminarEvent[]> = {};
-  for (const e of events) {
+  const sortedEvents = [...events].sort(
+    (a, b) => Date.parse(b.date) - Date.parse(a.date),
+  );
+
+  for (const e of sortedEvents) {
     (groups[e.monthYear] ||= []).push(e);
   }
   return Object.entries(groups);
@@ -44,10 +48,16 @@ const CameraIcon = () => (
   </svg>
 );
 
+const PlayIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M8 5v14l11-7z" />
+  </svg>
+);
+
 const PastEventCard = ({ event }: { event: SeminarEvent }) => {
   const detailHref = `/events/programmes/seminars/${event.slug}`;
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+    <article className="group flex w-full flex-col justify-self-start overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md sm:w-[calc((100%_-_1.5rem)/2)] lg:w-[calc((100%_-_3rem)/3)]">
       <Link href={detailHref} className="relative block aspect-[4/5] w-full overflow-hidden bg-slate-50">
         <Image
           src={event.cardImage}
@@ -96,19 +106,58 @@ const PastEventCard = ({ event }: { event: SeminarEvent }) => {
           )}
         </dl>
 
-        <div className="mt-5 flex items-center justify-between gap-3">
-          <Link href={detailHref} className="text-sm font-semibold text-[#035CB3] hover:text-[#022D5A]">
-            View Details
-          </Link>
-          <Link
-            href={`${detailHref}#event-photos`}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#022D5A] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#035CB3]"
-            aria-label={`View photos from ${event.title}`}
-          >
-            <CameraIcon />
-            View Photos
-          </Link>
-        </div>
+        {event.photos && event.photos.length > 0 ? (
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+            <Link href={detailHref} className="text-sm font-semibold text-[#035CB3] hover:text-[#022D5A]">
+              View Details
+            </Link>
+            <div className="flex flex-wrap items-center gap-2">
+              <Link
+                href={`${detailHref}/photos`}
+                className="inline-flex items-center gap-2 rounded-lg bg-[#022D5A] px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#035CB3]"
+                aria-label={`View photos from ${event.title}`}
+              >
+                <CameraIcon />
+                View Photos
+              </Link>
+              {event.video && (
+                <Link
+                  href={`${detailHref}/video`}
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#48C184] px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#2d7a50]"
+                  aria-label={`Watch video of ${event.title}`}
+                >
+                  <PlayIcon />
+                  View Video
+                </Link>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="mt-5 flex justify-center">
+            <Link
+              href={detailHref}
+              className="group/btn inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#035CB3] to-[#024A8F] px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:shadow-md hover:from-[#024A8F] hover:to-[#022D5A]"
+              aria-label={`View details for ${event.title}`}
+            >
+              View Details
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="transition-transform group-hover/btn:translate-x-0.5"
+                aria-hidden="true"
+              >
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </Link>
+          </div>
+        )}
       </div>
     </article>
   );
@@ -143,7 +192,7 @@ export default function SeminarsPage() {
                 <span className="h-px flex-1 bg-slate-200" />
               </div>
 
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6">
                 {events.map((event) => (
                   <PastEventCard key={event.slug} event={event} />
                 ))}

@@ -3,5 +3,4 @@ import { routes } from '@/config/routes';
 
 export default function MembershipPage() {
   redirect(routes.membership.becomeMember);
-  rediirect(routes.membership.becomeMember);
 }

@@ -160,6 +160,7 @@ export const partners: Partner[] = [
   { name: 'Jazeera University (JU)', href: 'https://jazeerauniversity.edu.so/', scope: 'Local', logo: '/loges-locals/JAZEERA-UNIVERSITY.jpeg' },
   { name: 'Salaam University (SU)', href: 'https://salaam.edu.so/', scope: 'Local', logo: '/loges-locals/SALAAM-UNIVERSITY.jpeg' },
   { name: 'Benadir University (BU)', href: 'https://bu.edu.so/', scope: 'Local', logo: '/loges-locals/BANADIR-UNIVERSITY.jpeg' },
+  { name: 'Arkaan Leadership and Innovation Hub', href: 'https://arkaan.so/', scope: 'Local', logo: '/loges-locals/Arkaan Leadership and Innovation Hub.jpeg' },
 ];
 
 export const governanceDocuments = [
