@@ -1,0 +1,5 @@
+# Database dumps contain real member data — never commit them to Git.
+*.sql
+*.sql.gz
+*.dump
+!.gitignore

@@ -163,7 +163,7 @@ export default async function PanelDiscussionDetailPage({ params }: Params) {
                       <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
                       <circle cx="12" cy="13" r="4" />
                     </svg>
-                    View Event Photos
+                    View Photos
                   </Link>
                 )}
 
@@ -175,7 +175,7 @@ export default async function PanelDiscussionDetailPage({ params }: Params) {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                       <path d="M8 5v14l11-7z" />
                     </svg>
-                    View Event Video
+                    View Video
                   </Link>
                 )}
               </div>

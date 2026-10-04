@@ -4,16 +4,31 @@ import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 const images = [
-    '/picture-1.jpg',
-    '/picture-2.jpg',
-    '/picture-3.jpg',
-    '/picture-4.jpg',
-    '/picture-5.jpg',
-    '/picture-6.jpg',
-    '/picture-7.jpg',
-    '/picture-8.jpg',
-    '/picture-9.jpg',
-    '/picture-10.jpg',
+    '/slides-home-section/slides-home-1.jpeg',
+    '/slides-home-section/slides-home-2.jpeg',
+    '/slides-home-section/slides-home-3.jpeg',
+    '/slides-home-section/slides-home-4.jpeg',
+    '/slides-home-section/slides-home-5.jpeg',
+    '/slides-home-section/slides-home-6.jpeg',
+    '/slides-home-section/slides-home-7.jpeg',
+    '/slides-home-section/slides-home-8.jpeg',
+    '/slides-home-section/slides-home-9.jpeg',
+    '/slides-home-section/slides-home-10.jpeg',
+    '/slides-home-section/slides-home-11.jpeg',
+    '/slides-home-section/slides-home-12.jpeg',
+    '/slides-home-section/slides-home-13.jpeg',
+    '/slides-home-section/slides-home-14.jpeg',
+    '/slides-home-section/slides-home-15.jpeg',
+    '/slides-home-section/slides-home-16.jpeg',
+    '/slides-home-section/slides-home-17.jpeg',
+    '/slides-home-section/slides-home-18.jpeg',
+    '/slides-home-section/slides-home-19.jpeg',
+    '/slides-home-section/slides-home-20.jpeg',
+    '/slides-home-section/slides-home-21.jpeg',
+    '/slides-home-section/slides-home-22.jpeg',
+    '/slides-home-section/slides-home-23.jpeg',
+    '/slides-home-section/slides-home-24.jpeg',
+    '/slides-home-section/slides-home-25.jpeg',
 ];
 
 export default function HomeSlider() {
@@ -47,17 +62,17 @@ export default function HomeSlider() {
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
                 {images.map((src, index) => (
-                    <div key={index} className="min-w-full h-full relative">
+                    <div key={index} className="min-w-full h-full relative bg-[#022D5A]">
                         <Image
                             src={src}
                             alt={`Slide ${index + 1}`}
                             fill
                             sizes="100vw"
                             className="object-cover"
-                            priority={index === 0}
+                            priority={index === 9}
                         />
                         {/* Overlay for better text readability */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
                     </div>
                 ))}
             </div>

@@ -102,16 +102,27 @@ export const routes = {
 
       internationalWomenInEngineeringDay: {
         root:
-          '/events/annual-events/international-women-in-engineering-day',
+          '/events/annual-events/international-women-engineering-day',
 
         year2025:
-          '/events/annual-events/international-women-in-engineering-day/2025',
+          '/events/annual-events/international-women-engineering-day/2025',
 
         year2026:
-          '/events/annual-events/international-women-in-engineering-day/2026',
+          '/events/annual-events/international-women-engineering-day/2026',
 
         year2027:
-          '/events/annual-events/international-women-in-engineering-day/2027',
+          '/events/annual-events/international-women-engineering-day/2027',
+      },
+
+      worldEnvironmentDay: {
+        root:
+          '/events/annual-events/world-environment-day',
+
+        year2026:
+          '/events/annual-events/world-environment-day/2026',
+
+        year2027:
+          '/events/annual-events/world-environment-day/2027',
       },
 
       others:

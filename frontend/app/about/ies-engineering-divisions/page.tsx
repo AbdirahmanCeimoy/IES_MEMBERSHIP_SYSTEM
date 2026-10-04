@@ -113,7 +113,7 @@ export default function DivisionsPage() {
           </div>
 
           <div className="text-center">
-            <h2 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">Available Divisions</h2>
+            <h2 className="text-2xl font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">Our Technical Divisions</h2>
             <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-[#48C184]" />
           </div>
 

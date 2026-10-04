@@ -6,6 +6,26 @@ import { routes } from '@/config/routes';
  * Announcements") — they are calls to action from IES or its partners,
  * not routine news items.
  */
+const parseNewsDate = (date: string): number => {
+  const trimmed = date.trim();
+  const directDate = Date.parse(trimmed);
+  if (!Number.isNaN(directDate)) {
+    return directDate;
+  }
+
+  const match = trimmed.match(/(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})/);
+  if (match) {
+    return Date.parse(`${match[3]} ${match[2]} ${match[1]}`);
+  }
+
+  const yearMatch = trimmed.match(/(\d{4})/);
+  if (yearMatch) {
+    return Date.parse(`${yearMatch[1]}-01-01`);
+  }
+
+  return 0;
+};
+
 export const latestAnnouncements: NewsItem[] = [
   {
     title: '2027 WFEO Hackathon Registration Is Now Open!',
@@ -26,13 +46,31 @@ export const latestAnnouncements: NewsItem[] = [
     image: '/International Women in Engineering Day (INWED2026).jpeg',
   },
   {
+    title: 'Somalia’s 2nd World Engineering Day (WED2026) Celebration - Coming Soon',
+    excerpt:
+      'IES, in collaboration with UNESCO and WFEO, is pleased to announce the upcoming celebration of World Engineering Day for Sustainable Development in Somalia on 4 March 2026.',
+    date: '04 Mar 2026',
+    href: `${routes.infoHub.news}/somalias-world-engineering-day-wed2026-celebration`,
+    category: 'Announcement',
+    image: '/Somalia’s World Engineering Day (WED2026) .jpeg',
+  },
+  {
     title: 'IES Co-Organizes World Environment Day 2026 Program',
     excerpt:
       'IES will participate as a Co-Organizer of the World Environment Day 2026 program with Benadir University and the Ministry of Environment and Climate Change (MoECC), under the theme "Inspired by Nature, for Climate, for Our Future."',
-    date: '2026',
+    date: '03 Jun 2026',
     href: `${routes.infoHub.news}/world-environment-day-2026`,
     category: 'Announcement',
     image: '/IES Co-Organizes World Environment Day 2026 Program.jpeg',
+  },
+  {
+    title: 'Somalia’s 1st World Engineering Day (WED2025) Celebration - Coming Soon',
+    excerpt:
+      'IES, in collaboration with UNESCO and WFEO, marked the first ever celebration of World Engineering Day for Sustainable Development in Somalia on 4 March 2025.',
+    date: '04 Mar 2025',
+    href: `${routes.infoHub.news}/somalias-first-world-engineering-day-wed2025-celebration`,
+    category: 'Announcement',
+    image: '/Somalia’s First World Engineering Day.jpeg',
   },
   {
     title: 'International Women in Engineering Day (INWED2025) — Coming Soon',
@@ -43,11 +81,28 @@ export const latestAnnouncements: NewsItem[] = [
     category: 'Announcement',
     image: '/International Women in Engineering Day (INWED2025).jpeg',
   },
-];
+].sort((a, b) => parseNewsDate(b.date) - parseNewsDate(a.date));
 
-/** IES DECISION REQUIRED: replace with dynamic API-driven news feed. */
-export const featuredNews: NewsItem[] = [
-   {
+const newsItems: NewsItem[] = [
+  {
+    title: 'IES Delegation Meets with UNESCO Somalia to Discuss Engineering and STEM Development',
+    excerpt:
+      'The Institution of Engineers Somalia (IES) delegation met with UNESCO Somalia at UNSOS in Mogadishu to discuss engineering, STEM education, innovation and women’s participation in engineering.',
+    date: '21 July 2026',
+    href: `${routes.infoHub.news}/unesco-somalia-engineering-stem-development`,
+    category: 'Development',
+    image: '/IES Delegation Meets with UNESCO Somalia to Discuss Engineering and STEM Development.jpeg',
+  },
+  {
+    title: 'IES Participated in Solid Waste Management Program in Japan',
+    excerpt:
+      'Eng. Ayan Muse participated in the Solid Waste Management Program in Japan, strengthening knowledge on sustainable waste management and urban development.',
+    date: '12 July 2026',
+    href: `${routes.infoHub.news}/solid-waste-management-program-japan`,
+    category: 'Capacity Building',
+    image: '/IES Participated in Solid Waste Management Program in Japan.jpeg',
+  },
+  {
     title: 'IES Participated in SORECA and Ministry of Public Works Meeting on Infrastructure and Urban Development',
     excerpt:
       'IES leadership, led by President Eng. Omar Abdi Arab and Vice President Eng. Bashir Ali Hussein, joined a strategic meeting between SORECA and the Ministry of Public Works, Reconstruction and Housing to advance Somalia’s infrastructure and urban development.',
@@ -56,7 +111,6 @@ export const featuredNews: NewsItem[] = [
     category: 'Collaboration',
     image: '/PARTNER-SORECA.jpeg',
   },
-
   {
     title: 'IES Signs MoU with Benadir University (BU)',
     excerpt:
@@ -66,8 +120,6 @@ export const featuredNews: NewsItem[] = [
     category: 'Partnership',
     image: '/parterner-Banadir-University.jpeg',
   },
- 
- 
   {
     title: 'IES Signs MoU with Jamhuriya University of Science and Technology (JUST)',
     excerpt:
@@ -114,6 +166,15 @@ export const featuredNews: NewsItem[] = [
     image: '/IES Leadership Attended the Inauguration of Benadir Steel Ltd.jpeg',
   },
   {
+    title: 'IES Marks World Engineering Day (WED2025) with 100-Tree Donation to Madina Hospital',
+    excerpt:
+      'As part of World Engineering Day 2025, IES donated 100 trees to Madina Hospital in Mogadishu to support a greener environment and healthier community.',
+    date: '04 Mar 2025',
+    href: `${routes.infoHub.news}/ies-marks-world-engineering-day-wed2025-madina-hospital`,
+    category: 'Environmental Action',
+    image: '/IES Marks World Engineering Day (WED2025) with 100-Tree Donation to Madina Hospital.jpeg',
+  },
+  {
     title: 'IES Participated in the WFEO Engineering Capacity Building for Africa Programme in Nairobi',
     excerpt:
       'IES participated in the launch of the WFEO Engineering Capacity Building for Africa Programme (ECBAP), held in Nairobi, Kenya in collaboration with WFEO, IEK, EBK and CAST — supporting the training of over 100,000 engineers across Africa.',
@@ -141,3 +202,7 @@ export const featuredNews: NewsItem[] = [
     image: '/IES Vice President Participated in COP29 in Baku, Azerbaijan.jpeg',
   },
 ];
+
+export const featuredNews: NewsItem[] = [...newsItems].sort(
+  (a, b) => parseNewsDate(b.date) - parseNewsDate(a.date),
+);

@@ -83,7 +83,7 @@ export const publicNavigation: NavigationEntry[] = [
             children: [
               { label: '2025', href: routes.events.annualEvents.worldEngineeringDay.year2025 },
               { label: '2026', href: routes.events.annualEvents.worldEngineeringDay.year2026 },
-              { label: '2027', href: routes.events.annualEvents.worldEngineeringDay.year2027 },
+              { label: '2027' },
             ],
           },
           {
@@ -91,7 +91,14 @@ export const publicNavigation: NavigationEntry[] = [
             children: [
               { label: '2025', href: routes.events.annualEvents.internationalWomenInEngineeringDay.year2025 },
               { label: '2026', href: routes.events.annualEvents.internationalWomenInEngineeringDay.year2026 },
-              { label: '2027', href: routes.events.annualEvents.internationalWomenInEngineeringDay.year2027 },
+              { label: '2027' },
+            ],
+          },
+          {
+            label: 'World Environment Day',
+            children: [
+              { label: '2026', href: routes.events.annualEvents.worldEnvironmentDay.year2026 },
+              { label: '2027' },
             ],
           },
         ],

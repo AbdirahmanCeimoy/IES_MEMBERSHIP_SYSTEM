@@ -38,7 +38,7 @@ export default function SecretariatPage() {
         breadcrumbs={<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About', href: routes.about.root }, { label: 'Secretariat' }]} />}
         eyebrow="About IES"
         title="IES Secretariat"
-        description="Discover our IES Secretariat"
+        description="Discover our Secretariat"
       />
 
       <Section>

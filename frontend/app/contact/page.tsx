@@ -173,30 +173,77 @@ export default function ContactPage() {
       </section>
 
       <Section tone="default" spacing="relaxed">
-        <div className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 shadow-sm lg:grid-cols-[1fr_1.2fr]">
-          <div className="border-b border-slate-100 bg-slate-50 p-8 lg:border-b-0 lg:border-r lg:p-10">
-            <h2 className="text-xl font-bold text-slate-800">
-              Get in Touch
-            </h2>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-8">
+          {/* COLUMN 1 — Map + address + hours */}
+          <div className="space-y-5">
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
+              <div className="relative aspect-[4/3] w-full lg:aspect-[4/5]">
+                <iframe
+                  title="IES Office Location - Adani Tower, Mogadishu"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=45.315867%2C2.031906%2C45.321867%2C2.035906&layer=mapnik&marker=2.0339063%2C45.318867"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0 h-full w-full border-0"
+                />
+                <a
+                  href="https://www.google.com/maps/search/Adani+Tower+2/@2.0339063,45.318867,18.64z"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-white/95 px-3 py-1.5 text-xs font-semibold text-[#022D5A] shadow-md ring-1 ring-slate-200 backdrop-blur-sm transition-colors hover:bg-white"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M15 3h6v6" />
+                    <path d="M10 14 21 3" />
+                    <path d="M21 10v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8" />
+                  </svg>
+                  Open in Maps
+                </a>
+              </div>
+            </div>
 
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#035CB3]/8">
+                  <LocationIcon />
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-slate-700">Office Address</p>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-500">
+                    4th Floor, Adani Tower, Maka Al-mukarama Street, Hodan District, Mogadishu
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 flex items-start gap-3 border-t border-slate-100 pt-5">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#035CB3]/8">
+                  <ClockIcon />
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-slate-700">Working Days &amp; Hours</p>
+                  <p className="mt-1 text-sm text-slate-500">Saturday – Thursday</p>
+                  <p className="text-sm text-slate-500">8:00 AM – 5:00 PM</p>
+                  <p className="mt-1 text-xs text-red-400">Friday: Closed</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* COLUMN 2 — Department contacts */}
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm sm:p-8">
+            <h2 className="text-xl font-bold text-slate-800">Get in Touch</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
-              Reach out to us directly or fill out the form, and we&apos;ll get
-              back to you as soon as possible.
+              Reach out to us directly or fill out the form, and we&apos;ll get back to you as soon as possible.
             </p>
 
-            <div className="mt-8 border-t border-slate-200 pt-8">
+            <div className="mt-6 space-y-6 border-t border-slate-200 pt-6">
               {departments.map((dept) => (
-                <div key={dept.title} className="mb-6 last:mb-0">
-                  <h3 className="text-sm font-bold text-[#022D5A]">
-                    {dept.title}
-                  </h3>
-
+                <div key={dept.title}>
+                  <h3 className="text-sm font-bold text-[#022D5A]">{dept.title}</h3>
                   <div className="mt-2 flex flex-col gap-1.5">
                     <div className="flex items-center gap-2.5">
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#035CB3]/8">
                         <EmailIcon />
                       </div>
-
                       <a
                         href={`mailto:${dept.email}`}
                         className="text-sm text-slate-500 transition-colors hover:text-[#035CB3]"
@@ -204,12 +251,10 @@ export default function ContactPage() {
                         {dept.email}
                       </a>
                     </div>
-
                     <div className="flex items-center gap-2.5">
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#035CB3]/8">
                         <PhoneIcon />
                       </div>
-
                       <a
                         href={`tel:${dept.phone.replace(/\s/g, '')}`}
                         className="text-sm text-slate-500 transition-colors hover:text-[#035CB3]"
@@ -221,52 +266,10 @@ export default function ContactPage() {
                 </div>
               ))}
             </div>
-
-            <div className="mt-8 space-y-6 border-t border-slate-200 pt-8">
-              <div className="flex items-start gap-3.5">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#035CB3]/8">
-                  <LocationIcon />
-                </div>
-
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-slate-700">
-                    Office Address
-                  </p>
-
-                  <p className="mt-1 text-sm leading-relaxed text-slate-500">
-                    4th Floor, Adani Tower, Maka Al-mukarama Street, Hodan
-                    District, Mogadishu
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3.5">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#035CB3]/8">
-                  <ClockIcon />
-                </div>
-
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-slate-700">
-                    Working Days &amp; Hours
-                  </p>
-
-                  <p className="mt-1 text-sm text-slate-500">
-                    Saturday – Thursday
-                  </p>
-
-                  <p className="text-sm text-slate-500">
-                    8:00 AM – 5:00 PM
-                  </p>
-
-                  <p className="mt-1 text-xs text-red-400">
-                    Friday: Closed
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
 
-          <div className="bg-white p-8 lg:p-10">
+          {/* COLUMN 3 — Send us a message form */}
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             {status === 'sent' ? (
               <div className="flex flex-col items-center gap-3 py-10 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#48C184]/10">

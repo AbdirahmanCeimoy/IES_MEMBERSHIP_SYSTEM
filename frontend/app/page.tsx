@@ -20,9 +20,9 @@ export default function HomePage() {
       <section className="relative isolate w-full overflow-hidden bg-[#022D5A] text-white">
         <div className="absolute inset-0 w-full">
           <HomeSlider />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#022D5A]/70 via-[#022D5A]/55 to-[#035CB3]/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#022D5A]/35 via-[#022D5A]/25 to-[#035CB3]/35" />
         </div>
-        <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-4 py-20 text-center sm:py-24 lg:py-28">
+        <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-4 py-10 text-center sm:py-24 lg:py-28">
           <h1 className="text-3xl font-extrabold uppercase tracking-wide drop-shadow-md sm:text-4xl lg:text-5xl">
             Advancing engineering excellence
             <br />
