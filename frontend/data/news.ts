@@ -46,9 +46,9 @@ export const latestAnnouncements: NewsItem[] = [
     image: '/International Women in Engineering Day (INWED2026).jpeg',
   },
   {
-    title: 'Somalia’s 2nd World Engineering Day (WED2026) Celebration - Coming Soon',
+    title: 'Somalia’s 2nd World Engineering Day (WED2026) Celebration',
     excerpt:
-      'IES, in collaboration with UNESCO and WFEO, is pleased to announce the upcoming celebration of World Engineering Day for Sustainable Development in Somalia on 4 March 2026.',
+      'IES successfully organized Somalia’s Second World Engineering Day Celebration (WED2026) under the theme "Smart Engineering for a Sustainable Future Through Innovation & Digital Transformation" at Grand Café, Mogadishu.',
     date: '04 Mar 2026',
     href: `${routes.infoHub.news}/somalias-world-engineering-day-wed2026-celebration`,
     category: 'Announcement',
@@ -64,9 +64,9 @@ export const latestAnnouncements: NewsItem[] = [
     image: '/IES Co-Organizes World Environment Day 2026 Program.jpeg',
   },
   {
-    title: 'Somalia’s 1st World Engineering Day (WED2025) Celebration - Coming Soon',
+    title: 'Somali’s 1st World Engineering Day (WED2025) Celebration',
     excerpt:
-      'IES, in collaboration with UNESCO and WFEO, marked the first ever celebration of World Engineering Day for Sustainable Development in Somalia on 4 March 2025.',
+      'IES successfully organized the Somali’s First World Engineering Day (WED2025) Celebration at Jazeera Hotel, Mogadishu, bringing together more than 250 participants under the theme "Shaping a Sustainable Future Through Engineering."',
     date: '04 Mar 2025',
     href: `${routes.infoHub.news}/somalias-first-world-engineering-day-wed2025-celebration`,
     category: 'Announcement',
@@ -112,7 +112,7 @@ const newsItems: NewsItem[] = [
     image: '/PARTNER-SORECA.jpeg',
   },
   {
-    title: 'IES Signs MoU with Benadir University (BU)',
+    title: 'IES Signed MoU with Benadir University (BU)',
     excerpt:
       'IES and Benadir University signed an MoU to strengthen cooperation in engineering education, professional training, research, innovation and continuing professional development.',
     date: '01 Jan 2026',
@@ -121,7 +121,7 @@ const newsItems: NewsItem[] = [
     image: '/parterner-Banadir-University.jpeg',
   },
   {
-    title: 'IES Signs MoU with Jamhuriya University of Science and Technology (JUST)',
+    title: 'IES Signed MoU with Jamhuriya University of Science and Technology (JUST)',
     excerpt:
       'On 18 December 2025, IES and Jamhuriya University signed a Memorandum of Understanding to establish a framework for collaboration in engineering education, research, innovation and professional development.',
     date: '18 Dec 2025',
@@ -130,7 +130,7 @@ const newsItems: NewsItem[] = [
     image: '/parterner-jamhuriya-University.jpeg',
   },
   {
-    title: 'IES Signs MoU with Jazeera University (JU)',
+    title: 'IES Signed MoU with Jazeera University (JU)',
     excerpt:
       'IES and Jazeera University signed an MoU to enhance cooperation in engineering education, professional development, innovation and knowledge exchange.',
     date: '20 Dec 2025',
@@ -139,7 +139,7 @@ const newsItems: NewsItem[] = [
     image: '/parterner-jazeraUniversity.jpeg',
   },
   {
-    title: 'IES Signs MoU with Salaam University (SU)',
+    title: 'IES Signed MoU with Salaam University (SU)',
     excerpt:
       'IES and Salaam University signed an MoU to strengthen cooperation in engineering education, professional development, research and knowledge exchange.',
     date: '31 Dec 2025',

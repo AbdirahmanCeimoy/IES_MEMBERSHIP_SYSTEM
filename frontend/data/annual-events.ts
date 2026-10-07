@@ -12,7 +12,9 @@ export interface AnnualEvent {
   title: string;
   cardDescription: string;
   fullDescription: string[];
+  activitiesIntro?: string;
   activities?: string[];
+  postActivitiesParagraphs?: string[];
   cardImage: string;
   heroImage: string;
   photos?: string[];
@@ -43,12 +45,12 @@ export const annualEvents: AnnualEvent[] = [
     cardDescription:
       'IES celebrated the first World Engineering Day in Somalia under the theme “Shaping a Sustainable Future Through Engineering.”',
     fullDescription: [
-      'The Institution of Engineers Somalia (IES) successfully organized the Somali\'s First World Engineering Day (WED2025) Celebration under the theme “Shaping a Sustainable Future Through Engineering.”',
+      'The Institution of Engineers Somalia (IES) successfully organized the Somali\'s First World Engineering Day (WED2025) Celebration under the theme:',
+      '“Shaping a Sustainable Future Through Engineering.”',
       'The celebration was held at Jazeera Hotel, Airport Street, Wadajir District, Mogadishu, from 4:00 PM to 8:00 PM, and brought together more than 250 participants, including engineers, engineering professionals, students, academics, government representatives, development partners, and other stakeholders.',
       'The event provided an important platform to recognize the vital role of engineering in sustainable development, innovation, infrastructure development, and addressing Somalia’s development challenges.',
-      'The celebration highlighted the contribution of engineers and the engineering profession to building a more sustainable, resilient, and innovative future for Somalia and the world.',
-      'Through the successful organization of World Engineering Day 2025, IES reaffirmed its commitment to advancing the engineering profession in Somalia, promoting professional collaboration, encouraging innovation, and supporting engineering solutions for sustainable national development.',
     ],
+    activitiesIntro: 'The World Engineering Day 2025 Celebration featured a range of activities, including:',
     activities: [
       'Opening Ceremony',
       'Keynote Address',
@@ -59,6 +61,10 @@ export const annualEvents: AnnualEvent[] = [
       'Recognition of the Contribution of Engineers to Somalia’s Development',
       'Networking and Professional Engagement',
       'Closing Remarks and Appreciation',
+    ],
+    postActivitiesParagraphs: [
+      'The celebration highlighted the contribution of engineers and the engineering profession to building a more sustainable, resilient, and innovative future for Somalia and the world.',
+      'Through the successful organization of World Engineering Day 2025, IES reaffirmed its commitment to advancing the engineering profession in Somalia, promoting professional collaboration, encouraging innovation, and supporting engineering solutions for sustainable national development.',
     ],
     cardImage: `${WED_2025_PHOTO_ROOT}/WED-2025-poster.jpeg`,
     heroImage: `${WED_2025_PHOTO_ROOT}/WED-2025-poster.jpeg`,
@@ -84,12 +90,12 @@ export const annualEvents: AnnualEvent[] = [
     cardDescription:
       'IES celebrated Somalia’s Second World Engineering Day under the theme “Smart Engineering for a Sustainable Future Through Innovation & Digital Transformation.”',
     fullDescription: [
-      'The Institution of Engineers Somalia (IES) successfully organized Somalia’s Second World Engineering Day Celebration (WED2026) under the theme “Smart Engineering for a Sustainable Future Through Innovation & Digital Transformation.”',
+      'The Institution of Engineers Somalia (IES) successfully organized Somalia’s Second World Engineering Day Celebration in (WED2026) under the theme:',
+      '“Smart Engineering for a Sustainable Future Through Innovation & Digital Transformation.”',
       'The celebration was held at Grand Café, Airport Hotel, Wadajir District, Mogadishu, from 3:00 PM to 6:00 PM, bringing together engineers, engineering professionals, students, academics, government representatives, development partners, and other stakeholders.',
       'The event provided an important platform to recognize the vital role of engineering in promoting innovation, digital transformation, sustainable development, and practical solutions to Somalia’s development challenges.',
-      'The celebration highlighted the contribution of engineers and the engineering profession to advancing smart, innovative, and sustainable solutions for Somalia’s development.',
-      'Through the successful organization of Somalia’s Second World Engineering Day Celebration, IES reaffirmed its commitment to advancing the engineering profession, promoting innovation and digital transformation, strengthening professional collaboration, and supporting engineering solutions for a sustainable future.',
     ],
+    activitiesIntro: 'The celebration featured a range of activities, including:',
     activities: [
       'Opening Ceremony',
       'Keynote Address',
@@ -100,6 +106,10 @@ export const annualEvents: AnnualEvent[] = [
       'Discussion on the Future of Engineering in Somalia',
       'Networking and Professional Engagement',
       'Closing Remarks and Appreciation',
+    ],
+    postActivitiesParagraphs: [
+      'The celebration highlighted the contribution of engineers and the engineering profession to advancing smart, innovative, and sustainable solutions for Somalia’s development.',
+      'Through the successful organization of Somalia’s Second World Engineering Day Celebration, IES reaffirmed its commitment to advancing the engineering profession, promoting innovation and digital transformation, strengthening professional collaboration, and supporting engineering solutions for a sustainable future.',
     ],
     cardImage: `${WED_2026_PHOTO_ROOT}/(WED2026)-poster.jpeg`,
     heroImage: `${WED_2026_PHOTO_ROOT}/(WED2026)-poster.jpeg`,

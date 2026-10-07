@@ -51,9 +51,17 @@ export default function WED2026Page() {
             {event.activities?.length ? (
               <div className="mt-6">
                 <h2 className="text-lg font-bold text-[#022D5A]">Event Activities</h2>
+                {event.activitiesIntro && (
+                  <p className="mt-3 text-sm leading-relaxed text-slate-700 sm:text-base">{event.activitiesIntro}</p>
+                )}
                 <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 sm:text-base">
                   {event.activities.map((activity) => <li key={activity}>{activity}</li>)}
                 </ul>
+              </div>
+            ) : null}
+            {event.postActivitiesParagraphs?.length ? (
+              <div className="mt-6 space-y-4 text-sm leading-relaxed text-slate-700 sm:text-base">
+                {event.postActivitiesParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
               </div>
             ) : null}
             <div className="relative mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">

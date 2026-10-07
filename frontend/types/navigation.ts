@@ -5,6 +5,8 @@ export interface NavigationItem {
   href?: string;
   description?: string;
   external?: boolean;
+  /** Looks like a normal link but does nothing on click (page not built yet). */
+  inactive?: boolean;
   children?: NavigationItem[];
 }
 

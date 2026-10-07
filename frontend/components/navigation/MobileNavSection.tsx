@@ -50,6 +50,16 @@ const MobileSubItem = ({
     );
   }
 
+  if (!hasChildren) {
+    return (
+      <li>
+        <span className="block cursor-pointer rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#035CB3]">
+          {item.label}
+        </span>
+      </li>
+    );
+  }
+
   return (
     <li>
       <button
@@ -94,8 +104,8 @@ export const MobileNavSection = ({ entry, active, onNavigate }: MobileNavSection
         href={entry.href}
         onClick={onNavigate}
         className={cn(
-          'block rounded-md px-3 py-3 text-base font-medium transition-colors',
-          active ? 'text-[#035CB3]' : 'text-slate-800 hover:bg-slate-50 hover:text-[#035CB3]',
+          'block rounded-lg px-3 py-2.5 text-[15px] font-medium transition-colors',
+          active ? 'bg-[#035CB3]/5 text-[#035CB3]' : 'text-slate-600 hover:bg-slate-50 hover:text-[#035CB3]',
         )}
       >
         {entry.label}
@@ -109,8 +119,8 @@ export const MobileNavSection = ({ entry, active, onNavigate }: MobileNavSection
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          'flex w-full items-center justify-between rounded-md px-3 py-3 text-left text-base font-medium transition-colors',
-          active ? 'text-[#035CB3]' : 'text-slate-800 hover:bg-slate-50',
+          'flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-[15px] font-medium transition-colors',
+          active ? 'bg-[#035CB3]/5 text-[#035CB3]' : 'text-slate-600 hover:bg-slate-50 hover:text-[#035CB3]',
         )}
         aria-expanded={open}
       >

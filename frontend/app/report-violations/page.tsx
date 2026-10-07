@@ -6,12 +6,13 @@ import { SiteContainer } from '@/components/layout/SiteContainer';
 import { site } from '@/config/site';
 import { cn } from '@/lib/cn';
 
-const categories = [
-  'General Inquiry',
-  'Membership',
-  'Finance',
-  'IES Programs',
-  'Other Inquiry',
+const violationCategories = [
+  'Professional Misconduct',
+  'Ethical Violation',
+  'Fraud or Corruption',
+  'Safety Concern',
+  'Unprofessional Practice',
+  'Other Violation',
 ];
 
 const ChevronDown = () => (
@@ -31,78 +32,48 @@ const ChevronDown = () => (
 );
 
 const LocationIcon = () => (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#035CB3"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#035CB3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" />
     <circle cx="12" cy="10" r="3" />
   </svg>
 );
 
 const ClockIcon = () => (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#035CB3"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#035CB3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
     <polyline points="12 6 12 12 16 14" />
   </svg>
 );
 
 const EmailIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#035CB3"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#035CB3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="4" width="20" height="16" rx="2" />
     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
   </svg>
 );
 
 const PhoneIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#035CB3"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#035CB3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
   </svg>
 );
 
-const departments = [
+const ShieldIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+  </svg>
+);
+
+const reportingChannels = [
   {
-    title: 'Membership & Registration',
-    email: 'membershipcommittee@iesomalia.org.so',
-    phone: '+252 612267137',
+    title: 'Ethics Committee',
+    email: 'ethics@iesomalia.org.so',
+    phone: '+252 612267178',
   },
   {
-    title: 'Finance & Payments',
-    email: 'finance@iesomalia.org.so',
-    phone: '+252 614240602',
+    title: 'Confidential Hotline',
+    email: 'report@iesomalia.org.so',
+    phone: '+252 612267137',
   },
   {
     title: 'General Inquiries',
@@ -111,37 +82,32 @@ const departments = [
   },
 ];
 
-export default function ContactPage() {
-  const [status, setStatus] = useState<
-    'idle' | 'sending' | 'sent' | 'error'
-  >('idle');
-
+export default function ReportViolationsPage() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [isMember, setIsMember] = useState(false);
+  const [anonymous, setAnonymous] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('sending');
 
     const formData = new FormData(e.currentTarget);
-
     const data = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
+      name: anonymous ? 'Anonymous' : (formData.get('name') as string),
+      email: anonymous ? '' : (formData.get('email') as string),
       category: formData.get('category') as string,
       subject: formData.get('subject') as string,
       message: formData.get('message') as string,
-      regNumber: isMember
-        ? (formData.get('regNumber') as string)
-        : undefined,
+      regNumber: isMember ? (formData.get('regNumber') as string) : undefined,
       isMember,
+      anonymous,
+      type: 'report',
     };
 
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
@@ -149,6 +115,7 @@ export default function ContactPage() {
         setStatus('sent');
         e.currentTarget.reset();
         setIsMember(false);
+        setAnonymous(false);
       } else {
         setStatus('error');
       }
@@ -161,40 +128,42 @@ export default function ContactPage() {
     <>
       <section className="bg-gradient-to-b from-[#035CB3] to-[#024A8F] py-14 text-center text-white">
         <SiteContainer>
+          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur">
+            <ShieldIcon />
+            Confidential Reporting Channel
+          </div>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Contact Us
+            Report Violations
           </h1>
-
-          <p className="mx-auto mt-3 max-w-xl text-sm text-blue-100">
-            Have a question or want to learn more about IES? We&apos;d love to
-            hear from you.
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-blue-100">
+            Help us uphold the highest standards of engineering practice. Report any professional misconduct, ethical violations, or unprofessional practices confidentially.
           </p>
         </SiteContainer>
       </section>
 
       <Section tone="default" spacing="relaxed">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-8">
-          {/* COLUMN 1 — Get in Touch + address + hours (merged into one card) */}
+          {/* COLUMN 1 — Reporting channels + address + hours (merged into one card) */}
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm sm:p-8">
-            <h2 className="text-xl font-bold text-slate-800">Get in Touch</h2>
+            <h2 className="text-xl font-bold text-slate-800">Confidential Reporting Channels</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
-              Reach out to us directly or fill out the form, and we&apos;ll get back to you as soon as possible.
+              Reports can be submitted directly to the Ethics Committee or anonymously through the form. All reports are reviewed with the strictest confidentiality.
             </p>
 
             <div className="mt-6 space-y-6 border-t border-slate-200 pt-6">
-              {departments.map((dept) => (
-                <div key={dept.title}>
-                  <h3 className="text-sm font-bold text-[#022D5A]">{dept.title}</h3>
+              {reportingChannels.map((ch) => (
+                <div key={ch.title}>
+                  <h3 className="text-sm font-bold text-[#022D5A]">{ch.title}</h3>
                   <div className="mt-2 flex flex-col gap-1.5">
                     <div className="flex items-center gap-2.5">
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#035CB3]/8">
                         <EmailIcon />
                       </div>
                       <a
-                        href={`mailto:${dept.email}`}
+                        href={`mailto:${ch.email}`}
                         className="text-sm text-slate-500 transition-colors hover:text-[#035CB3]"
                       >
-                        {dept.email}
+                        {ch.email}
                       </a>
                     </div>
                     <div className="flex items-center gap-2.5">
@@ -202,10 +171,10 @@ export default function ContactPage() {
                         <PhoneIcon />
                       </div>
                       <a
-                        href={`tel:${dept.phone.replace(/\s/g, '')}`}
+                        href={`tel:${ch.phone.replace(/\s/g, '')}`}
                         className="text-sm text-slate-500 transition-colors hover:text-[#035CB3]"
                       >
-                        {dept.phone}
+                        {ch.phone}
                       </a>
                     </div>
                   </div>
@@ -239,68 +208,62 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* COLUMN 2 — Send us a message form */}
+          {/* COLUMN 2 — Report violation form */}
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             {status === 'sent' ? (
               <div className="flex flex-col items-center gap-3 py-10 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#48C184]/10">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#48C184"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#48C184" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </div>
-
-                <h3 className="text-lg font-bold text-slate-800">
-                  Message Sent Successfully!
-                </h3>
-
-                <p className="max-w-xs text-sm text-slate-500">
-                  Thank you for reaching out. Our team will get back to you as
-                  soon as possible.
+                <h3 className="text-lg font-bold text-slate-800">Report Submitted Successfully</h3>
+                <p className="max-w-sm text-sm text-slate-500">
+                  Your report has been received. Our Ethics Committee will review it and take appropriate action. Thank you for helping us uphold professional standards.
                 </p>
-
                 <button
                   type="button"
                   onClick={() => setStatus('idle')}
                   className="mt-3 rounded-lg bg-[#035CB3] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#024A8F]"
                 >
-                  Send Another Message
+                  Submit Another Report
                 </button>
               </div>
             ) : (
               <>
-                <h3 className="text-xl font-bold text-[#022D5A]">
-                  If you have any questions, feel free to message us
-                </h3>
-
+                <h3 className="text-xl font-bold text-[#022D5A]">Report a Violation by Filling the Form</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Fill out the form below and we&apos;ll respond as soon as
-                  possible.
+                  Fill out the form below. All information will be treated with confidentiality.
                 </p>
 
                 <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                  <label className="flex cursor-pointer items-center gap-2.5">
-                    <input
-                      type="checkbox"
-                      checked={isMember}
-                      onChange={(e) => setIsMember(e.target.checked)}
-                      className="h-4 w-4 rounded border-slate-300 text-[#035CB3] focus:ring-[#035CB3]/30"
-                    />
+                  {/* Checkboxes row */}
+                  <div className="flex flex-col gap-2.5 sm:flex-row sm:gap-5">
+                    <label className="flex cursor-pointer items-center gap-2.5">
+                      <input
+                        type="checkbox"
+                        checked={isMember}
+                        onChange={(e) => setIsMember(e.target.checked)}
+                        disabled={anonymous}
+                        className="h-4 w-4 rounded border-slate-300 text-[#035CB3] focus:ring-[#035CB3]/30 disabled:opacity-50"
+                      />
+                      <span className="text-sm font-medium text-slate-700">I am an IES Member</span>
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2.5">
+                      <input
+                        type="checkbox"
+                        checked={anonymous}
+                        onChange={(e) => {
+                          setAnonymous(e.target.checked);
+                          if (e.target.checked) setIsMember(false);
+                        }}
+                        className="h-4 w-4 rounded border-slate-300 text-[#035CB3] focus:ring-[#035CB3]/30"
+                      />
+                      <span className="text-sm font-medium text-slate-700">Submit Anonymously</span>
+                    </label>
+                  </div>
 
-                    <span className="text-sm font-medium text-slate-700">
-                      I am an IES Member
-                    </span>
-                  </label>
-
-                  {isMember && (
+                  {isMember && !anonymous && (
                     <input
                       name="regNumber"
                       type="text"
@@ -310,23 +273,24 @@ export default function ContactPage() {
                     />
                   )}
 
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <input
-                      name="name"
-                      type="text"
-                      required
-                      placeholder="Your Name"
-                      className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
-                    />
-
-                    <input
-                      name="email"
-                      type="email"
-                      required
-                      placeholder="Your Email Address"
-                      className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
-                    />
-                  </div>
+                  {!anonymous && (
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <input
+                        name="name"
+                        type="text"
+                        required
+                        placeholder="Your Name"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
+                      />
+                      <input
+                        name="email"
+                        type="email"
+                        required
+                        placeholder="Your Email Address"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
+                      />
+                    </div>
+                  )}
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="relative">
@@ -336,63 +300,51 @@ export default function ContactPage() {
                         defaultValue=""
                         className="w-full cursor-pointer appearance-none rounded-lg border border-slate-200 bg-white px-4 py-2.5 pr-10 text-sm text-slate-800 outline-none transition-all focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
                       >
-                        <option value="" disabled>
-                          Inquiry Category
-                        </option>
-
-                        {categories.map((cat) => (
-                          <option key={cat} value={cat}>
-                            {cat}
-                          </option>
+                        <option value="" disabled>Violation Category</option>
+                        {violationCategories.map((cat) => (
+                          <option key={cat} value={cat}>{cat}</option>
                         ))}
                       </select>
-
                       <ChevronDown />
                     </div>
-
                     <input
                       name="subject"
                       type="text"
                       required
-                      placeholder="Subject"
+                      placeholder="Subject / Short Title"
                       className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
                     />
                   </div>
 
                   <textarea
                     name="message"
-                    rows={5}
-                    placeholder="Project description or your inquiry..."
+                    rows={6}
+                    required
+                    placeholder="Describe the violation or concern in detail — include dates, parties involved, and any relevant context..."
                     className="w-full resize-y rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
                   />
 
                   <div>
                     <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      Attach Document (Optional)
+                      Attach Supporting Evidence (Optional)
                     </p>
-
                     <label className="flex cursor-pointer items-center gap-3 text-sm text-slate-500">
                       <span className="rounded-md bg-slate-800 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-slate-700">
                         Choose File
                       </span>
-
                       <input
                         type="file"
                         name="attachment"
                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                         className="hidden"
                       />
-
-                      <span className="text-xs text-slate-400">
-                        PDF, Word, or Images (Max 5MB)
-                      </span>
+                      <span className="text-xs text-slate-400">PDF, Word, or Images (Max 5MB)</span>
                     </label>
                   </div>
 
                   {status === 'error' && (
                     <p className="text-sm text-red-600">
-                      Something went wrong. Please try again or email us
-                      directly at {site.contact.generalEmail}.
+                      Something went wrong. Please try again or email us directly at {site.contact.generalEmail}.
                     </p>
                   )}
 
@@ -408,33 +360,14 @@ export default function ContactPage() {
                   >
                     {status === 'sending' ? (
                       <>
-                        <svg
-                          className="h-4 w-4 animate-spin"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
-                          <circle
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            className="opacity-25"
-                          />
-
-                          <path
-                            d="M4 12a8 8 0 018-8"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            className="opacity-75"
-                          />
+                        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
+                          <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="opacity-75" />
                         </svg>
-
-                        Sending...
+                        Submitting...
                       </>
                     ) : (
-                      'SUBMIT'
+                      'SUBMIT REPORT'
                     )}
                   </button>
                 </form>

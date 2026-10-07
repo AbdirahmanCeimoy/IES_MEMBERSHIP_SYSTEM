@@ -95,6 +95,20 @@ const DropdownItem = ({
           {item.label}
           <SubMenuChevron flip={flipLeft} />
         </button>
+      ) : item.inactive ? (
+        <button
+          type="button"
+          onClick={(e) => e.preventDefault()}
+          className={cn(
+            'flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-slate-700 transition-colors',
+            'hover:bg-slate-50 hover:text-[#035CB3]',
+            'focus-visible:outline-none focus-visible:bg-slate-50 focus-visible:text-[#035CB3]',
+            !isLast && 'border-b border-slate-100',
+          )}
+          role="menuitem"
+        >
+          {item.label}
+        </button>
       ) : (
         <span
           className={cn(

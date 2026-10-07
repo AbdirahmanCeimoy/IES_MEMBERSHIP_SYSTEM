@@ -59,7 +59,7 @@ export const publicNavigation: NavigationEntry[] = [
       { label: 'IES Membership Benefits', href: routes.membership.benefits },
       { label: 'IES Membership Requirements', href: routes.membership.requirements },
       { label: 'IES Membership Fees Structure', href: routes.membership.fees },
-      { label: 'Online Application Guidelines (Account Creation)' },
+      { label: 'Online Application Guidelines (Account Creation)', inactive: true },
       { label: 'Member Check', href: routes.membership.memberCheck },
       {
         label: 'Professional Development',
@@ -112,7 +112,7 @@ export const publicNavigation: NavigationEntry[] = [
           { label: 'Panel Discussions', href: routes.events.programmes.panelDiscussions },
           { label: 'Visits', href: routes.events.programmes.visits.siteVisits },
           { label: 'CPD Courses', href: routes.events.programmes.cpdCourses },
-          { label: 'Others' },
+          { label: 'Others', inactive: true },
         ],
       },
     ],

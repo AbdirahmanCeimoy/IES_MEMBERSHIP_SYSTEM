@@ -31,6 +31,17 @@ const images = [
     '/slides-home-section/slides-home-25.jpeg',
 ];
 
+// Heads sit in the top third of most event photos, so crop from the bottom by default.
+const DEFAULT_POSITION = 'center 22%';
+
+// Per-slide crop overrides (CSS object-position), tuned so faces clear the hero title.
+const slidePositions: Record<string, string> = {
+    '/slides-home-section/slides-home-9.jpeg': 'center 42%',
+};
+
+// Portrait photos: centred over a softened copy of themselves so they fill the wide hero like the landscape slides.
+const portraitSlides = new Set(['/slides-home-section/slides-home-10.jpeg']);
+
 export default function HomeSlider() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -63,14 +74,55 @@ export default function HomeSlider() {
             >
                 {images.map((src, index) => (
                     <div key={index} className="min-w-full h-full relative bg-[#022D5A]">
-                        <Image
-                            src={src}
-                            alt={`Slide ${index + 1}`}
-                            fill
-                            sizes="100vw"
-                            className="object-cover"
-                            priority={index === 9}
-                        />
+                        {portraitSlides.has(src) ? (
+                            <>
+                                {/* Backdrop: the same photo stretched across the frame and softened, so the banner continues to the edges. */}
+                                <Image
+                                    src={src}
+                                    alt=""
+                                    fill
+                                    sizes="100vw"
+                                    className="scale-110 object-cover blur-md brightness-95"
+                                    style={{ objectPosition: 'center top' }}
+                                    aria-hidden="true"
+                                />
+                                {/* Mobile: whole photo. */}
+                                <Image
+                                    src={src}
+                                    alt={`Slide ${index + 1}`}
+                                    fill
+                                    sizes="100vw"
+                                    className="object-contain md:hidden"
+                                />
+                                {/* Desktop: head-to-waist framing like the landscape slides, edges faded into the backdrop. */}
+                                <div
+                                    className="absolute left-1/2 top-[-6%] hidden h-[170%] -translate-x-1/2 md:block"
+                                    style={{
+                                        aspectRatio: '817 / 1089',
+                                        maskImage: 'linear-gradient(to right, transparent, black 14%, black 86%, transparent)',
+                                        WebkitMaskImage: 'linear-gradient(to right, transparent, black 14%, black 86%, transparent)',
+                                    }}
+                                >
+                                    <Image
+                                        src={src}
+                                        alt={`Slide ${index + 1}`}
+                                        fill
+                                        sizes="(min-width: 768px) 60vw, 100vw"
+                                        className="object-cover"
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <Image
+                                src={src}
+                                alt={`Slide ${index + 1}`}
+                                fill
+                                sizes="100vw"
+                                className="object-cover"
+                                style={{ objectPosition: slidePositions[src] ?? DEFAULT_POSITION }}
+                                priority={index === 0}
+                            />
+                        )}
                         {/* Overlay for better text readability */}
                         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
                     </div>
@@ -100,12 +152,12 @@ export default function HomeSlider() {
             </button>
 
             {/* Indicators */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2">
+            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-1.5 sm:bottom-6 sm:gap-2">
                 {images.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => goToSlide(index)}
-                        className={`w-3 h-3 rounded-full transition-all duration-300 ${currentIndex === index ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/80'
+                        className={`h-2 w-2 rounded-full transition-all duration-300 sm:h-3 sm:w-3 ${currentIndex === index ? 'w-5 bg-white sm:w-8' : 'bg-white/50 hover:bg-white/80'
                             }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />

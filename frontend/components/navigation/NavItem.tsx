@@ -14,7 +14,7 @@ export const NavItem = ({ label, href, active, className }: NavItemProps) => (
   <Link
     href={href}
     className={cn(
-      'inline-flex items-center whitespace-nowrap rounded-md px-1.5 py-1.5 text-[15px] font-medium leading-[1.5] transition-colors',
+      'inline-flex items-center whitespace-nowrap rounded-md px-[3px] py-1.5 text-[13.5px] font-medium leading-[1.5] transition-colors',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]',
       active
         ? 'text-[#035CB3]'

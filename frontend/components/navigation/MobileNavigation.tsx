@@ -1,12 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { publicNavigation } from '@/config/navigation';
 import { site } from '@/config/site';
-import { routes } from '@/config/routes';
 import type { NavigationEntry } from '@/types/navigation';
 import { cn } from '@/lib/cn';
 import { MobileNavSection } from './MobileNavSection';
@@ -55,67 +52,64 @@ export const MobileNavigation = () => {
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [open]);
-
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
-        onClick={() => setOpen(true)}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-md text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]"
-        aria-label="Open navigation menu"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#035CB3]"
+        aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
         aria-expanded={open}
+        aria-controls="mobile-navigation"
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
+        {open ? (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        ) : (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        )}
       </button>
 
+      {open && (
+        <div
+          className="absolute inset-x-0 top-full z-40 h-[100dvh] bg-slate-900/20"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       <div
+        id="mobile-navigation"
         className={cn(
-          'fixed inset-0 z-50 flex flex-col bg-white transition-opacity duration-200',
-          open ? 'opacity-100' : 'pointer-events-none opacity-0',
+          'absolute inset-x-0 top-full z-50 origin-top border-b border-slate-200 bg-white shadow-lg transition-all duration-200',
+          open ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-2 opacity-0',
         )}
         aria-hidden={!open}
-        role="dialog"
-        aria-modal="true"
       >
-        <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-          <Link href={routes.home} onClick={() => setOpen(false)} className="flex items-center gap-2">
-            <div className="relative h-9 w-9">
-              <Image src={site.logo} alt={`${site.shortName} logo`} fill className="object-contain" />
-            </div>
-            <span className="text-sm font-bold text-[#035CB3]">{site.shortName}omalia</span>
-          </Link>
-          <button
-            type="button"
-            onClick={() => setOpen(false)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"
-            aria-label="Close menu"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
-        </div>
+        <nav
+          aria-label="Mobile"
+          className="mx-auto max-h-[calc(100dvh-4rem)] w-full md:max-h-[calc(100dvh-6.5rem)] max-w-3xl overflow-y-auto px-4 pb-5 pt-3 sm:px-6"
+        >
+          <div className="flex flex-col">
+            {publicNavigation.map((entry) => (
+              <MobileNavSection
+                key={entry.label}
+                entry={entry}
+                active={isEntryActive(pathname, entry)}
+                onNavigate={() => setOpen(false)}
+              />
+            ))}
+          </div>
 
-        <div className="flex-1 overflow-y-auto px-2 py-3">
-          {publicNavigation.map((entry) => (
-            <MobileNavSection
-              key={entry.label}
-              entry={entry}
-              active={isEntryActive(pathname, entry)}
-              onNavigate={() => setOpen(false)}
-            />
-          ))}
-        </div>
-
-        <div className="border-t border-slate-100 bg-white p-4">
-          <div className="flex flex-col gap-2">
+          <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
             <Button
               href={site.cta.primary.href}
               variant="primary"
               size="lg"
-              className="w-full justify-center"
+              className="w-full justify-center rounded-lg"
             >
               {site.cta.primary.label}
             </Button>
@@ -123,12 +117,12 @@ export const MobileNavigation = () => {
               href={site.cta.secondary.href}
               variant="secondary"
               size="lg"
-              className="w-full justify-center"
+              className="w-full justify-center rounded-lg"
             >
               {site.cta.secondary.label}
             </Button>
           </div>
-        </div>
+        </nav>
       </div>
     </div>
   );

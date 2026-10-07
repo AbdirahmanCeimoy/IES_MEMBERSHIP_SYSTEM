@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { buildAuthHeader, getAuthToken, getStoredUser } from '@/lib/authSession';
-import { apiRequest, API_BASE_URL } from '@/lib/apiClient';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { apiRequest } from '@/lib/apiClient';
+import { fetchPublicEvents, type EventRow } from '@/lib/adminApi';
 
 interface StoredUser {
   fullName?: string;
@@ -23,14 +22,10 @@ interface StoredUser {
   title?: string;
   gender?: string;
   dateOfBirth?: string;
-  city?: string;
-  nationality?: string;
 }
 
 interface MembershipDocument {
   id?: string;
-  type?: string;
-  fileName?: string;
 }
 
 interface MembershipApplication {
@@ -38,61 +33,31 @@ interface MembershipApplication {
   membershipGrade?: string;
   stage?: string;
   decision?: string;
+  membershipStatus?: string;
   registrationNumber?: string | null;
-  certificateNumber?: string | null;
   createdAt?: string;
   documents?: MembershipDocument[];
 }
 
-const quickLinks = [
-  { title: 'Upload Documents', body: 'Submit the required documents for your application.', href: '/member/documents' },
-  { title: 'Application Status', body: 'Track your membership application.', href: '/member/application' },
-  { title: 'Update Profile', body: 'Keep your contact and profile up to date.', href: '/member/profile' },
-  { title: 'CPD Activities', body: 'Log CPD hours and view your record.', href: '/member/cpd' },
-  { title: 'Upcoming Events', body: 'Browse and register for IES events.', href: '/member/events' },
-];
-
-/**
- * Profile completion in 30% steps:
- *   Step 1 — Profile filled       : 30%
- *   Step 2 — Documents uploaded   : 30%
- *   Step 3 — Payment made         : 30%
- *   Step 4 — Approved by IES      : 10%
- */
-const isProfileFilled = (user: StoredUser | null): boolean => {
-  if (!user) return false;
-  const required = [
-    user.title, user.firstName, user.lastName, user.gender, user.dateOfBirth,
-    user.discipline, user.grade, user.email, user.phone, user.nationalId,
-  ];
-  return required.every((v) => v && String(v).trim() !== '');
+const formatYear = (iso?: string): string => {
+  if (!iso) return '—';
+  try { return String(new Date(iso).getFullYear()); } catch { return '—'; }
 };
 
-const calculateProfileCompletion = (
-  user: StoredUser | null,
-  applications: MembershipApplication[] = [],
-): number => {
-  let pct = 0;
-  // Step 1: Profile fields filled (30%)
-  if (isProfileFilled(user)) pct += 30;
-  const latest = applications[0];
-  // Step 2: Documents uploaded (30%) - at least one document attached
-  if (latest && (latest.documents?.length ?? 0) > 0) pct += 30;
-  // Step 3: Payment / Application submitted (30%) - application exists means fees process was accepted
-  if (latest) pct += 30;
-  // Step 4: Approved by IES (10%)
-  if (latest?.decision === 'APPROVED') pct += 10;
-  return pct;
+const deriveStatus = (app?: MembershipApplication): string => {
+  if (!app) return 'NOT IN GOOD STANDING';
+  if (app.membershipStatus === 'GOOD_STANDING' || app.decision === 'APPROVED') return 'GOOD STANDING';
+  if (app.membershipStatus === 'SUSPENDED') return 'SUSPENDED';
+  if (app.membershipStatus === 'PENDING' || (app.stage && app.decision !== 'REJECTED')) return 'PENDING';
+  return 'NOT IN GOOD STANDING';
 };
 
-const formatDate = (iso?: string): string => {
-  if (!iso) return '-';
-  try {
-    const d = new Date(iso);
-    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-  } catch {
-    return iso;
-  }
+const GRADE_LABELS: Record<string, string> = {
+  STUDENT: 'Student Member (SMIES)',
+  GRADUATE: 'Graduate Member (GMIES)',
+  ASSOCIATE: 'Associate Member (AMIES)',
+  CORPORATE: 'Corporate Member (MIES)',
+  FELLOW: 'Fellow Member (FMIES)',
 };
 
 export default function MemberOverviewPage() {
@@ -100,251 +65,150 @@ export default function MemberOverviewPage() {
     typeof window === 'undefined' ? null : getStoredUser<StoredUser>() ?? {},
   );
   const [applications, setApplications] = useState<MembershipApplication[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<EventRow[]>([]);
+  const [loadingApps, setLoadingApps] = useState(true);
+  const [loadingEvents, setLoadingEvents] = useState(true);
 
   useEffect(() => {
     const token = getAuthToken();
-    if (!token) return;
-    apiRequest<{ items?: MembershipApplication[] } | MembershipApplication[]>(
-      '/memberships/my-applications',
-      { headers: buildAuthHeader(token) },
-    ).then((res) => {
-      if (!res.ok || !res.data) return;
-      const items = Array.isArray(res.data) ? res.data : (res.data.items ?? []);
-      setApplications(items);
-    }).catch(() => {});
+    if (!token) { setLoadingApps(false); return; }
+    apiRequest<unknown>('/memberships/my-applications', { headers: buildAuthHeader(token) })
+      .then((res) => {
+        if (!res.ok || !res.data) return;
+        const raw = res.data as unknown;
+        const items = Array.isArray(raw) ? raw : (raw as { items?: MembershipApplication[] }).items ?? [];
+        setApplications(items as MembershipApplication[]);
+      })
+      .catch(() => {})
+      .finally(() => setLoadingApps(false));
   }, []);
 
-  const profilePct = calculateProfileCompletion(user, applications);
-  const isComplete = profilePct === 100;
-  // `username` is intentionally excluded — the app hides usernames everywhere.
-  const displayName = user?.fullName || [user?.title, user?.firstName, user?.lastName].filter(Boolean).join(' ') || 'Member';
+  useEffect(() => {
+    fetchPublicEvents()
+      .then((events) => setUpcomingEvents(events.slice(0, 4)))
+      .catch(() => {})
+      .finally(() => setLoadingEvents(false));
+  }, []);
+
   const latestApp = applications[0];
-  const registrationNo = latestApp?.registrationNumber ?? '-';
-  const category = user?.gradeLabel ?? user?.grade ?? '-';
-  const decision = latestApp?.decision ?? 'PENDING';
-  const membershipStatus =
-    decision === 'APPROVED' ? 'ACTIVE' :
-    decision === 'REJECTED' ? 'REJECTED' :
-    latestApp ? 'UNDER REVIEW' : 'PROFILE INCOMPLETE';
+  const memberStatus = deriveStatus(latestApp);
+  const isGoodStanding = memberStatus === 'GOOD STANDING';
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Top summary bar (like IEK header) */}
-      <div className="grid gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-4">
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Registration No</p>
-          <p className="mt-1 font-mono text-sm font-bold text-[#035CB3]">{registrationNo}</p>
+      {/* 3 Stat Cards — compact */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        {/* Member Since */}
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#035CB3]/10 text-[#035CB3]">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+          </div>
+          <p className="mt-3 text-xl font-bold text-[#022D5A]">
+            {loadingApps ? '—' : formatYear(latestApp?.createdAt)}
+          </p>
+          <p className="mt-0.5 text-xs text-slate-500">Member Since</p>
         </div>
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Category</p>
-          <p className="mt-1 text-sm font-bold text-[#035CB3]">{category}</p>
-        </div>
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Membership Status</p>
-          <span className={
-            'mt-1 inline-flex items-center rounded-full px-3 py-0.5 text-[11px] font-bold ' +
-            (membershipStatus === 'ACTIVE'
-              ? 'bg-[#48C184] text-white'
-              : membershipStatus === 'REJECTED'
-                ? 'bg-rose-100 text-rose-700'
-                : 'bg-amber-100 text-amber-700')
-          }>
-            {membershipStatus}
-          </span>
-        </div>
-        <div className="flex items-center justify-start sm:justify-end">
-          <Link
-            href="/member/profile"
-            className={
-              'inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold ' +
-              (isComplete
-                ? 'bg-[#48C184]/15 text-[#3AA870]'
-                : 'bg-rose-100 text-rose-600')
-            }
-          >
-            <span className="relative flex h-6 w-6 items-center justify-center">
-              <svg viewBox="0 0 36 36" className="absolute inset-0" aria-hidden="true">
-                <path
-                  d="M18 2.5 a 15.5 15.5 0 0 1 0 31 a 15.5 15.5 0 0 1 0 -31"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  opacity="0.25"
-                />
-                <path
-                  d="M18 2.5 a 15.5 15.5 0 0 1 0 31 a 15.5 15.5 0 0 1 0 -31"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  strokeDasharray={`${profilePct}, 100`}
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-            {isComplete ? `Profile Complete!` : `Incomplete Profile ! ${profilePct}%`}
+
+        {/* Events Attended */}
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#035CB3]/10 text-[#035CB3]">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+          </div>
+          <p className="mt-3 text-xl font-bold text-[#022D5A]">0</p>
+          <p className="mt-0.5 text-xs text-slate-500">Events Attended</p>
+          <Link href="/member/events" className="mt-1 block text-[11px] font-semibold text-[#035CB3] hover:underline">
+            Browse events ›
           </Link>
         </div>
+
+        {/* Membership Status */}
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className={
+            'flex h-8 w-8 items-center justify-center rounded-lg ' +
+            (isGoodStanding ? 'bg-[#48C184]/15 text-[#48C184]' : 'bg-rose-100 text-rose-500')
+          }>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <line x1="2" y1="10" x2="22" y2="10" />
+            </svg>
+          </div>
+          <p className={
+            'mt-3 text-sm font-bold leading-tight ' +
+            (isGoodStanding ? 'text-[#48C184]' : 'text-rose-500')
+          }>
+            {loadingApps ? '—' : memberStatus}
+          </p>
+          <p className="mt-0.5 text-xs text-slate-500">Membership Status</p>
+          <p className="mt-0.5 text-[11px] text-slate-400">
+            {user?.gradeLabel ?? GRADE_LABELS[user?.grade ?? ''] ?? 'Grade not set'}
+          </p>
+        </div>
       </div>
 
-      <div>
-        <h1 className="text-2xl font-bold text-[#035CB3]">Dashboard</h1>
-        <p className="text-sm text-slate-600">
-          Welcome{displayName ? `, ${displayName}` : ''}. Here&apos;s an overview of your membership.
-        </p>
-      </div>
+      {/* Recent Activity + Upcoming Events */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Recent Activity */}
+        <div className="rounded-xl border border-slate-200 bg-white p-4">
+          <h2 className="text-sm font-bold text-[#022D5A]">Recent Activity</h2>
+          <div className="mt-4 flex min-h-[90px] flex-col items-center justify-center text-center">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" />
+              <path d="M12 8v4l3 3" strokeLinecap="round" />
+            </svg>
+            <p className="mt-2 text-xs text-slate-400">No recent activity found.</p>
+          </div>
+        </div>
 
-      {/* Stats row */}
-      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-        <Card padded>
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Membership Status</p>
-          <p className="mt-2 text-lg font-semibold text-[#035CB3]">
-            {membershipStatus === 'ACTIVE' ? 'Good Standing' : membershipStatus === 'UNDER REVIEW' ? 'Under Review' : 'Not in Good Standing'}
-          </p>
-          <Badge tone={membershipStatus === 'ACTIVE' ? 'success' : membershipStatus === 'REJECTED' ? 'warning' : 'warning'} className="mt-2">
-            {membershipStatus === 'ACTIVE' ? 'Active member' : 'Pending IES review'}
-          </Badge>
-        </Card>
-        <Card padded>
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Applied Grade</p>
-          <p className="mt-2 text-lg font-semibold text-[#035CB3]">
-            {user?.gradeLabel ?? '-'}
-          </p>
-          <p className="mt-1 text-xs text-slate-500">
-            {user?.discipline ?? 'Discipline not set'}
-          </p>
-        </Card>
-        <Card padded>
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">CPD Hours (2026)</p>
-          <p className="mt-2 text-lg font-semibold text-[#035CB3]">0</p>
-          <p className="mt-1 text-xs text-slate-500">Log your first activity</p>
-        </Card>
-        <Card padded>
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">Notifications</p>
-          <p className="mt-2 text-lg font-semibold text-[#035CB3]">0</p>
-          <p className="mt-1 text-xs text-slate-500">No new notifications</p>
-        </Card>
-      </div>
-
-      {/* General Information + My Applications */}
-      <div className="grid gap-5 lg:grid-cols-[1fr_1.4fr]">
-        {/* General Information */}
-        <Card padded>
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">General Information</p>
-          <div className="mt-4 flex flex-col items-center gap-3">
-            <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-slate-100 ring-4 ring-[#035CB3]/10">
-              {(() => {
-                const photoDoc = applications[0]?.documents?.find((d) => d.type === 'PASSPORT_PHOTO');
-                if (photoDoc?.id) {
-                  const src = `${API_BASE_URL.replace(/\/api$/, '')}/api/memberships/public-photo/${photoDoc.id}`;
-                  return (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img src={src} alt={displayName} className="h-full w-full object-cover" />
-                  );
-                }
-                return (
-                  <span className="text-2xl font-bold text-[#035CB3]">
-                    {(user?.firstName?.[0] ?? user?.fullName?.[0] ?? 'M').toUpperCase()}
-                  </span>
-                );
-              })()}
+        {/* Upcoming Events */}
+        <div className="rounded-xl border border-slate-200 bg-white p-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-bold text-[#022D5A]">Upcoming Events</h2>
+            <Link href="/member/events" className="text-xs font-semibold text-[#035CB3] hover:underline">
+              All events
+            </Link>
+          </div>
+          {loadingEvents ? (
+            <div className="mt-4 flex min-h-[90px] items-center justify-center">
+              <svg className="h-4 w-4 animate-spin text-[#035CB3]" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+              </svg>
             </div>
-            <p className="text-center text-sm font-bold uppercase tracking-wider text-[#035CB3]">
-              {displayName}
-            </p>
-            {user?.gradeLabel && (
-              <span className="rounded-full bg-[#035CB3]/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#035CB3]">
-                {user.gradeLabel}
-              </span>
-            )}
-          </div>
-          <dl className="mt-5 divide-y divide-slate-100 text-sm">
-            <Detail label="Registration No." value={registrationNo} mono />
-            <Detail label="Email" value={user?.email ?? '-'} />
-            <Detail label="Phone" value={user?.phone ?? '-'} />
-            <Detail label="ID / Passport" value={user?.nationalId ?? '-'} mono />
-            <Detail label="Gender" value={user?.gender ? user.gender.charAt(0) + user.gender.slice(1).toLowerCase() : '-'} />
-            <Detail label="Date of Birth" value={formatDate(user?.dateOfBirth)} />
-            <Detail label="Discipline" value={user?.discipline ?? '-'} />
-            <Detail label="City" value={user?.city ?? '-'} />
-            <Detail label="Nationality" value={user?.nationality ?? '-'} />
-          </dl>
-        </Card>
-
-        {/* My Membership Applications */}
-        <Card padded className="overflow-hidden">
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">My Membership Applications</p>
-          <div className="mt-4 overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-slate-200 bg-slate-50 text-[11px] uppercase tracking-widest text-slate-500">
-                  <th className="px-3 py-3 font-bold">Application No</th>
-                  <th className="px-3 py-3 font-bold">Applied Category</th>
-                  <th className="px-3 py-3 font-bold">Date</th>
-                  <th className="px-3 py-3 font-bold">Status</th>
-                  <th className="px-3 py-3 font-bold text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {applications.length === 0 && (
-                  <tr>
-                    <td colSpan={5} className="px-3 py-8 text-center text-sm text-slate-500">
-                      No applications yet. Complete your profile and submit documents to apply.
-                    </td>
-                  </tr>
-                )}
-                {applications.map((app) => (
-                  <tr key={app.id} className="border-b border-slate-100">
-                    <td className="px-3 py-3 font-mono text-xs text-[#035CB3]">
-                      {app.id ? `IES-${app.id.slice(0, 8).toUpperCase()}` : '-'}
-                    </td>
-                    <td className="px-3 py-3 text-sm text-slate-700">{app.membershipGrade ?? '-'}</td>
-                    <td className="px-3 py-3 text-xs text-slate-600">{formatDate(app.createdAt)}</td>
-                    <td className="px-3 py-3">
-                      <Badge tone={
-                        app.decision === 'APPROVED' ? 'success' :
-                        app.decision === 'REJECTED' ? 'warning' : 'muted'
-                      }>
-                        {app.decision ?? 'PENDING'}
-                      </Badge>
-                    </td>
-                    <td className="px-3 py-3 text-right">
-                      <Link
-                        href="/member/application"
-                        className="inline-flex items-center gap-1 rounded-md bg-[#035CB3] px-3 py-1 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#48C184]"
-                      >
-                        View
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      </div>
-
-      {/* Quick Links */}
-      <div>
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-slate-500">Quick Links</h2>
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-5">
-          {quickLinks.map((link) => (
-            <Card key={link.href} padded interactive>
-              <Link href={link.href}>
-                <h3 className="text-sm font-semibold text-[#035CB3]">{link.title}</h3>
-                <p className="mt-1 text-xs text-slate-600">{link.body}</p>
-                <p className="mt-3 text-xs font-semibold text-[#035CB3]">Open ›</p>
-              </Link>
-            </Card>
-          ))}
+          ) : upcomingEvents.length === 0 ? (
+            <div className="mt-4 flex min-h-[90px] flex-col items-center justify-center text-center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <path d="M16 2v4M8 2v4M3 10h18" strokeLinecap="round" />
+              </svg>
+              <p className="mt-2 text-xs text-slate-400">No upcoming events found.</p>
+            </div>
+          ) : (
+            <ul className="mt-3 space-y-2">
+              {upcomingEvents.map((ev) => (
+                <li key={ev.id} className="flex items-start gap-3 rounded-lg border border-slate-100 p-2.5">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#035CB3]/10 text-[#035CB3]">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" />
+                      <path d="M16 2v4M8 2v4M3 10h18" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="truncate text-xs font-semibold text-[#022D5A]">{ev.title}</p>
+                    <p className="text-[11px] text-slate-500">{ev.date}{ev.location ? ` · ${ev.location}` : ''}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-const Detail = ({ label, value, mono }: { label: string; value: string; mono?: boolean }) => (
-  <div className="flex items-center justify-between gap-3 py-2">
-    <p className="text-xs font-semibold text-slate-500">{label}</p>
-    <p className={'text-right text-sm text-[#035CB3] ' + (mono ? 'font-mono' : '')}>{value}</p>
-  </div>
-);

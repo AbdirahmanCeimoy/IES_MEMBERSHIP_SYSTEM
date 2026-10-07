@@ -19,27 +19,65 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
   return { title: article?.title ?? 'News' };
 }
 
-/** Split text into paragraphs and auto-linkify URLs. */
-const renderParagraph = (text: string, key: number) => {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
+const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+/** Linkify URLs within a single line of text. */
+const linkify = (text: string, keyPrefix: string) => {
   const parts = text.split(urlRegex);
+  return parts.map((part, i) =>
+    urlRegex.test(part) ? (
+      <a
+        key={`${keyPrefix}-${i}`}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold text-[#035CB3] underline hover:text-[#48C184]"
+      >
+        {part}
+      </a>
+    ) : (
+      <span key={`${keyPrefix}-${i}`}>{part}</span>
+    ),
+  );
+};
+
+/**
+ * Render a paragraph string with awareness of structure:
+ * - Lines starting with "- " become a bullet list
+ * - Short standalone text without a trailing period/colon becomes a sub-heading
+ * - Plain text renders as a paragraph, with "\n" turned into <br>
+ */
+const renderParagraph = (text: string, key: number) => {
+  const lines = text.split('\n');
+  const allBullets = lines.length > 0 && lines.every((l) => l.trim().startsWith('- '));
+
+  if (allBullets) {
+    return (
+      <ul key={key} className="list-disc space-y-1 pl-6 marker:text-[#035CB3]">
+        {lines.map((line, i) => (
+          <li key={i}>{linkify(line.trim().replace(/^-\s+/, ''), `b-${i}`)}</li>
+        ))}
+      </ul>
+    );
+  }
+
+  const isHeading = lines.length === 1 && text.length <= 40 && !/[.:!?]$/.test(text.trim());
+  if (isHeading) {
+    return (
+      <h2 key={key} className="mt-2 text-lg font-bold text-[#022D5A] sm:text-xl">
+        {linkify(text, 'h')}
+      </h2>
+    );
+  }
+
   return (
     <p key={key}>
-      {parts.map((part, i) =>
-        urlRegex.test(part) ? (
-          <a
-            key={i}
-            href={part}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-[#035CB3] underline hover:text-[#48C184]"
-          >
-            {part}
-          </a>
-        ) : (
-          <span key={i}>{part}</span>
-        ),
-      )}
+      {lines.map((line, idx) => (
+        <span key={idx}>
+          {linkify(line, `l-${idx}`)}
+          {idx < lines.length - 1 && <br />}
+        </span>
+      ))}
     </p>
   );
 };

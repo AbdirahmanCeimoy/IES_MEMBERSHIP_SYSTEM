@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { site } from '@/config/site';
 import { SiteContainer } from '@/components/layout/SiteContainer';
-import { ContactFormModal } from './ContactFormModal';
 
 const PhoneIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -73,38 +71,32 @@ const socialLinks = [
 export { FacebookIcon, InstagramIcon, LinkedInIcon, TikTokIcon, YouTubeIcon, XIcon, PhoneIcon, MailIcon, ClockIcon, socialLinks };
 
 export const TopBar = () => {
-  const [reportOpen, setReportOpen] = useState(false);
-
   return (
     <>
       <div className="hidden border-b border-[#035CB3]/10 bg-[#f0f6ff] text-xs text-slate-600 md:block">
-        <SiteContainer className="flex items-center justify-between py-1.5">
-          <div className="flex items-center gap-4">
+        <SiteContainer className="flex max-w-none items-center justify-between gap-4 py-1.5 lg:px-8">
+          <div className="flex min-w-0 items-center gap-4 whitespace-nowrap">
             <a href={`tel:${site.contact.phones[0].replace(/\s/g, '')}`} className="flex items-center gap-1.5 transition-colors hover:text-[#035CB3]">
               <PhoneIcon />
               <span className="font-semibold text-[#022D5A]">Call Us:</span>
               <span>{site.contact.phones[0]}</span>
             </a>
-            <span className="text-slate-300">|</span>
-            <a href={`mailto:${site.contact.generalEmail}`} className="flex items-center gap-1.5 transition-colors hover:text-[#035CB3]">
+            <span className="hidden text-slate-300 lg:inline">|</span>
+            <a href={`mailto:${site.contact.generalEmail}`} className="hidden items-center gap-1.5 lg:flex transition-colors hover:text-[#035CB3]">
               <MailIcon />
               <span className="font-semibold text-[#022D5A]">Email Us:</span>
               <span>{site.contact.generalEmail}</span>
             </a>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-3 whitespace-nowrap">
             <a href="/info-hub/ies-journal" className="rounded-md bg-[#035CB3] px-3 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white transition-all hover:bg-[#024A8F] hover:shadow-md">
               IES Journal
             </a>
-            <button
-              type="button"
-              onClick={() => setReportOpen(true)}
-              className="rounded-md bg-[#035CB3] px-3 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white transition-all hover:bg-[#024A8F] hover:shadow-md"
-            >
+            <a href="/report-violations" className="rounded-md bg-[#035CB3] px-3 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white transition-all hover:bg-[#024A8F] hover:shadow-md">
               Report Violations
-            </button>
-            <span className="text-slate-300">|</span>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Follow Us:</span>
+            </a>
+            <span className="hidden text-slate-300 xl:inline">|</span>
+            <span className="hidden text-[10px] xl:inline font-semibold uppercase tracking-wider text-slate-400">Follow Us:</span>
             {socialLinks.map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
@@ -121,7 +113,6 @@ export const TopBar = () => {
         </SiteContainer>
       </div>
 
-      {reportOpen && <ContactFormModal open onClose={() => setReportOpen(false)} mode="report" />}
     </>
   );
 };
