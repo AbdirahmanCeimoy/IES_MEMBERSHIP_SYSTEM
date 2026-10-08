@@ -104,7 +104,7 @@ export default function BillingPage() {
           </div>
           <div className="flex items-center gap-1 text-xs text-slate-500">
             <span className="min-w-[60px] text-right">
-              {totalRows === 0 ? '0' : `${(page - 1) * rowsPerPage + 1}–${Math.min(page * rowsPerPage, totalRows)}`} of {totalRows}
+              {totalRows === 0 ? '0' : `${(page - 1) * rowsPerPage + 1}-${Math.min(page * rowsPerPage, totalRows)}`} of {totalRows}
             </span>
             <button
               type="button"

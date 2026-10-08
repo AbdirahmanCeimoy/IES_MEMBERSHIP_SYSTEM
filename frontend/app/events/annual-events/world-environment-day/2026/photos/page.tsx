@@ -7,7 +7,7 @@ import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { routes } from '@/config/routes';
 import { findAnnualEvent } from '@/data/annual-events';
 
-export const metadata = { title: 'Photos — World Environment Day Celebration 2026' };
+export const metadata = { title: 'Photos - World Environment Day Celebration 2026' };
 
 export default function WorldEnvironmentDay2026PhotosPage() {
   const event = findAnnualEvent('world-environment-day-2026');
@@ -65,7 +65,7 @@ export default function WorldEnvironmentDay2026PhotosPage() {
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                 <Image
                   src={src}
-                  alt={`${event.title} — photo ${i + 1}`}
+                  alt={`${event.title} - photo ${i + 1}`}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.05]"

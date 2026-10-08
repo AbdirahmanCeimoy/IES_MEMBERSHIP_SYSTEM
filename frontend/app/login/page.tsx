@@ -87,12 +87,14 @@ export default function LoginPage() {
         </div>
 
         {/* Organization Name */}
-        <h2 className="mb-1 text-center text-2xl font-extrabold leading-snug text-[#035CB3] sm:text-2xl">
-          {site.name}
+        <h2 className="mb-3 text-center text-xl font-extrabold leading-snug text-[#035CB3] sm:text-xl">
+          The Institution of Engineers
+          <br />
+          Somalia (IES)
         </h2>
 
         {/* Log In Heading */}
-        <h1 className="mb-3 text-center text-base font-bold text-[#035CB3]">
+        <h1 className="mb-3 text-center text-2xl font-extrabold tracking-wide text-[#035CB3]">
           Log In
         </h1>
 

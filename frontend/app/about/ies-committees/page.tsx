@@ -20,7 +20,7 @@ export default function CommitteesPage() {
       <Section spacing="relaxed">
         <SiteContainer>
           <h2 className="mb-8 text-center text-2xl font-extrabold text-[#035CB3] sm:text-3xl">
-            IES Committees 2026–2028
+            IES Committees 2026-2028
           </h2>
 
           <div className="overflow-x-auto rounded-xl border border-slate-200">

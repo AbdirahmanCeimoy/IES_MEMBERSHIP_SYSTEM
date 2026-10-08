@@ -1472,7 +1472,7 @@ export default function DashboardPage() {
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="footer-icon">
                                 <circle cx="10" cy="10" r="9" stroke="#94a3b8" strokeWidth="1.5" />
                             </svg>
-                            <span className="footer-org">INSTITUTION OF ENGINEERS – SOMALIA</span>
+                            <span className="footer-org">INSTITUTION OF ENGINEERS - SOMALIA</span>
                         </div>
                         <p className="footer-text">© 2024 IES Somalia. All infrastructure standards and member credentials are protected by the Board of Engineers.</p>
                     </footer>

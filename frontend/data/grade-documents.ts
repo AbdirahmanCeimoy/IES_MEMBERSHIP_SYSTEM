@@ -122,10 +122,10 @@ const projectPortfolio: DocumentField = {
 };
 
 /**
- * IES Graduate Certificate — repurposes `refereeOneFileName` (unused since
+ * IES Graduate Certificate - repurposes `refereeOneFileName` (unused since
  * referees moved to Profile → Referees tab) so it does not clash with the
  * Degree Certificate slot which owns `degreeFileName`. Optional across all
- * grades that use it (Corporate + Associate) — applicants can skip it.
+ * grades that use it (Corporate + Associate) - applicants can skip it.
  */
 const iesGraduateCert: DocumentField = {
   key: 'refereeOneFileName',
@@ -154,14 +154,14 @@ const csrPortfolio: DocumentField = {
 const shortBio: DocumentField = {
   key: 'achievementProfileFileName',
   label: 'Short Biography',
-  helper: 'PDF Preferred (Maximum 2 Pages) – IES & CSR Involvement',
+  helper: 'PDF Preferred (Maximum 2 Pages) - IES & CSR Involvement',
   accept: 'pdf',
   required: true,
 };
 
 /**
  * Upload buttons per grade. These MUST mirror the wording in
- * `grade-requirements.ts` — anything captured elsewhere (referees, years of
+ * `grade-requirements.ts` - anything captured elsewhere (referees, years of
  * experience, IES involvement) is not repeated here as an upload slot.
  */
 export const gradeDocuments: Record<GradeCode, DocumentField[]> = {

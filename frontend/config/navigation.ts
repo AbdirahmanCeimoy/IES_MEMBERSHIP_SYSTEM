@@ -42,7 +42,7 @@ export const publicNavigation: NavigationEntry[] = [
         label: 'IES Key Documents',
         children: [
           { label: 'IES Brochure', href: routes.about.governance.brochure },
-          { label: 'IES Strategic Plan 2026–2030', href: routes.about.governance.strategicPlan2026_2030 },
+          { label: 'IES Strategic Plan 2026-2030', href: routes.about.governance.strategicPlan2026_2030 },
           { label: 'IES Annual Reports', href: routes.about.governance.iesDocuments.annualReports },
         ],
       },
@@ -122,8 +122,8 @@ export const publicNavigation: NavigationEntry[] = [
     href: routes.infoHub.root,
     layout: 'dropdown',
     children: [
-      { label: 'News', href: routes.infoHub.news },
       { label: 'Announcements', href: routes.infoHub.announcements },
+      { label: 'News', href: routes.infoHub.news },
       { label: 'Publications', href: routes.infoHub.publications },
       { label: 'Engineering in Somalia Magazine', href: routes.infoHub.magazine },
       { label: 'Conference Papers & Reports', href: routes.infoHub.conferencePapers },

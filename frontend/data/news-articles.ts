@@ -17,7 +17,7 @@ export interface NewsArticle {
   hideSignature?: boolean;
   /** Hide the "The MoU establishes a framework..." lead-in and the areas list. */
   hideAreas?: boolean;
-  /** What kind of item this is — decides which index page the "Back" link
+  /** What kind of item this is - decides which index page the "Back" link
    *  returns to and which navigation section highlights. Defaults to 'news'. */
   kind?: 'news' | 'announcement';
 }
@@ -49,7 +49,7 @@ export const newsArticles: NewsArticle[] = [
     title: 'IES Signed MoU with Jazeera University (JU)',
     date: '20 December 2025',
     author: { name: 'Eng. Omar Abdi Arab', role: 'President, IES' },
-    hashtags: ['IES', 'JazeeraUniversity', 'MoUSigning', 'StrategicPartnership', 'EngineeringEducation'],
+    hashtags: ['IES', 'JazeeraUniversity', 'MoUSigning', 'StrategicPartnership', 'EngineeringEducation', 'AcademicCollaboration', 'SomaliEngineers'],
     image: '/Jazera-University-sign.png',
     intro:
       'On 20 December 2025, the Institution of Engineers of Somalia (IES) and Jazeera University, Mogadishu, Somalia, officially signed a Memorandum of Understanding (MoU) to enhance cooperation in engineering education, professional development, innovation and knowledge exchange.',
@@ -70,7 +70,7 @@ export const newsArticles: NewsArticle[] = [
     title: 'IES Signed MoU with Salaam University (SU)',
     date: '31 December 2025',
     author: { name: 'Eng. Mohamed Hussein Hassan', role: 'Honorary Secretary, IES' },
-    hashtags: ['IES', 'SalaamUniversity', 'MoUSigning', 'StrategicPartnership', 'EngineeringEducation'],
+    hashtags: ['IES', 'SalaamUniversity', 'MoUSigning', 'StrategicPartnership', 'EngineeringEducation', 'AcademicCollaboration', 'SomaliEngineers'],
     image: '/slaaam-University.jpeg',
     intro:
       'On 31 December 2025, the Institution of Engineers of Somalia (IES) and Salaam University, Mogadishu, Somalia, officially signed a Memorandum of Understanding (MoU) to strengthen cooperation in engineering education, professional development, research and knowledge exchange.',
@@ -91,7 +91,7 @@ export const newsArticles: NewsArticle[] = [
     title: 'IES Signed MoU with Benadir University',
     date: '1 January 2026',
     author: { name: 'Eng. Bashir Ali Hussein', role: 'Vice President, IES' },
-    hashtags: ['IES', 'BenadirUniversity', 'MoUSigning', 'StrategicPartnership', 'EngineeringEducation'],
+    hashtags: ['IES', 'BenadirUniversity', 'MoUSigning', 'StrategicPartnership', 'EngineeringEducation', 'AcademicCollaboration', 'SomaliEngineers'],
     image: '/parterner-Banadir-University.jpeg',
     intro:
       'On 1 January 2026, the Institution of Engineers of Somalia (IES) and Benadir University, Mogadishu, Somalia, officially signed a Memorandum of Understanding (MoU) to strengthen cooperation in engineering education, professional training, research, innovation and continuing professional development in Somalia.',
@@ -114,7 +114,7 @@ export const newsArticles: NewsArticle[] = [
     title: 'IES Participated in SORECA and Ministry of Public Works Meeting on Infrastructure and Urban Development',
     date: '15 April 2026',
     author: { name: 'IES', role: 'Institution of Engineers Somalia' },
-    hashtags: ['IES', 'InfrastructureDevelopment', 'UrbanDevelopment', 'EngineeringSomalia', 'PublicWorks', 'SustainableCities', 'CapacityBuilding', 'ConstructionSector', 'Collaboration', 'SomaliaDevelopment', 'SomaliRealEstate', 'ProfessionalEngineers', 'SORECA', 'MoPWRH'],
+    hashtags: ['IES', 'SORECA', 'MoPWRH', 'InfrastructureDevelopment', 'UrbanDevelopment', 'ConstructionSector', 'PublicWorks', 'SustainableCities', 'CapacityBuilding', 'Collaboration', 'SomaliaDevelopment', 'SomaliRealEstate', 'ProfessionalEngineers', 'EngineeringSomalia'],
     image: '/PARTNER-SORECA.jpeg',
     intro:
       'The Institution of Engineers Somalia (IES), led by President Eng. Omar Abdi Arab and Vice President Eng. Bashir Ali Hussein, participated in an important meeting between the Somali Real Estate and Construction Association (SORECA) and the Ministry of Public Works, Reconstruction and Housing, Somalia.',
@@ -134,7 +134,7 @@ export const newsArticles: NewsArticle[] = [
     title: '2027 WFEO Hackathon Registration Is Now Open!',
     date: '',
     author: { name: 'WFEO', role: 'World Federation of Engineering Organizations' },
-    hashtags: ['WFEOHackathon', 'WED', 'WorldEngineeringDay', 'SustainableDevelopment', 'SustainableTransport', 'YoungEngineers', 'EngineeringStudents', 'Innovation'],
+    hashtags: ['IES', 'WFEOHackathon', 'WorldEngineeringDay', 'WED', 'SustainableDevelopment', 'SustainableTransport', 'YoungEngineers', 'EngineeringStudents', 'Innovation'],
     image: '/PARTNER-WFOE.jpeg',
     intro:
       'The #WFEOHackathon is back as part of the 2027 World Engineering Day for Sustainable Development celebrations!',
@@ -152,9 +152,9 @@ export const newsArticles: NewsArticle[] = [
   {
     slug: 'iek-32nd-convention-mombasa',
     title: 'IES Vice President Participated in the 32nd IEK International Convention in Mombasa, Kenya',
-    date: '25–28 November 2025',
+    date: '25-28 November 2025',
     author: { name: 'Eng. Bashir Ali Hussein', role: 'Vice President, IES' },
-    hashtags: ['IES', 'IEK32ndConvention', 'EngineeringTheFuture', 'RegionalCollaboration', 'EAFEO', 'FAEO', 'WFEO', 'EBK', 'EngineeringExcellence', 'KnowledgeExchange'],
+    hashtags: ['IES', 'IEK32ndConvention', 'EBK', 'EAFEO', 'FAEO', 'WFEO', 'RegionalCollaboration', 'EngineeringTheFuture', 'EngineeringExcellence', 'KnowledgeExchange'],
     image: '/IES Vice President Participated in the 32nd IEK International Convention in Mombasa, Kenya.jpeg',
     intro:
       'The Institution of Engineers Somalia (IES) was honored to participate in the 32nd IEK International Convention held at PrideInn Paradise Beach Resort, Mombasa, Kenya, one of the region\'s premier gatherings of engineering professionals, policymakers, and innovators from across Africa.',
@@ -172,13 +172,13 @@ export const newsArticles: NewsArticle[] = [
   },
   {
     slug: 'benadir-steel-inauguration',
-    title: 'IES Leadership Attended the Inauguration of Benadir Steel Ltd.',
+    title: 'IES Leadership Attended the Inauguration of Benadir Steel Industry.',
     date: '08 November 2025',
     author: { name: 'Eng. Omar Abdi Arab', role: 'President, IES' },
-    hashtags: ['IES', 'BenadirSteelLtd', 'EngineeringSomalia', 'IndustrialDevelopment', 'EngineeringInnovation'],
+    hashtags: ['IES', 'BenadirSteelIndustry', 'IndustrialDevelopment', 'EngineeringSomalia', 'EngineeringInnovation'],
     image: '/IES Leadership Attended the Inauguration of Benadir Steel Ltd.jpeg',
     intro:
-      'On 8 November 2025, the Institution of Engineers Somalia (IES), led by President Eng. Omar Abdi Arab and Vice President Eng. Bashir Ali Hussein, attended the inauguration ceremony of Benadir Steel Ltd., which was officially opened by the President of the Federal Republic of Somalia, H.E. Dr. Hassan Sheikh Mohamud.',
+      'On 8 November 2025, the Institution of Engineers Somalia (IES), led by President Eng. Omar Abdi Arab and Vice President Eng. Bashir Ali Hussein, attended the inauguration ceremony of Benadir Steel Industry., which was officially opened by the President of the Federal Republic of Somalia, H.E. Dr. Hassan Sheikh Mohamud.',
     paragraphs: [
       'The new steel factory marked an important step toward strengthening local manufacturing, encouraging Somali engineers, and advancing industrial self-reliance in Somalia.',
     ],
@@ -193,7 +193,7 @@ export const newsArticles: NewsArticle[] = [
     title: 'IES Marks World Engineering Day (WED2025) with 100-Tree Donation to Madina Hospital',
     date: '4 March 2025',
     author: { name: 'IES', role: 'Institution of Engineers Somalia' },
-    hashtags: ['WorldEngineeringDayWED2025', 'ShapingASustainableFuture', 'EngineeringMatters', 'IES', 'MadinaHospital', 'TreePlanting', 'Sustainability'],
+    hashtags: ['IES', 'MadinaHospital', 'WorldEngineeringDayWED2025', 'ShapingASustainableFuture', 'EngineeringMatters', 'TreePlanting', 'Sustainability'],
     image: '/IES Marks World Engineering Day (WED2025) with 100-Tree Donation to Madina Hospital.jpeg',
     intro:
       'As part of the World Engineering Day (WED2025) celebration, the Institution of Engineers Somalia (IES) donated 100 trees to Madina Hospital in Mogadishu to support the creation of a greener environment and a healthier atmosphere for patients, healthcare workers, and the surrounding community.',
@@ -214,7 +214,7 @@ export const newsArticles: NewsArticle[] = [
     title: 'IES Participated in the WFEO Engineering Capacity Building for Africa Programme in Nairobi',
     date: '17 March 2025',
     author: { name: 'Eng. Omar Abdi Arab', role: 'President, IES' },
-    hashtags: ['IES', 'WFEO', 'ECBAP', 'IEK', 'EBK', 'CAST', 'EngineeringCapacityBuilding', 'EngineeringAfrica', 'EngineeringInnovation', 'SustainableDevelopment', 'RegionalCollaboration'],
+    hashtags: ['IES', 'IEK', 'EBK', 'ECBAP', 'WFEO', 'CAST', 'EngineeringCapacityBuilding', 'EngineeringAfrica', 'EngineeringInnovation', 'SustainableDevelopment', 'RegionalCollaboration'],
     image: '/IES Participated in the WFEO Engineering Capacity Building for Africa Programme in Nairobi.jpeg',
     intro:
       'The Institution of Engineers Somalia (IES) was honored to participate in the launch of the WFEO Engineering Capacity Building for Africa Programme (ECBAP), held on 17 March 2025 in Nairobi, Kenya, in collaboration with the World Federation of Engineering Organizations (WFEO), the Institution of Engineers of Kenya (IEK), the Engineers Board of Kenya (EBK), and the China Association for Science and Technology (CAST).',
@@ -251,12 +251,12 @@ export const newsArticles: NewsArticle[] = [
   {
     slug: 'cop29-baku',
     title: 'IES Vice President Participated in COP29 in Baku, Azerbaijan',
-    date: '11–22 November 2024',
+    date: '11-22 November 2024',
     author: { name: 'Eng. Bashir Ali Hussein', role: 'Vice President, IES' },
-    hashtags: ['IES', 'COP29', 'ClimateAction', 'Sustainability', 'EngineeringForChange', 'ClimateResilience', 'Somalia', 'EngineeringInnovation', 'Baku2024'],
+    hashtags: ['IES', 'Baku2024', 'COP29', 'ClimateAction', 'ClimateResilience', 'Sustainability', 'EngineeringForChange', 'EngineeringInnovation', 'Somalia'],
     image: '/IES Vice President Participated in COP29 in Baku, Azerbaijan.jpeg',
     intro:
-      'The Institution of Engineers Somalia (IES) was pleased to be represented at the 29th United Nations Climate Change Conference of the Parties (COP29), held from 11–22 November 2024 in Baku, Azerbaijan.',
+      'The Institution of Engineers Somalia (IES) was pleased to be represented at the 29th United Nations Climate Change Conference of the Parties (COP29), held from 11-22 November 2024 in Baku, Azerbaijan.',
     paragraphs: [
       'IES was proudly represented by our Vice President, Eng. Bashir Ali Hussein, who participated in discussions and engagements focused on climate resilience, sustainability, and the role of engineering in addressing climate-related challenges.',
       'His participation provided an opportunity for IES to engage with international organizations, research institutions, universities, and other stakeholders working to advance sustainable development and climate action.',
@@ -273,14 +273,14 @@ export const newsArticles: NewsArticle[] = [
     title: 'International Women in Engineering Day (INWED2026) - Coming Soon',
     date: '23 June 2026',
     author: { name: 'Eng. Omar Abdi Arab', role: 'President, IES' },
-    hashtags: ['INWED2026', 'EngineeringIntelligence', 'WomenInEngineering', 'IESomalia', 'WEC', 'JUST', 'Engineering'],
+    hashtags: ['IES', 'JUST', 'INWED2026', 'EngineeringIntelligence', 'WomenInEngineering', 'WEC', 'Engineering'],
     image: '/International Women in Engineering Day (INWED2026).jpeg',
     intro:
       'The Institution of Engineers Somalia (IES), through its Women Engineers Committee (WEC), is pleased to organize International Women in Engineering Day 2026 (INWED26), hosted by Jamhuriya University of Science and Technology.',
     paragraphs: [
       'Under the theme "Engineering Intelligence," the event will celebrate the achievements, leadership, and contributions of women engineers while exploring how innovation, technology, and engineering intelligence are shaping the future of engineering and society.',
       '📅 Date: Tuesday, 23 June 2026',
-      '🕒 Time: 3:00 PM – 6:00 PM',
+      '🕒 Time: 3:00 PM - 6:00 PM',
       '📍 Venue: JIC Hall, Jamhuriya University, Campus 3, Opposite Dahab Tower',
       '🎯 Organized by: IES Women Engineers Committee (WEC)',
       '🎯 Hosted by: Jamhuriya University of Science and Technology',
@@ -296,12 +296,11 @@ export const newsArticles: NewsArticle[] = [
     title: 'Somalia’s 2nd World Engineering Day (WED2026) Celebration',
     date: '4 March 2026',
     author: { name: 'IES', role: 'Institution of Engineers Somalia' },
-    hashtags: ['WED2026', 'SmartEngineering', 'SustainableFuture', 'Innovation', 'Digitalization', 'IES', 'Somalia'],
+    hashtags: ['IES', 'GrandCafe', 'WED2026', 'SmartEngineering', 'SustainableFuture', 'Innovation', 'Digitalization', 'Somalia'],
     image: '/Somalia’s World Engineering Day (WED2026) .jpeg',
     intro:
-      'The Institution of Engineers Somalia (IES) successfully organized Somalia’s Second World Engineering Day Celebration in (WED2026) under the theme:',
+      'The Institution of Engineers Somalia (IES) successfully organized Somalia’s Second World Engineering Day Celebration in (WED2026) under the theme: “Smart Engineering for a Sustainable Future Through Innovation & Digital Transformation.”',
     paragraphs: [
-      '“Smart Engineering for a Sustainable Future Through Innovation & Digital Transformation.”',
       'The celebration was held at Grand Café, Airport Hotel, Wadajir District, Mogadishu, from 3:00 PM to 6:00 PM, bringing together engineers, engineering professionals, students, academics, government representatives, development partners, and other stakeholders.',
       'The event provided an important platform to recognize the vital role of engineering in promoting innovation, digital transformation, sustainable development, and practical solutions to Somalia’s development challenges.',
       'Event Activities',
@@ -320,12 +319,11 @@ export const newsArticles: NewsArticle[] = [
     title: 'Somali’s 1st World Engineering Day (WED2025) Celebration',
     date: '4 March 2025',
     author: { name: 'IES', role: 'Institution of Engineers Somalia' },
-    hashtags: ['WED2025', 'ShapingASustainableFuture', 'EngineeringMatters', 'IES', 'Somalia'],
+    hashtags: ['IES', 'JazeeraHotel', 'WED2025', 'ShapingASustainableFuture', 'EngineeringMatters', 'Somalia'],
     image: '/Somalia’s First World Engineering Day.jpeg',
     intro:
-      'The Institution of Engineers Somalia (IES) successfully organized the Somali’s First World Engineering Day (WED2025) Celebration under the theme:',
+      'The Institution of Engineers Somalia (IES) successfully organized the Somali’s First World Engineering Day (WED2025) Celebration under the theme: “Shaping a Sustainable Future Through Engineering.”',
     paragraphs: [
-      '“Shaping a Sustainable Future Through Engineering.”',
       'The celebration was held at Jazeera Hotel, Airport Street, Wadajir District, Mogadishu, from 4:00 PM to 8:00 PM, and brought together more than 250 participants, including engineers, engineering professionals, students, academics, government representatives, development partners, and other stakeholders.',
       'The event provided an important platform to recognize the vital role of engineering in sustainable development, innovation, infrastructure development, and addressing Somalia’s development challenges.',
       'Event Activities',
@@ -343,7 +341,7 @@ export const newsArticles: NewsArticle[] = [
     title: 'IES Delegation Met with UNESCO Somalia to Discuss Engineering and STEM Development',
     date: '21 July 2026',
     author: { name: 'IES', role: 'Institution of Engineers Somalia' },
-    hashtags: ['IES', 'UNESCOSomalia', 'STEM', 'EngineeringDevelopment', 'WomenInEngineering', 'Somalia'],
+    hashtags: ['IES', 'Partnership','UNESCO', 'STEM','WomenInEngineering', 'EngineeringDevelopment', 'Somalia'],
     image: '/IES Delegation Meets with UNESCO Somalia to Discuss Engineering and STEM Development.jpeg',
     intro:
       'The Institution of Engineers Somalia (IES) delegation was invited by UNESCO Somalia to a constructive meeting held on 21 July 2026 at the United Nations Support Office in Somalia (UNSOS), Mogadishu.',
@@ -366,7 +364,7 @@ export const newsArticles: NewsArticle[] = [
     title: 'IES Participated in Solid Waste Management Program in Japan',
     date: '12 July 2026',
     author: { name: 'Eng. Ayan Muse', role: 'Council Member, IES' },
-    hashtags: ['IES', 'SolidWasteManagement', 'Japan', 'UrbanDevelopment', 'Sustainability', 'WasteManagement'],
+    hashtags: ['IES', 'Japan', 'SolidWasteManagement', 'WasteManagement', 'UrbanDevelopment', 'Sustainability'],
     image: '/IES Participated in Solid Waste Management Program in Japan.jpeg',
     intro:
       'The Institution of Engineers Somalia (IES) highlighted the successful participation of Eng. Ayan Muse, Council Member of IES, in the Solid Waste Management Program held at the Tokyo Development Learning Center (TDLC), Japan.',
@@ -387,15 +385,15 @@ export const newsArticles: NewsArticle[] = [
     title: 'IES Co-Organizes World Environment Day 2026 Program - Coming Soon',
     date: '3 June 2026',
     author: { name: 'Eng. Omar Abdi Arab', role: 'President, IES' },
-    hashtags: ['WorldEnvironmentDay2026', 'InspiredByNature', 'ClimateAction', 'IESomalia', 'BenadirUniversity', 'MoECC', 'Sustainability', 'Somalia'],
+    hashtags: ['IES', 'BenadirUniversity', 'MoECC', 'WorldEnvironmentDay2026', 'InspiredByNature', 'ClimateAction', 'Sustainability', 'Somalia'],
     image: '/IES Co-Organizes World Environment Day 2026 Program.jpeg',
     intro:
       'The Institution of Engineers Somalia (IES) is pleased to announce its participation as a Co-Organizer of the World Environment Day 2026 program, organized in collaboration with Benadir University and the Ministry of Environment and Climate Change (MoECC).',
     paragraphs: [
       'Under the theme “Inspired by Nature, for Climate, for Our Future,” the program will bring together students, academics, engineers, environmental professionals, and other stakeholders to promote environmental awareness, climate action, and nature-based solutions for a sustainable and resilient future.',
       'Key Activities\nThe program will feature a range of environmental and awareness activities, including:\n- 🌳 Tree Planting and Urban Greening\n- 🧹 Environmental Clean-Up Campaign\n- ♻️ Waste Management and Recycling Awareness\n- 🌱 Nature-Based Solutions and Environmental Conservation\n- 🌍 Climate Change Awareness and Education\n- 💧 Water and Natural Resource Conservation\n- 🏙️ Sustainable Cities and Climate-Resilient Infrastructure Discussions\n🎤 Expert Talks\n👩‍🎓 Student Engagement and Environmental Awareness Activities',
-      '📅 Date: 3 June 2026\n🕒 Time: 9:00 AM – 11:00 AM\n📍 Venue: Prof. Addow Campus, Floor 3, Seminar Hall',
-      'Organized in collaboration by:\nBenadir University | Ministry of Environment & Climate Change | The Institution of Engineers Somalia (IES).',
+      '📅 Date: 3 June 2026\n🕒 Time: 9:00 AM - 11:00 AM\n📍 Venue: Prof. Addow Campus, Floor 3, Seminar Hall',
+      'Organized in collaboration by: Benadir University | Ministry of Environment & Climate Change | The Institution of Engineers Somalia (IES).',
       'Through this collaboration, IES is proud to support initiatives that connect engineering, environmental stewardship, and climate action, contributing to a cleaner, greener, and more sustainable future for Somalia.',
     ],
     areas: [],
@@ -406,10 +404,10 @@ export const newsArticles: NewsArticle[] = [
   {
     slug: 'inwed-2025',
     kind: 'announcement',
-    title: 'International Women in Engineering Day (INWED2025) — Coming Soon',
+    title: 'International Women in Engineering Day (INWED2025) - Coming Soon',
     date: '23 June 2025',
     author: { name: 'Eng. Omar Abdi Arab', role: 'President, IES' },
-    hashtags: ['INWED26', 'TogetherWeEngineer', 'WomenInEngineering', 'IESomalia', 'WEC', 'EngineeringExcellence', 'InnovationInAction'],
+    hashtags: ['IES', 'ArkaanLeadershipHub', "ArkaanInnovationHUB",'WEC', 'INWED26', 'TogetherWeEngineer', 'WomenInEngineering', 'EngineeringExcellence', 'InnovationInAction'],
     image: '/International Women in Engineering Day (INWED2025).jpeg',
     intro:
       'Join us as we celebrate the brilliant and resilient women shaping the future of engineering in Somalia and beyond.',
@@ -417,8 +415,8 @@ export const newsArticles: NewsArticle[] = [
       '🔧 Theme: Together We Engineer',
       '📍 Venue: Arkaan Leadership and Innovation Hub Center',
       '📅 Date: 23 June 2025',
-      '🕒 Time: 3:00 PM – 6:00 PM',
-      '🎯 Organized by: IES — Women Engineers Committee (WEC)',
+      '🕒 Time: 3:00 PM - 6:00 PM',
+      '🎯 Organized by: IES - Women Engineers Committee (WEC)',
       'Let\'s unite to inspire, empower, and elevate women in engineering. Be part of the movement. 💪💡',
     ],
     areas: [],

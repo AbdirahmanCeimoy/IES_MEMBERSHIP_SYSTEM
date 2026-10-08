@@ -7,7 +7,7 @@ import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { routes } from '@/config/routes';
 import { findAnnualEvent } from '@/data/annual-events';
 
-export const metadata = { title: 'Photos — INWED 2025' };
+export const metadata = { title: 'Photos - INWED 2025' };
 
 export default function INWED2025PhotosPage() {
   const event = findAnnualEvent('international-women-engineering-day-2025');
@@ -31,7 +31,7 @@ export default function INWED2025PhotosPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
           {event.photos.map((src, index) => (
             <a key={src} href={src} target="_blank" rel="noopener noreferrer" className="group relative block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md" aria-label={`Open photo ${index + 1} in a new tab`}>
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100"><Image src={src} alt={`${event.title} — photo ${index + 1}`} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px" className="object-cover transition-transform duration-500 group-hover:scale-[1.05]" /></div>
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100"><Image src={src} alt={`${event.title} - photo ${index + 1}`} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px" className="object-cover transition-transform duration-500 group-hover:scale-[1.05]" /></div>
               <div className="flex items-center justify-between gap-3 px-4 py-3"><span className="text-xs font-semibold uppercase tracking-wider text-[#022D5A] sm:text-sm">Photo {index + 1}</span><span className="text-xs font-semibold text-[#035CB3]">Open ↗</span></div>
             </a>
           ))}

@@ -59,7 +59,7 @@ export const Pagination = ({
         Showing <span className="font-semibold text-slate-700">{rangeStart}</span>
         {rangeEnd > rangeStart && (
           <>
-            {' '}–{' '}
+            {' '}-{' '}
             <span className="font-semibold text-slate-700">{rangeEnd}</span>
           </>
         )}{' '}

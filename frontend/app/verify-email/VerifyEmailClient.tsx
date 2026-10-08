@@ -60,7 +60,7 @@ export const VerifyEmailClient = () => {
         setLoading(false);
         return;
       }
-      // Verified — proceed to initial profile
+      // Verified - proceed to initial profile
       router.push(
         `/initial-profile?grade=${grade}` +
         `&phone=${encodeURIComponent(phone)}` +
@@ -105,7 +105,7 @@ export const VerifyEmailClient = () => {
       return;
     }
     if (target === email.toLowerCase()) {
-      setError('That is the same email — enter a different one.');
+      setError('That is the same email - enter a different one.');
       return;
     }
     setChangeLoading(true);

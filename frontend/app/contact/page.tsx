@@ -167,14 +167,14 @@ export default function ContactPage() {
 
           <p className="mx-auto mt-3 max-w-xl text-sm text-blue-100">
             Have a question or want to learn more about IES? We&apos;d love to
-            hear from you.
+            hear from you
           </p>
         </SiteContainer>
       </section>
 
       <Section tone="default" spacing="relaxed">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-8">
-          {/* COLUMN 1 — Get in Touch + address + hours (merged into one card) */}
+          {/* COLUMN 1 - Get in Touch + address + hours (merged into one card) */}
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm sm:p-8">
             <h2 className="text-xl font-bold text-slate-800">Get in Touch</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
@@ -232,14 +232,14 @@ export default function ContactPage() {
               </div>
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-700">Working Days &amp; Hours</p>
-                <p className="mt-1 text-sm text-slate-500">Saturday – Thursday</p>
-                <p className="text-sm text-slate-500">8:00 AM – 5:00 PM</p>
+                <p className="mt-1 text-sm text-slate-500">Saturday - Thursday</p>
+                <p className="text-sm text-slate-500">8:00 AM - 5:00 PM</p>
                 <p className="mt-1 text-xs text-red-400">Friday: Closed</p>
               </div>
             </div>
           </div>
 
-          {/* COLUMN 2 — Send us a message form */}
+          {/* COLUMN 2 - Send us a message form */}
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             {status === 'sent' ? (
               <div className="flex flex-col items-center gap-3 py-10 text-center">
@@ -305,7 +305,7 @@ export default function ContactPage() {
                       name="regNumber"
                       type="text"
                       required
-                      placeholder="Enter Membership Registration Number (e.g. IES-00350)"
+                      placeholder="Enter your Membership Registration Number (e.g. SMIES-00350)"
                       className="w-full rounded-lg border border-slate-200 bg-amber-50 px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
                     />
                   )}
@@ -315,7 +315,7 @@ export default function ContactPage() {
                       name="name"
                       type="text"
                       required
-                      placeholder="Your Name"
+                      placeholder="Enter your Name"
                       className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
                     />
 
@@ -323,7 +323,7 @@ export default function ContactPage() {
                       name="email"
                       type="email"
                       required
-                      placeholder="Your Email Address"
+                      placeholder="Enter your Email Address"
                       className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
                     />
                   </div>
@@ -362,7 +362,7 @@ export default function ContactPage() {
                   <textarea
                     name="message"
                     rows={5}
-                    placeholder="Project description or your inquiry..."
+                    placeholder="Describe your Inquiry"
                     className="w-full resize-y rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
                   />
 

@@ -115,7 +115,7 @@ export default function WorldEnvironmentDayPage() {
       <PageHero
         eyebrow="IES Annual Events"
         title="World Environment Day"
-        description="IES celebration of World Environment Day — promoting environmental awareness, climate action and nature-based solutions"
+        description="IES celebration of World Environment Day - promoting environmental awareness, climate action and nature-based solutions"
       />
 
       <Section tone="muted">

@@ -16,8 +16,8 @@ export const site = {
     presidentEmail: 'omararb@iesomalia.org.so',
     phones: ['+252 612267178', '+252 612267137'],
     address: '4th Floor, Adani Tower, Maka Al-mukarama Street, Hodan District, Mogadishu',
-    workingDays: 'Saturday – Thursday',
-    workingHours: '8:00 AM – 5:00 PM',
+    workingDays: 'Saturday - Thursday',
+    workingHours: '8:00 AM - 5:00 PM',
     closedDay: 'Friday',
   },
 

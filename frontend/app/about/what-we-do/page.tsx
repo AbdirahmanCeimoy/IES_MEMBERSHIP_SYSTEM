@@ -6,7 +6,7 @@ import { ContentGrid } from '@/components/public/ContentGrid';
 import { routes } from '@/config/routes';
 import { whatWeDo } from '@/data/institution';
 
-export const metadata = { title: 'What We Do – About IES' };
+export const metadata = { title: 'What We Do - About IES' };
 
 export default function WhatWeDoPage() {
   return (

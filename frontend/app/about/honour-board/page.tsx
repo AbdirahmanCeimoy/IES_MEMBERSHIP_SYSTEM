@@ -5,7 +5,7 @@ import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { routes } from '@/config/routes';
 import { title } from 'process';
 
-export const metadata = { title: 'Honour Board (Past Presidents) – About IES' };
+export const metadata = { title: 'Honour Board (Past Presidents) - About IES' };
 
 export default function HonourBoardPage() {
   return (

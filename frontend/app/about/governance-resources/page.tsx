@@ -31,7 +31,7 @@ const governanceItems = [
     href: routes.about.governance.codeOfProfessionalPractice,
   },
   {
-    title: 'Strategic Plan 2026–2030',
+    title: 'Strategic Plan 2026-2030',
     description: 'The IES 5-year strategic plan.',
     href: routes.about.governance.strategicPlan2026_2030,
   },

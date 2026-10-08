@@ -16,7 +16,7 @@ export const generateStaticParams = () =>
 export async function generateMetadata({ params }: Params) {
   const { slug } = await params;
   const event = findSeminar(slug);
-  return { title: event ? `Video — ${event.title}` : 'Event Video' };
+  return { title: event ? `Video - ${event.title}` : 'Event Video' };
 }
 
 export default async function SeminarVideoPage({ params }: Params) {
@@ -43,7 +43,7 @@ export default async function SeminarVideoPage({ params }: Params) {
         }
         eyebrow="Event Video"
         title={event.title}
-        description={`Recording from ${event.date}`}
+        description={`Recorded ${event.date}`}
       />
 
       <Section tone="muted">
@@ -57,16 +57,13 @@ export default async function SeminarVideoPage({ params }: Params) {
             </svg>
             Back to View Details
           </Link>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#48C184]/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#2d7a50]">
-            Recording
-          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#48C184]/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#2d7a50]">Event Highlights</span>
         </div>
 
         <article className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="relative aspect-video w-full bg-[#022D5A]">
             <video
               src={event.video}
-              poster={event.heroImage}
               controls
               preload="metadata"
               className="h-full w-full"

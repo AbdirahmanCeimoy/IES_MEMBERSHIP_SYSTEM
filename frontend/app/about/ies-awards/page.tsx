@@ -3,7 +3,7 @@ import { Section } from '@/components/layout/Section';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { routes } from '@/config/routes';
 
-export const metadata = { title: 'IES Awards – About IES' };
+export const metadata = { title: 'IES Awards - About IES' };
 
 export default function AwardsPage() {
   return (

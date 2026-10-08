@@ -117,7 +117,7 @@ export default function AdminReportsPage() {
         ))}
       </div>
 
-      {/* Period totals — 2 big cards */}
+      {/* Period totals - 2 big cards */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card padded className="relative overflow-hidden">
           <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-[#035CB3]/5" />

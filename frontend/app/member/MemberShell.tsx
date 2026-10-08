@@ -506,7 +506,7 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
           </div>
         </header>
 
-        {/* Breadcrumb bar — left: path, right: incomplete profile chip + dropdown */}
+        {/* Breadcrumb bar - left: path, right: incomplete profile chip + dropdown */}
         <div className="relative flex items-center justify-between border-b border-slate-100 bg-white px-4 py-1.5 text-xs text-slate-500 lg:px-6">
           <span>
             <span className="font-semibold text-[#035CB3]">Member</span>

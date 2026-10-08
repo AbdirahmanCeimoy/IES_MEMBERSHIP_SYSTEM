@@ -86,8 +86,8 @@ export const ComplaintFormClient = () => {
                 </div>
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wide text-slate-700">Working Hours</p>
-                  <p className="mt-1 text-sm text-slate-500">Saturday – Thursday</p>
-                  <p className="text-sm text-slate-500">8:00 AM – 5:00 PM</p>
+                  <p className="mt-1 text-sm text-slate-500">Saturday - Thursday</p>
+                  <p className="text-sm text-slate-500">8:00 AM - 5:00 PM</p>
                   <p className="mt-1 text-xs text-red-400">Friday: Closed</p>
                 </div>
               </div>

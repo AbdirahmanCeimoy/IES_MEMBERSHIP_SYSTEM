@@ -1,4 +1,4 @@
-export const metadata = { title: 'Payments — Member Portal' };
+export const metadata = { title: 'Payments - Member Portal' };
 
 export default function PaymentsPage() {
   return (

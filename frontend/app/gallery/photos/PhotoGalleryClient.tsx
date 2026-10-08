@@ -15,7 +15,7 @@ interface YearGroup {
 
 const extractYear = (date: string): string => {
   const m = date.match(/\b(20\d{2})\b/);
-  return m ? m[1] : '—';
+  return m ? m[1] : '-';
 };
 
 /** Group by year, newest year first; events within a year newest first. */
@@ -129,6 +129,16 @@ export function PhotoGalleryClient({ events }: Props) {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
                     className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                   />
+                  {/* Category badge */}
+                  <span className={
+                    'absolute left-3 top-3 inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider shadow ' +
+                    (event.category === 'Panel Discussion'
+                      ? 'bg-[#48C184] text-white'
+                      : 'bg-white/95 text-[#035CB3]')
+                  }>
+                    {event.category}
+                  </span>
+                  {/* Photo count badge */}
                   <div className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
                     <CameraIcon /> {event.photos?.length ?? 0}
                   </div>

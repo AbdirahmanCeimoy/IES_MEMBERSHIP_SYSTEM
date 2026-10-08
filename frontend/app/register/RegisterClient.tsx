@@ -28,7 +28,7 @@ const gradeLabels: Record<string, string> = {
 
 const buildUsernameFromEmail = (email: string): string => {
   const local = email.split('@')[0] ?? '';
-  // Keep only alphanumerics — email local part is unique across Gmail so this stays unique.
+  // Keep only alphanumerics - email local part is unique across Gmail so this stays unique.
   return local.replace(/[^a-z0-9]/g, '').slice(0, 30);
 };
 
@@ -77,11 +77,11 @@ export const RegisterClient = () => {
       return 'Email must be a valid Gmail address (e.g. yourname@gmail.com).';
     const digits = form.phone.replace(/\D/g, '');
     if (digits.length < 9 || digits.length > 15)
-      return 'Mobile number must be 9–15 digits.';
+      return 'Mobile number must be 9-15 digits.';
     if (!/^[A-Z0-9]{7,11}$/.test(form.nationalId))
       return 'National ID / Passport must be 7 to 11 characters (letters and digits).';
     if (!isValidPassword(form.password))
-      return 'Password: 8–16 characters, must include uppercase, lowercase, number, and symbol.';
+      return 'Password: 8-16 characters, must include uppercase, lowercase, number, and symbol.';
     if (form.password !== form.confirmPassword)
       return 'Passwords do not match.';
     return null;
@@ -190,7 +190,7 @@ export const RegisterClient = () => {
                 required
                 value={form.email}
                 onChange={handleChange('email')}
-                placeholder="Enter Your Email Address"
+                placeholder="Enter your Email Address"
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
@@ -202,7 +202,7 @@ export const RegisterClient = () => {
                 required
                 value={form.phone}
                 onChange={handleChange('phone')}
-                placeholder="Enter Your Mobile No."
+                placeholder="Enter your Mobile No."
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
@@ -213,7 +213,7 @@ export const RegisterClient = () => {
                 required
                 value={form.nationalId}
                 onChange={handleChange('nationalId')}
-                placeholder="Enter Your National ID/Passport No"
+                placeholder="Enter your National ID/Passport No"
                 className="rounded-lg border border-slate-300 px-3 py-2 text-sm  focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
               />
             </label>
@@ -221,7 +221,7 @@ export const RegisterClient = () => {
               Password
               <PasswordInput
                 autoComplete="new-password"
-                 placeholder=" Enter Your New Password"
+                 placeholder=" Enter your New Password"
                 required
                 minLength={8}
                 maxLength={16}
@@ -229,14 +229,14 @@ export const RegisterClient = () => {
                 onChange={handleChange('password')}
               />
               <span className="text-[10px] font-normal text-slate-500">
-                8–16 characters · uppercase · lowercase · number · symbol
+                8-16 characters · uppercase · lowercase · number · symbol
               </span>
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
               Confirm 
               <PasswordInput
                 autoComplete="new-password"
-                 placeholder="  Confirm Your Password"
+                 placeholder="  Confirm your Password"
                 required
                 minLength={8}
                 maxLength={16}

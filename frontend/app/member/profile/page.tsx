@@ -72,7 +72,7 @@ const Field = ({ label, value }: { label: string; value?: string | null }) => (
   <div>
     <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{label}</p>
     <p className="mt-1 text-sm font-semibold text-[#035CB3]">
-      {value && String(value).trim() !== '' ? value : '—'}
+      {value && String(value).trim() !== '' ? value : '-'}
     </p>
   </div>
 );
@@ -223,7 +223,7 @@ interface Referee {
 
 const REFEREE_TYPES = ['PROPOSER', 'SECONDER'];
 
-// IES-focused engineering sectors — feel free to trim/rename in one place.
+// IES-focused engineering sectors - feel free to trim/rename in one place.
 const IES_SECTORS = [
   'Civil Engineering',
   'Electrical Engineering',
@@ -358,7 +358,7 @@ export default function MyProfilePage() {
     try {
       window.localStorage.setItem(qualificationsKey, JSON.stringify(next));
     } catch {
-      /* storage unavailable — keep in memory */
+      /* storage unavailable - keep in memory */
     }
   };
 
@@ -511,7 +511,7 @@ export default function MyProfilePage() {
     try {
       persistInstitutions([...institutions, entry]);
     } catch {
-      setInstError('Could not save. The certificate image may be too large — try a smaller file.');
+      setInstError('Could not save. The certificate image may be too large - try a smaller file.');
       return;
     }
     closeInstModal();
@@ -758,7 +758,7 @@ export default function MyProfilePage() {
   const [docSubmitting, setDocSubmitting] = useState(false);
   const [docSubmitOk, setDocSubmitOk] = useState(false);
 
-  // NEVER default to GRADUATE on the client — that used to overwrite the real
+  // NEVER default to GRADUATE on the client - that used to overwrite the real
   // grade after re-login. Use whatever the backend stored; if it is truly
   // missing (brand-new signup, still on Category → Register step), the tab
   // waits for a real value instead of pretending the user is a Graduate.
@@ -1082,7 +1082,7 @@ export default function MyProfilePage() {
 
   const submitWorkContact = (event: React.FormEvent) => {
     event.preventDefault();
-    // Alternative Phone Number is optional — do NOT enforce.
+    // Alternative Phone Number is optional - do NOT enforce.
     const requiredFields: (keyof typeof workForm)[] = ['email', 'phone', 'address', 'district', 'city', 'country'];
     for (const f of requiredFields) {
       if (!workForm[f].trim()) {
@@ -1220,7 +1220,7 @@ export default function MyProfilePage() {
     <div className="mx-auto -mt-2 flex max-w-6xl flex-col gap-2">
       {/* Tabs card (breadcrumb above already reads "Member / Profile") */}
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        {/* Tabs strip — single horizontal row, scrolls on narrow screens */}
+        {/* Tabs strip - single horizontal row, scrolls on narrow screens */}
         <div className="flex gap-0.5 overflow-x-auto whitespace-nowrap border-b border-slate-200 bg-slate-50/60 px-2 pt-3 scrollbar-none">
           {TABS.map((t) => {
             const active = t.key === tab;
@@ -1320,7 +1320,7 @@ export default function MyProfilePage() {
                 )}
               </div>
 
-              {/* Bio — exact Initial Profile order.
+              {/* Bio - exact Initial Profile order.
                   Row 1: First Name / Middle Name / Last Name
                   Row 2: Gender / Title / Date of Birth
                   Row 3: National ID (read-only, disabled bg) / Nationality
@@ -1369,7 +1369,7 @@ export default function MyProfilePage() {
 
               {editing && (
                 <div className="flex flex-col gap-4">
-                  {/* Row 1 — Names */}
+                  {/* Row 1 - Names */}
                   <div className="grid gap-3 sm:grid-cols-3">
                     <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                       First Name <span className="text-rose-500">*</span>
@@ -1405,7 +1405,7 @@ export default function MyProfilePage() {
                     </label>
                   </div>
 
-                  {/* Row 2 — Gender / Title / DOB */}
+                  {/* Row 2 - Gender / Title / DOB */}
                   <div className="grid gap-3 sm:grid-cols-3">
                     <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                       Gender <span className="text-rose-500">*</span>
@@ -1451,7 +1451,7 @@ export default function MyProfilePage() {
                     </label>
                   </div>
 
-                  {/* Row 3 — National ID (read-only) / Nationality */}
+                  {/* Row 3 - National ID (read-only) / Nationality */}
                   <div className="grid gap-3 sm:grid-cols-2">
                     <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                       National ID / Passport No. <span className="text-rose-500">*</span>
@@ -1478,7 +1478,7 @@ export default function MyProfilePage() {
                     </label>
                   </div>
 
-                  {/* Row 4 — City / Discipline */}
+                  {/* Row 4 - City / Discipline */}
                   <div className="grid gap-3 sm:grid-cols-2">
                     <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                       City / Town
@@ -1506,7 +1506,7 @@ export default function MyProfilePage() {
                     </label>
                   </div>
 
-                  {/* Row 5 — Specialization */}
+                  {/* Row 5 - Specialization */}
                   <div className="grid gap-3">
                     <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                       Specialization
@@ -1543,7 +1543,7 @@ export default function MyProfilePage() {
               </div>
             )}
 
-            {/* Personal Contact card — IEK style */}
+            {/* Personal Contact card - IEK style */}
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
               {/* Header */}
               <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-3">
@@ -1611,7 +1611,7 @@ export default function MyProfilePage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-[11px] font-semibold tracking-wide text-slate-500">Email</p>
-                      <p className="mt-0.5 truncate text-sm font-medium text-[#035CB3]">{user.email ?? '—'}</p>
+                      <p className="mt-0.5 truncate text-sm font-medium text-[#035CB3]">{user.email ?? '-'}</p>
                     </div>
                   </div>
                   {/* Phone */}
@@ -1623,7 +1623,7 @@ export default function MyProfilePage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-[11px] font-semibold tracking-wide text-slate-500">Phone</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.phone ?? '—'}</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.phone ?? '-'}</p>
                     </div>
                   </div>
                   {/* Alternative Phone */}
@@ -1635,7 +1635,7 @@ export default function MyProfilePage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-[11px] font-semibold tracking-wide text-slate-500">Alternative Phone Number</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.alternativePhone ?? '—'}</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.alternativePhone ?? '-'}</p>
                     </div>
                   </div>
                   {/* Address */}
@@ -1647,7 +1647,7 @@ export default function MyProfilePage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-[11px] font-semibold tracking-wide text-slate-500">Address</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.address ?? '—'}</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.address ?? '-'}</p>
                     </div>
                   </div>
                   {/* District */}
@@ -1659,7 +1659,7 @@ export default function MyProfilePage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-[11px] font-semibold tracking-wide text-slate-500">District</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.district ?? '—'}</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.district ?? '-'}</p>
                     </div>
                   </div>
                   {/* City */}
@@ -1671,7 +1671,7 @@ export default function MyProfilePage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-[11px] font-semibold tracking-wide text-slate-500">City</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.city ?? '—'}</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.city ?? '-'}</p>
                     </div>
                   </div>
                   {/* Country */}
@@ -1683,7 +1683,7 @@ export default function MyProfilePage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-[11px] font-semibold tracking-wide text-slate-500">Country</p>
-                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.nationality ?? '—'}</p>
+                      <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{user.nationality ?? '-'}</p>
                     </div>
                   </div>
                 </div>
@@ -1759,7 +1759,7 @@ export default function MyProfilePage() {
               )}
             </div>
 
-            {/* + Add Work Contact — placed right under the Personal Contact card, aligned right (below the Edit / Delete icons). */}
+            {/* + Add Work Contact - placed right under the Personal Contact card, aligned right (below the Edit / Delete icons). */}
             <div className="mt-2 flex justify-end">
               <button
                 type="button"
@@ -1773,7 +1773,7 @@ export default function MyProfilePage() {
               </button>
             </div>
 
-            {/* Existing work contacts — same rows as Personal Contact for consistency */}
+            {/* Existing work contacts - same rows as Personal Contact for consistency */}
             {workContacts.length > 0 && (
               <div className="mt-4 flex flex-col gap-4">
                 {workContacts.map((wc, idx) => (
@@ -1824,7 +1824,7 @@ export default function MyProfilePage() {
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="text-[11px] font-semibold tracking-wide text-slate-500">{row.label}</p>
-                            <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{row.value || '—'}</p>
+                            <p className="mt-0.5 text-sm font-medium text-[#035CB3]">{row.value || '-'}</p>
                           </div>
                         </div>
                       ))}
@@ -1834,7 +1834,7 @@ export default function MyProfilePage() {
               </div>
             )}
 
-            {/* Add / Edit Work Contact modal — mirrors the Personal Contact fields */}
+            {/* Add / Edit Work Contact modal - mirrors the Personal Contact fields */}
             {workModalOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
                 <form onSubmit={submitWorkContact} className="w-full max-w-2xl overflow-hidden rounded-xl bg-white shadow-xl">
@@ -2154,7 +2154,7 @@ export default function MyProfilePage() {
                               View
                             </a>
                           ) : (
-                            <span className="italic text-slate-400">—</span>
+                            <span className="italic text-slate-400">-</span>
                           )}
                         </td>
                         <td className="px-4 py-2 text-right">
@@ -2414,7 +2414,7 @@ export default function MyProfilePage() {
                         />
                       </label>
 
-                      {/* To Date — hidden when Current is on */}
+                      {/* To Date - hidden when Current is on */}
                       {!expForm.current && (
                         <label className="flex flex-col gap-1 text-xs font-semibold text-[#035CB3]">
                           To Date <span className="text-rose-500">*</span>
@@ -2532,12 +2532,12 @@ export default function MyProfilePage() {
                     {referees.map((r) => (
                       <tr key={r.id} className="border-b border-slate-50 last:border-b-0 align-top">
                         <td className="px-4 py-2 text-sm text-[#035CB3]">{r.name}</td>
-                        <td className="px-4 py-2 text-xs text-slate-600">{r.address || '—'}</td>
+                        <td className="px-4 py-2 text-xs text-slate-600">{r.address || '-'}</td>
                         <td className="px-4 py-2 text-xs text-slate-600">{r.email}</td>
                         <td className="px-4 py-2 text-xs text-slate-600">{r.phone}</td>
-                        <td className="px-4 py-2 text-xs text-slate-600">{r.placeOfWork || '—'}</td>
-                        <td className="px-4 py-2 text-xs text-slate-600">{r.designation || '—'}</td>
-                        <td className="px-4 py-2 text-xs font-mono text-slate-700">{r.memberNo || '—'}</td>
+                        <td className="px-4 py-2 text-xs text-slate-600">{r.placeOfWork || '-'}</td>
+                        <td className="px-4 py-2 text-xs text-slate-600">{r.designation || '-'}</td>
+                        <td className="px-4 py-2 text-xs font-mono text-slate-700">{r.memberNo || '-'}</td>
                         <td className="px-4 py-2 text-xs text-[#035CB3] font-semibold">{r.refereeType}</td>
                         <td className="px-4 py-2 text-right">
                           <button
@@ -2751,7 +2751,7 @@ export default function MyProfilePage() {
             {/* Required documents upload grid */}
             {!gradeSpec ? (
               <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center text-sm text-amber-800">
-                Select a membership category first — required documents will appear here once your grade is set.
+                Select a membership category first - required documents will appear here once your grade is set.
               </div>
             ) : (
             <section className="rounded-xl border border-slate-200 bg-white">

@@ -20,9 +20,9 @@ export default function GalleryVideosPage() {
             ]}
           />
         }
-        eyebrow="Videos"
-        title="Gallery - Videos"
-        description="Official IES video library and event coverage — click any video to play."
+        eyebrow="Gallery"
+        title="Videos"
+        description="Explore the official IES video library featuring event highlights, activities, interviews, and other IES programmes"
       />
       <Section>
         <VideoGalleryClient videos={galleryVideos} />

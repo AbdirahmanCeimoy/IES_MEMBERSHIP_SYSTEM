@@ -24,12 +24,13 @@ const socialLinks = [
 const quickLinks = [
   { label: 'About IES', href: routes.about.root },
   { label: 'Membership', href: routes.membership.root },
-  { label: 'Apply Now', href: routes.membership.applicationGuidelines },
-  { label: 'Member Check', href: routes.membership.memberCheck },
-  { label: 'News', href: routes.infoHub.news },
-  { label: 'Events', href: routes.events.root },
-  { label: 'Gallery', href: routes.gallery.photos },
+  { label: 'Apply for Membership', href: routes.membership.applicationGuidelines },
   { label: 'Member Login', href: routes.auth.login },
+  { label: 'Member Check', href: routes.membership.memberCheck },
+  { label: 'Affiliations & Partners', href: routes.about.partners.root },
+  { label: 'Announcements', href: routes.infoHub.announcements },
+  { label: 'News', href: routes.infoHub.news },
+  { label: 'IES Branded Products', href: routes.merchandise.root },
 ];
 
 const MapPinIcon = () => (
@@ -96,7 +97,7 @@ export const Footer = ({ hideCta }: { hideCta?: boolean }) => (
           <div>
             <div className="mb-2 flex items-center gap-2">
               <h3 className="text-xs font-bold text-slate-800">Contact Us</h3>
-              <span className="h-px flex-1 bg-slate-400/30" />
+              <span className="text-xs font-bold text-slate-400">-</span>
             </div>
             <div className="flex flex-col gap-1.5">
               <div className="flex items-start gap-1.5">
@@ -141,7 +142,7 @@ export const Footer = ({ hideCta }: { hideCta?: boolean }) => (
           <div>
             <div className="mb-2 flex items-center gap-2">
               <h3 className="whitespace-nowrap text-xs font-bold text-slate-800">Working Days &amp; Hours</h3>
-              <span className="h-px flex-1 bg-slate-400/30" />
+              <span className="text-xs font-bold text-slate-400">-</span>
             </div>
             <div className="flex flex-col gap-1.5 text-[11px] text-slate-500">
               <p className="leading-relaxed">
@@ -162,7 +163,7 @@ export const Footer = ({ hideCta }: { hideCta?: boolean }) => (
           <div>
             <div className="mb-2 flex items-center gap-2">
               <h3 className="text-xs font-bold text-slate-800">Quick Links</h3>
-              <span className="h-px flex-1 bg-slate-400/30" />
+              <span className="text-xs font-bold text-slate-400">-</span>
             </div>
             <ul className="flex flex-col gap-1">
               {quickLinks.map((link) => (

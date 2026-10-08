@@ -143,7 +143,7 @@ export default function ReportViolationsPage() {
 
       <Section tone="default" spacing="relaxed">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-8">
-          {/* COLUMN 1 — Reporting channels + address + hours (merged into one card) */}
+          {/* COLUMN 1 - Reporting channels + address + hours (merged into one card) */}
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm sm:p-8">
             <h2 className="text-xl font-bold text-slate-800">Confidential Reporting Channels</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
@@ -201,14 +201,14 @@ export default function ReportViolationsPage() {
               </div>
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-700">Working Days &amp; Hours</p>
-                <p className="mt-1 text-sm text-slate-500">Saturday – Thursday</p>
-                <p className="text-sm text-slate-500">8:00 AM – 5:00 PM</p>
+                <p className="mt-1 text-sm text-slate-500">Saturday - Thursday</p>
+                <p className="text-sm text-slate-500">8:00 AM - 5:00 PM</p>
                 <p className="mt-1 text-xs text-red-400">Friday: Closed</p>
               </div>
             </div>
           </div>
 
-          {/* COLUMN 2 — Report violation form */}
+          {/* COLUMN 2 - Report violation form */}
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             {status === 'sent' ? (
               <div className="flex flex-col items-center gap-3 py-10 text-center">
@@ -320,7 +320,7 @@ export default function ReportViolationsPage() {
                     name="message"
                     rows={6}
                     required
-                    placeholder="Describe the violation or concern in detail — include dates, parties involved, and any relevant context..."
+                    placeholder="Describe the violation or concern in detail - include dates, parties involved, and any relevant context..."
                     className="w-full resize-y rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
                   />
 

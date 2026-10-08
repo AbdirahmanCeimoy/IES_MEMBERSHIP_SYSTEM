@@ -24,7 +24,7 @@ export default function CouncilPage() {
 
       <Section>
          <p className="mb-4 text-lg font-extrabold tracking-tight text-[#035CB3] sm:text-3xl">
-           IES Council 2026 – 2028
+           IES Council 2026 - 2028
          </p>
         <div className="grid gap-6 lg:grid-cols-[3fr_2fr]">
           <div className="flex flex-col gap-3 text-sm leading-relaxed text-slate-700 sm:text-base">

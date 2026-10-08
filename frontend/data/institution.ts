@@ -170,5 +170,5 @@ export const governanceDocuments = [
   { title: 'IES Brochure', description: 'Official IES informational brochure.', href: '#', type: 'Brochure' },
   { title: 'IES Constitution 2026', description: 'The Constitution of the Institution of Engineers of Somalia.', href: '#', type: 'Constitution' },
   { title: 'Code of Professional Practice and Ethics', description: 'Professional practice and ethics code for members.', href: '#', type: 'Code' },
-  { title: 'Strategic Plan 2026–2030', description: 'The IES 5-year strategic plan.', href: '#', type: 'Plan' },
+  { title: 'Strategic Plan 2026-2030', description: 'The IES 5-year strategic plan.', href: '#', type: 'Plan' },
 ];

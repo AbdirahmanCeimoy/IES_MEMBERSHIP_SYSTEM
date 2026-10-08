@@ -123,7 +123,7 @@ function FinalizeCredentialsForm() {
                 value={username}
                 onChange={(event) => setUsername(sanitizeUsername(event.target.value))}
                 className="rounded-md border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]"
-                placeholder="3–32 letters or numbers"
+                placeholder="3-32 letters or numbers"
               />
               <span className="text-[11px] font-normal text-slate-500">{USERNAME_RULE}</span>
             </label>

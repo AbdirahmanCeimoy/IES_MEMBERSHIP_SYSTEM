@@ -17,7 +17,7 @@ export const generateStaticParams = () =>
 export async function generateMetadata({ params }: Params) {
   const { slug } = await params;
   const event = findPanelDiscussion(slug);
-  return { title: event ? `Photos — ${event.title}` : 'Event Photos' };
+  return { title: event ? `Photos - ${event.title}` : 'Event Photos' };
 }
 
 export default async function PanelDiscussionPhotosPage({ params }: Params) {
@@ -77,7 +77,7 @@ export default async function PanelDiscussionPhotosPage({ params }: Params) {
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                 <Image
                   src={src}
-                  alt={`${event.title} — photo ${i + 1}`}
+                  alt={`${event.title} - photo ${i + 1}`}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.05]"

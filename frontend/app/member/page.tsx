@@ -40,8 +40,8 @@ interface MembershipApplication {
 }
 
 const formatYear = (iso?: string): string => {
-  if (!iso) return '—';
-  try { return String(new Date(iso).getFullYear()); } catch { return '—'; }
+  if (!iso) return '-';
+  try { return String(new Date(iso).getFullYear()); } catch { return '-'; }
 };
 
 const deriveStatus = (app?: MembershipApplication): string => {
@@ -96,7 +96,7 @@ export default function MemberOverviewPage() {
 
   return (
     <div className="flex flex-col gap-5">
-      {/* 3 Stat Cards — compact */}
+      {/* 3 Stat Cards - compact */}
       <div className="grid gap-3 sm:grid-cols-3">
         {/* Member Since */}
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -106,7 +106,7 @@ export default function MemberOverviewPage() {
             </svg>
           </div>
           <p className="mt-3 text-xl font-bold text-[#022D5A]">
-            {loadingApps ? '—' : formatYear(latestApp?.createdAt)}
+            {loadingApps ? '-' : formatYear(latestApp?.createdAt)}
           </p>
           <p className="mt-0.5 text-xs text-slate-500">Member Since</p>
         </div>
@@ -143,7 +143,7 @@ export default function MemberOverviewPage() {
             'mt-3 text-sm font-bold leading-tight ' +
             (isGoodStanding ? 'text-[#48C184]' : 'text-rose-500')
           }>
-            {loadingApps ? '—' : memberStatus}
+            {loadingApps ? '-' : memberStatus}
           </p>
           <p className="mt-0.5 text-xs text-slate-500">Membership Status</p>
           <p className="mt-0.5 text-[11px] text-slate-400">

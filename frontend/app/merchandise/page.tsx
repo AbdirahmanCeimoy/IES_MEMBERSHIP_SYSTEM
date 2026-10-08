@@ -17,7 +17,7 @@ const products: Product[] = [
   { name: 'IES Cap', price: '$3', image: '/IES BRAND PRODUCT/Brand-koofiyad.jpeg' },
   { name: 'IES Mug', price: '$5', image: '/IES BRAND PRODUCT/Brund-cup.jpeg' },
   { name: 'IES T-Shirt (White)', price: '$7', image: '/IES BRAND PRODUCT/Brand-t-shert-white.png' },
-  { name: 'IES T-Shirt (White & Blue) ', price: '$8', image: '/IES BRAND PRODUCT/Brund-t-shert-blue.jpeg' },
+  { name: 'IES T-Shirt (White & Blue) ', price: '$8', image: '/IES BRAND PRODUCT/t-shirtblue&white.jpeg' },
   { name: 'IES T-Shirt (Blue) ', price: '$12', image: '/IES BRAND PRODUCT/Brand-t-shert-.jpeg' },
 ];
 const buildWhatsappLink = (product: Product) => {

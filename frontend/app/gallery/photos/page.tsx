@@ -2,14 +2,18 @@ import { PageHero } from '@/components/layout/PageHero';
 import { Section } from '@/components/layout/Section';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { routes } from '@/config/routes';
-import { seminars } from '@/data/seminars';
+import { seminars, type SeminarEvent } from '@/data/seminars';
+import { panelDiscussions } from '@/data/panel-discussions';
 import { PhotoGalleryClient } from './PhotoGalleryClient';
 
 export const metadata = { title: 'Gallery - Photos' };
 
 export default function GalleryPhotosPage() {
-  // Only seminars that have photos to show (poster-only entries are skipped)
-  const withPhotos = seminars.filter((s) => (s.photos?.length ?? 0) > 0);
+  // Combine seminars + panel discussions, keep only those with photos
+  const combined: SeminarEvent[] = [
+    ...seminars,
+    ...panelDiscussions,
+  ].filter((e) => (e.photos?.length ?? 0) > 0);
 
   return (
     <>
@@ -23,12 +27,12 @@ export default function GalleryPhotosPage() {
             ]}
           />
         }
-        eyebrow="Photography"
-        title="Gallery - Photos"
-        description="Visual highlights from IES seminars and events — click any event to view all its photos."
+        eyebrow="Gallery"
+        title="Photos"
+        description="Explore photos from IES events, activities, programmes, and professional engagements"
       />
       <Section>
-        <PhotoGalleryClient events={withPhotos} />
+        <PhotoGalleryClient events={combined} />
       </Section>
     </>
   );

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Announcements\AnnouncementsController;
+use App\Http\Controllers\Contacts\ContactsController;
 use App\Http\Controllers\Events\EventsController;
 use App\Http\Controllers\Health\HealthController;
 use App\Http\Controllers\Memberships\MembershipsController;
@@ -105,3 +106,16 @@ Route::prefix('admin')
 Route::get('events', [EventsController::class, 'listPublic']);
 Route::post('events/{id}/register', [EventsController::class, 'register'])
     ->middleware(['jwt.auth', 'role:MEMBER,ADMIN']);
+
+// Public contact + report submissions
+Route::post('contact', [ContactsController::class, 'store']);
+
+// Admin — view / manage submissions
+Route::prefix('admin/contacts')
+    ->middleware(['jwt.auth', 'role:ADMIN'])
+    ->group(function (): void {
+        Route::get('', [ContactsController::class, 'list']);
+        Route::get('{id}', [ContactsController::class, 'get']);
+        Route::patch('{id}', [ContactsController::class, 'update']);
+        Route::delete('{id}', [ContactsController::class, 'remove']);
+    });

@@ -41,15 +41,15 @@ export default function SecretariatPage() {
         description="Discover our Secretariat"
       />
 
-      <Section>
+      <Section spacing="compact" contain={false}>
         <SiteContainer>
-      <p className="w-full mt-4 text-left text-sm leading-relaxed text-slate-700 sm:text-base">            
-          The Secretariat, headed by the Chief Executive Officer (CEO), supports the operations of the Institution of Engineers Somalia (IES). The Secretariat is responsible for the day-to-day administration and management of the Institution, ensuring the effective implementation of its mandate, policies, programmes, and strategic objectives.
+          <p className="w-full text-left text-sm leading-relaxed text-slate-700 sm:text-base">
+            The Secretariat, headed by the Chief Executive Officer (CEO), supports the operations of the Institution of Engineers Somalia (IES). The Secretariat is responsible for the day-to-day administration and management of the Institution, ensuring the effective implementation of its mandate, policies, programmes, and strategic objectives.
           </p>
-          <p className="w-full mt-4 text-left  text-sm leading-relaxed text-slate-700 sm:text-base">
+          <p className="w-full mt-3 text-left text-sm leading-relaxed text-slate-700 sm:text-base">
             The IES Secretariat works collaboratively with the Institution&apos;s leadership, members, government institutions, development partners, professional organizations, and other stakeholders to advance the engineering profession and contribute to Somalia&apos;s sustainable development.
           </p>
-          <p className="w-full mt-4 text-left text-sm leading-relaxed text-slate-700 sm:text-base">
+          <p className="w-full mt-3 text-left text-sm leading-relaxed text-slate-700 sm:text-base">
             The IES Secretariat section is currently under development. Member profiles and photographs will be published here shortly.
           </p>
         </SiteContainer>

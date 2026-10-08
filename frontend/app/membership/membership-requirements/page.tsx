@@ -26,7 +26,7 @@ const DISPLAY_ORDER: GradeCode[] = [
 ];
 
 // The canonical requirement arrays end with "Application Fee: $X." which the
-// accordion already shows as a separate pill — strip it to avoid duplication.
+// accordion already shows as a separate pill - strip it to avoid duplication.
 const stripFeeLine = (items: string[]) =>
   items.filter((line) => !/^Application Fee:/i.test(line.trim()));
 

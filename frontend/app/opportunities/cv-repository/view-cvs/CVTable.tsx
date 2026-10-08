@@ -68,7 +68,7 @@ function parseEntries(rows: string[][]): CVEntry[] {
 }
 
 function formatDate(timestamp: string) {
-  if (!timestamp) return '—';
+  if (!timestamp) return '-';
   try {
     const date = new Date(timestamp);
     if (isNaN(date.getTime())) return timestamp.split(' ')[0] || timestamp;
@@ -230,7 +230,7 @@ export function CVTable() {
           {filtered.length === 1 ? 'CV' : 'CVs'} found
           {totalPages > 1 && (
             <span className="ml-1 text-slate-400">
-              — page {safeP} of {totalPages}
+              - page {safeP} of {totalPages}
             </span>
           )}
         </p>
@@ -267,9 +267,9 @@ export function CVTable() {
               <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
                 <td className="whitespace-nowrap px-4 py-3 text-slate-500">{formatDate(entry.timestamp)}</td>
                 <td className="whitespace-nowrap px-4 py-3 font-medium text-slate-800">{entry.name}</td>
-                <td className="whitespace-nowrap px-4 py-3 text-slate-600">{entry.discipline || '—'}</td>
-                <td className="whitespace-nowrap px-4 py-3 text-slate-600">{entry.education || '—'}</td>
-                <td className="whitespace-nowrap px-4 py-3 text-slate-600">{entry.experience || '—'}</td>
+                <td className="whitespace-nowrap px-4 py-3 text-slate-600">{entry.discipline || '-'}</td>
+                <td className="whitespace-nowrap px-4 py-3 text-slate-600">{entry.education || '-'}</td>
+                <td className="whitespace-nowrap px-4 py-3 text-slate-600">{entry.experience || '-'}</td>
                 <td className="whitespace-nowrap px-4 py-3">
                   {entry.cvLink ? (
                     <a href={entry.cvLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-md bg-[#035CB3] px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#024A8F]">
@@ -280,7 +280,7 @@ export function CVTable() {
                       View CV
                     </a>
                   ) : (
-                    <span className="text-xs text-slate-400">—</span>
+                    <span className="text-xs text-slate-400">-</span>
                   )}
                 </td>
               </tr>
@@ -307,11 +307,11 @@ export function CVTable() {
             <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
               <div>
                 <p className="font-semibold text-slate-400">Education</p>
-                <p className="text-slate-600">{entry.education || '—'}</p>
+                <p className="text-slate-600">{entry.education || '-'}</p>
               </div>
               <div>
                 <p className="font-semibold text-slate-400">Experience</p>
-                <p className="text-slate-600">{entry.experience || '—'}</p>
+                <p className="text-slate-600">{entry.experience || '-'}</p>
               </div>
               <div>
                 <p className="font-semibold text-slate-400">Submitted</p>

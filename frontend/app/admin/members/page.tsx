@@ -205,7 +205,7 @@ export default function AdminMembersPage() {
                             {GRADE_LABELS[m.grade] ?? m.grade}
                           </span>
                         ) : (
-                          <span className="text-[11px] text-slate-400">—</span>
+                          <span className="text-[11px] text-slate-400">-</span>
                         )}
                       </td>
                       <td className="px-5 py-3 font-mono text-xs text-slate-600">{m.id.slice(0, 8)}</td>

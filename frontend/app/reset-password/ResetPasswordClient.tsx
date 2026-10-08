@@ -127,7 +127,7 @@ export const ResetPasswordClient = () => {
                 className="!rounded-xl !px-4 !py-3"
               />
               <span className="text-[11px] text-slate-500">
-                8–16 characters · uppercase · lowercase · number · symbol
+                8-16 characters · uppercase · lowercase · number · symbol
               </span>
             </div>
 

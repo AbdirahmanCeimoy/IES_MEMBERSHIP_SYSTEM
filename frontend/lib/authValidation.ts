@@ -1,6 +1,6 @@
 export const USERNAME_REGEX = /^(?=.{3,32}$)[a-z0-9]+$/i;
 export const GMAIL_REGEX = /^[a-z0-9._%+-]+@gmail\.com$/i;
-/** 8–16 chars, must contain at least one uppercase, one lowercase and one number. */
+/** 8-16 chars, must contain at least one uppercase, one lowercase and one number. */
 export const SECURE_PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,16}$/;
 
@@ -10,7 +10,7 @@ export const USERNAME_RULE =
 export const EMAIL_RULE = 'Email must end with @gmail.com.';
 
 export const SECURE_PASSWORD_RULE =
-  '8–16 characters · uppercase · lowercase · number';
+  '8-16 characters · uppercase · lowercase · number';
 
 export const normalizeUsername = (value: string) =>
   value.trim().toLowerCase();

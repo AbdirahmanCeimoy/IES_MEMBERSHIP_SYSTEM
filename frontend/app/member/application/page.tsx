@@ -273,7 +273,7 @@ export default function MyApplicationPage() {
               </Link>
             </div>
 
-            {/* 5-step timeline — Step 1 is current */}
+            {/* 5-step timeline - Step 1 is current */}
             <div className="mt-5">
               <p className="mb-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">Application Progress</p>
               <ol className="flex flex-col gap-0">

@@ -138,7 +138,7 @@ export const MemberCheckClient = () => {
             Search Members
           </h1>
 
-          {/* Search bar — hidden once a successful result is shown */}
+          {/* Search bar - hidden once a successful result is shown */}
           {members.length === 0 && (
             <form onSubmit={handleSubmit} className="mx-auto mt-8 flex max-w-4xl overflow-hidden rounded-lg border border-slate-200 shadow-sm">
               <div className="relative flex flex-1 items-center">
@@ -146,7 +146,7 @@ export const MemberCheckClient = () => {
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search by Name, Email, ID / Passport, or Phone Number"
+                  placeholder="Search by Name, Email, ID/Passport, or Phone Number"
                   className="h-full flex-1 px-4 py-3 pr-10 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none"
                   required
                 />
@@ -183,7 +183,7 @@ export const MemberCheckClient = () => {
             </form>
           )}
 
-          {/* Search Results header — shown only when a result is present */}
+          {/* Search Results header - shown only when a result is present */}
           {members.length > 0 && (
             <div className="mx-auto mt-8 flex max-w-5xl items-center justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-3">
@@ -304,7 +304,7 @@ export const MemberCheckClient = () => {
                           </div>
                         </div>
 
-                        {/* Specialization — its own section (IEK-style) */}
+                        {/* Specialization - its own section (IEK-style) */}
                         <div className="rounded-lg border border-slate-200">
                           <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
                             <h4 className="text-sm font-bold text-[#022D5A]">Specialization</h4>
@@ -399,7 +399,7 @@ export const MemberCheckClient = () => {
               </p>
             ) : (
               <p className="mt-2 text-sm text-slate-500">
-                Enter a Member No, ID/Passport, Email, or Member Name above to search the IES member register.
+                {/* Enter a Member No, ID/Passport, Email, or Member Name above to search the IES member register. */}
               </p>
             )}
           </div>

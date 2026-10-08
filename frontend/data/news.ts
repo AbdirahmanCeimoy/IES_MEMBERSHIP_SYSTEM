@@ -3,7 +3,7 @@ import { routes } from '@/config/routes';
 
 /**
  * Announcements sit in their own section on the homepage ("Latest
- * Announcements") — they are calls to action from IES or its partners,
+ * Announcements") - they are calls to action from IES or its partners,
  * not routine news items.
  */
 const parseNewsDate = (date: string): number => {
@@ -37,9 +37,9 @@ export const latestAnnouncements: NewsItem[] = [
     image: '/PARTNER-WFOE.jpeg',
   },
   {
-    title: 'International Women in Engineering Day (INWED2026) — Coming Soon',
+    title: 'International Women in Engineering Day (INWED2026) - Coming Soon',
     excerpt:
-      'IES, through its Women Engineers Committee (WEC), is pleased to organize INWED2026 under the theme "Engineering Intelligence" — hosted by Jamhuriya University of Science and Technology on 23 June 2026.',
+      'IES, through its Women Engineers Committee (WEC), is pleased to organize INWED2026 under the theme "Engineering Intelligence" - hosted by Jamhuriya University of Science and Technology on 23 June 2026.',
     date: '23 Jun 2026',
     href: `${routes.infoHub.news}/inwed-2026`,
     category: 'Announcement',
@@ -73,7 +73,7 @@ export const latestAnnouncements: NewsItem[] = [
     image: '/Somalia’s First World Engineering Day.jpeg',
   },
   {
-    title: 'International Women in Engineering Day (INWED2025) — Coming Soon',
+    title: 'International Women in Engineering Day (INWED2025) - Coming Soon',
     excerpt:
       'Join IES Women Engineers Committee (WEC) on 23 June 2025 to celebrate the brilliant and resilient women shaping the future of engineering in Somalia and beyond, under the theme "Together We Engineer."',
     date: '23 Jun 2025',
@@ -85,7 +85,7 @@ export const latestAnnouncements: NewsItem[] = [
 
 const newsItems: NewsItem[] = [
   {
-    title: 'IES Delegation Meets with UNESCO Somalia to Discuss Engineering and STEM Development',
+    title: 'IES Delegation Met with UNESCO Somalia to Discuss Engineering and STEM Development',
     excerpt:
       'The Institution of Engineers Somalia (IES) delegation met with UNESCO Somalia at UNSOS in Mogadishu to discuss engineering, STEM education, innovation and women’s participation in engineering.',
     date: '21 July 2026',
@@ -150,7 +150,7 @@ const newsItems: NewsItem[] = [
   {
     title: 'IES Vice President Participated in the 32nd IEK International Convention in Mombasa, Kenya',
     excerpt:
-      'IES was honored to participate in the 32nd IEK International Convention held at PrideInn Paradise Beach Resort, Mombasa, Kenya — one of the region\'s premier gatherings of engineering professionals, policymakers and innovators from across Africa.',
+      'IES was honored to participate in the 32nd IEK International Convention held at PrideInn Paradise Beach Resort, Mombasa, Kenya - one of the region\'s premier gatherings of engineering professionals, policymakers and innovators from across Africa.',
     date: '28 Nov 2025',
     href: `${routes.infoHub.news}/iek-32nd-convention-mombasa`,
     category: 'International Participation',
@@ -159,7 +159,7 @@ const newsItems: NewsItem[] = [
   {
     title: 'IES Leadership Attended the Inauguration of Benadir Steel Ltd.',
     excerpt:
-      'IES leadership attended the inauguration of Benadir Steel Ltd., officially opened by H.E. President Hassan Sheikh Mohamud — a step toward strengthening local manufacturing and industrial self-reliance in Somalia.',
+      'IES leadership attended the inauguration of Benadir Steel Ltd., officially opened by H.E. President Hassan Sheikh Mohamud - a step toward strengthening local manufacturing and industrial self-reliance in Somalia.',
     date: '08 Nov 2025',
     href: `${routes.infoHub.news}/benadir-steel-inauguration`,
     category: 'Industrial Development',
@@ -177,7 +177,7 @@ const newsItems: NewsItem[] = [
   {
     title: 'IES Participated in the WFEO Engineering Capacity Building for Africa Programme in Nairobi',
     excerpt:
-      'IES participated in the launch of the WFEO Engineering Capacity Building for Africa Programme (ECBAP), held in Nairobi, Kenya in collaboration with WFEO, IEK, EBK and CAST — supporting the training of over 100,000 engineers across Africa.',
+      'IES participated in the launch of the WFEO Engineering Capacity Building for Africa Programme (ECBAP), held in Nairobi, Kenya in collaboration with WFEO, IEK, EBK and CAST - supporting the training of over 100,000 engineers across Africa.',
     date: '17 Mar 2025',
     href: `${routes.infoHub.news}/wfeo-ecbap-nairobi`,
     category: 'Capacity Building',
@@ -186,7 +186,7 @@ const newsItems: NewsItem[] = [
   {
     title: 'IES President Attended B2B Panel Discussion',
     excerpt:
-      'IES, led by President Eng. Omar Abdi Arab, attended the B2B Panel Discussion organized by Arkaan Leadership and Innovation Hub — bringing together professionals for discussions on business, technology, industry collaboration and innovation.',
+      'IES, led by President Eng. Omar Abdi Arab, attended the B2B Panel Discussion organized by Arkaan Leadership and Innovation Hub - bringing together professionals for discussions on business, technology, industry collaboration and innovation.',
     date: '13 Feb 2025',
     href: `${routes.infoHub.news}/b2b-panel-discussion-arkaan`,
     category: 'Industry Engagement',

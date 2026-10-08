@@ -36,7 +36,7 @@ export default function MemberDocumentsPage() {
     typeof window === 'undefined' ? null : getStoredUser<StoredUser>() ?? {},
   );
 
-  // Do not fall back to GRADUATE — that used to overwrite the real category
+  // Do not fall back to GRADUATE - that used to overwrite the real category
   // whenever the stored user did not include the grade (e.g. immediately after
   // a fresh re-login). Wait for a real grade instead.
   const grade = (user?.grade ?? '').toUpperCase();

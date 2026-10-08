@@ -185,9 +185,9 @@ export default function HomePage() {
         <div className="flex flex-col items-center gap-4 text-center">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-[#48C184] px-4 py-1 text-[20px] font-black tracking-wide text-white shadow-sm">
-              <span aria-hidden="true">—</span>
+              <span aria-hidden="true">-</span>
               Stay Informed
-              <span aria-hidden="true">—</span>
+              <span aria-hidden="true">-</span>
             </span>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#035CB3] sm:text-4xl">
               Latest Announcements
@@ -202,7 +202,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Latest news — small gap above so it sits close to Announcements without touching. */}
+      {/* Latest news - small gap above so it sits close to Announcements without touching. */}
       <Section tone="default" spacing="compact" className="pt-6 sm:pt-8">
         <div className="flex flex-col items-center text-center">
           <h2 className="text-3xl font-extrabold tracking-tight gap-2 text-[#035CB3] sm:text-4xl">
