@@ -211,7 +211,9 @@ export const MemberShell = ({ children }: { children: ReactNode }) => {
 
   // Profile completion for breadcrumb indicator
   const PROFILE_KEYS = ['title', 'firstName', 'lastName', 'gender', 'dateOfBirth', 'discipline', 'grade', 'email', 'phone', 'nationalId'] as const;
-  const filledCount = PROFILE_KEYS.filter((k) => { const v = (user as Record<string, unknown>)[k]; return v && String(v).trim() !== ''; }).length;
+  const filledCount = user
+    ? PROFILE_KEYS.filter((k) => { const v = (user as unknown as Record<string, unknown>)[k]; return v && String(v).trim() !== ''; }).length
+    : 0;
   const latestApp = applications[0];
   let shellProfilePct = Math.round((filledCount / PROFILE_KEYS.length) * 30);
   if ((latestApp?.documents?.length ?? 0) > 0) shellProfilePct += 30;

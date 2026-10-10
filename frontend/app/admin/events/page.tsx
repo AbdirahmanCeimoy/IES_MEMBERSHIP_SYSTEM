@@ -19,11 +19,11 @@ export default function AdminEventsPage() {
   const [error, setError] = useState('');
   const [form, setForm] = useState({
     title: '',
-    type: 'WORKSHOP',
-    date: '',
-    location: '',
-    cpdHours: '',
     description: '',
+    type: 'SEMINAR',
+    date: '',
+    time: '',
+    location: '',
     notifyMembers: true,
   });
 
@@ -54,15 +54,15 @@ export default function AdminEventsPage() {
       title: form.title.trim(),
       type: form.type,
       date: form.date,
+      time: form.time || undefined,
       location: form.location || undefined,
-      cpdHours: Number(form.cpdHours || 0),
       description: form.description || undefined,
       notifyMembers: form.notifyMembers,
     });
     setSubmitting(false);
     if (result.ok) {
       setShowEditor(false);
-      setForm({ title: '', type: 'WORKSHOP', date: '', location: '', cpdHours: '', description: '', notifyMembers: true });
+      setForm({ title: '', description: '', type: 'SEMINAR', date: '', time: '', location: '', notifyMembers: true });
       setNotice(
         result.notified
           ? `Event published. Notified ${result.notified} member${result.notified === 1 ? '' : 's'} by email.`
@@ -151,36 +151,40 @@ export default function AdminEventsPage() {
             </div>
             <form onSubmit={handlePublish} className="flex max-h-[80vh] flex-col gap-3 overflow-y-auto p-5">
               <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                Event title
+                Title
                 <input type="text" required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]" />
+              </label>
+              <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                Description
+                <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]" />
+              </label>
+              <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                Type of Event
+                <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]">
+                  <option value="SEMINAR">Seminar</option>
+                  <option value="WEBINAR">Webinar</option>
+                  <option value="WORKSHOP">Workshop</option>
+                  <option value="TRAINING_PROGRAM">Training Program</option>
+                  <option value="PANEL_DISCUSSION">Panel Discussion</option>
+                  <option value="CONFERENCE">Conference</option>
+                  <option value="CPD_COURSE">CPD Course</option>
+                  <option value="AGM">AGM</option>
+                  <option value="NETWORKING_EVENT">Networking Event</option>
+                </select>
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                  Type
-                  <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]">
-                    <option value="WORKSHOP">Workshop</option>
-                    <option value="SEMINAR">Seminar</option>
-                    <option value="CONFERENCE">Conference</option>
-                    <option value="AGM">AGM</option>
-                    <option value="TRAINING">Training</option>
-                  </select>
-                </label>
-                <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
                   Date
                   <input type="date" required value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]" />
+                </label>
+                <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
+                  Time
+                  <input type="text" placeholder="e.g. 3:00 PM - 6:00 PM" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]" />
                 </label>
               </div>
               <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
                 Location
                 <input type="text" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]" />
-              </label>
-              <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                CPD hours
-                <input type="number" min="0" step="0.5" value={form.cpdHours} onChange={(e) => setForm({ ...form, cpdHours: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]" />
-              </label>
-              <label className="flex flex-col gap-1 text-xs font-semibold text-[#022D5A]">
-                Description
-                <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal focus:border-[#035CB3] focus:outline-none focus:ring-1 focus:ring-[#035CB3]" />
               </label>
               <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
                 <input

@@ -80,10 +80,10 @@ class EventBroadcastService
             'A new IES event has been published:',
             '',
             'Title:    ' . $e['title'],
-            'Type:     ' . ucfirst(strtolower($e['type'])),
+            'Type:     ' . $e['type'],
             'Date:     ' . $e['date'],
+            'Time:     ' . ($e['time'] ?? '-'),
             'Location: ' . ($e['location'] ?: '-'),
-            'CPD:      ' . $e['cpdHours'] . ' hours',
             '',
             $e['description'] ?: '',
             '',
@@ -97,10 +97,10 @@ class EventBroadcastService
     private function buildEventHtml(array $e): string
     {
         $safeTitle = htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8');
-        $safeType = htmlspecialchars(ucfirst(strtolower($e['type'])), ENT_QUOTES, 'UTF-8');
+        $safeType = htmlspecialchars($e['type'], ENT_QUOTES, 'UTF-8');
         $safeDate = htmlspecialchars($e['date'], ENT_QUOTES, 'UTF-8');
+        $safeTime = htmlspecialchars($e['time'] ?? '-', ENT_QUOTES, 'UTF-8');
         $safeLocation = htmlspecialchars($e['location'] ?: '-', ENT_QUOTES, 'UTF-8');
-        $cpd = number_format((float) $e['cpdHours'], 1);
         $desc = $e['description'] ? '<p style="margin:12px 0 0;font-size:14px;line-height:1.6;color:#334155;">' . nl2br(htmlspecialchars($e['description'], ENT_QUOTES, 'UTF-8')) . '</p>' : '';
         $year = date('Y');
 
@@ -110,23 +110,23 @@ class EventBroadcastService
 <body style="margin:0;padding:0;background:#f6f8fb;font-family:'Segoe UI',Arial,sans-serif;color:#0f172a;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f6f8fb;padding:32px 12px;"><tr><td align="center">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(8,43,85,0.08);">
-<tr><td style="background:linear-gradient(135deg,#082B55 0%,#0047AB 100%);padding:28px 32px;text-align:center;color:#ffffff;">
+<tr><td style="background:linear-gradient(135deg,#035CB3 0%,#024A8F 100%);padding:28px 32px;text-align:center;color:#ffffff;">
   <p style="margin:0;font-size:11px;letter-spacing:3px;color:#48C184;text-transform:uppercase;font-weight:700;">New IES Event</p>
   <h1 style="margin:8px 0 0;font-size:22px;font-weight:700;">{$safeTitle}</h1>
 </td></tr>
 <tr><td style="padding:28px 32px;">
   <table role="presentation" width="100%" style="font-size:14px;color:#334155;">
-    <tr><td style="padding:6px 0;font-weight:600;color:#082B55;width:100px;">Type</td><td style="padding:6px 0;">{$safeType}</td></tr>
-    <tr><td style="padding:6px 0;font-weight:600;color:#082B55;">Date</td><td style="padding:6px 0;">{$safeDate}</td></tr>
-    <tr><td style="padding:6px 0;font-weight:600;color:#082B55;">Location</td><td style="padding:6px 0;">{$safeLocation}</td></tr>
-    <tr><td style="padding:6px 0;font-weight:600;color:#082B55;">CPD Hours</td><td style="padding:6px 0;">{$cpd}</td></tr>
+    <tr><td style="padding:6px 0;font-weight:600;color:#022D5A;width:100px;">Type</td><td style="padding:6px 0;">{$safeType}</td></tr>
+    <tr><td style="padding:6px 0;font-weight:600;color:#022D5A;">Date</td><td style="padding:6px 0;">{$safeDate}</td></tr>
+    <tr><td style="padding:6px 0;font-weight:600;color:#022D5A;">Time</td><td style="padding:6px 0;">{$safeTime}</td></tr>
+    <tr><td style="padding:6px 0;font-weight:600;color:#022D5A;">Location</td><td style="padding:6px 0;">{$safeLocation}</td></tr>
   </table>
   {$desc}
   <div style="margin-top:24px;">
-    <a href="https://iesomalia.org.so/member/events" style="display:inline-block;background:#48C184;color:#082B55;padding:10px 20px;border-radius:8px;font-weight:700;text-decoration:none;font-size:14px;">Register in member portal</a>
+    <a href="https://iesomalia.org.so/member/events" style="display:inline-block;background:#48C184;color:#ffffff;padding:10px 20px;border-radius:8px;font-weight:700;text-decoration:none;font-size:14px;">Register in member portal</a>
   </div>
 </td></tr>
-<tr><td style="padding:20px 32px;background:#082B55;color:#94a3b8;text-align:center;font-size:11px;">
+<tr><td style="padding:20px 32px;background:#022D5A;color:#94a3b8;text-align:center;font-size:11px;">
   <p style="margin:0;color:#ffffff;font-weight:600;">Institution of Engineers Somalia</p>
   <p style="margin:0;">info@iesomalia.org.so &middot; iesomalia.org.so</p>
   <p style="margin:8px 0 0;color:#64748b;">&copy; {$year} IES. All rights reserved.</p>

@@ -5,6 +5,7 @@ import { Section } from '@/components/layout/Section';
 import { SiteContainer } from '@/components/layout/SiteContainer';
 import { site } from '@/config/site';
 import { cn } from '@/lib/cn';
+import { API_BASE_URL } from '@/lib/apiClient';
 
 const categories = [
   'General Inquiry',
@@ -137,7 +138,7 @@ export default function ContactPage() {
     };
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${API_BASE_URL}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -362,6 +363,7 @@ export default function ContactPage() {
                   <textarea
                     name="message"
                     rows={5}
+                    required
                     placeholder="Describe your Inquiry"
                     className="w-full resize-y rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
                   />

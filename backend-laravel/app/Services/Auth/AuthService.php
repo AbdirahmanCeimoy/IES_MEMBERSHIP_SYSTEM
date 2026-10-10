@@ -280,19 +280,10 @@ class AuthService
             throw $exception;
         }
 
-        // Fire welcome email asynchronously - do NOT block signup on it.
-        try {
-            $this->welcomeEmailService->sendWelcomeEmail([
-                'fullName' => $user->fullName ?: $user->username,
-                'email' => $user->email,
-                'username' => $user->username,
-                'grade' => $dto['grade'] ?? null,
-            ]);
-        } catch (Throwable $exception) {
-            Log::warning('Welcome email failed for ' . $user->email . ': ' . $exception->getMessage());
-        }
-
-        // Automatically generate and send an email verification OTP after signup.
+        // Generate verification OTP + save token BEFORE the response.
+        // (The /verify-email page expects the OTP to already exist by the time
+        // the user lands on it, so this bit must stay synchronous.)
+        $otp = null;
         try {
             $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
             $user->emailVerificationToken = hash('sha256', $otp . '|' . $user->email);
@@ -300,14 +291,46 @@ class AuthService
             $user->save();
 
             Log::info('Email verification OTP for ' . $user->email . ': ' . $otp);
-
-            $this->emailVerificationService->sendVerificationEmail([
-                'email' => $user->email,
-                'fullName' => $user->fullName ?: $user->username,
-                'otp' => $otp,
-            ]);
         } catch (Throwable $exception) {
-            Log::warning('Signup verification email failed for ' . $user->email . ': ' . $exception->getMessage());
+            Log::warning('Signup OTP generation failed for ' . $user->email . ': ' . $exception->getMessage());
+        }
+
+        // Send BOTH emails AFTER the HTTP response reaches the browser.
+        // dispatchAfterResponse() runs the task in the same process once the
+        // response is flushed, so the Register button returns in ~100ms instead
+        // of waiting 20-40s for SMTP. No queue worker required.
+        $welcomePayload = [
+            'fullName' => $user->fullName ?: $user->username,
+            'email' => $user->email,
+            'username' => $user->username,
+            'grade' => $dto['grade'] ?? null,
+        ];
+        $verificationPayload = $otp !== null ? [
+            'email' => $user->email,
+            'fullName' => $user->fullName ?: $user->username,
+            'otp' => $otp,
+        ] : null;
+
+        $welcomeService = $this->welcomeEmailService;
+        $verificationService = $this->emailVerificationService;
+        $userEmail = $user->email;
+
+        dispatch(function () use ($welcomeService, $welcomePayload, $userEmail): void {
+            try {
+                $welcomeService->sendWelcomeEmail($welcomePayload);
+            } catch (Throwable $e) {
+                Log::warning('Welcome email failed for ' . $userEmail . ': ' . $e->getMessage());
+            }
+        })->afterResponse();
+
+        if ($verificationPayload !== null) {
+            dispatch(function () use ($verificationService, $verificationPayload, $userEmail): void {
+                try {
+                    $verificationService->sendVerificationEmail($verificationPayload);
+                } catch (Throwable $e) {
+                    Log::warning('Signup verification email failed for ' . $userEmail . ': ' . $e->getMessage());
+                }
+            })->afterResponse();
         }
 
         return [

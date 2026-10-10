@@ -57,6 +57,11 @@ const MENU: MenuItem[] = [
     icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="4" width="14" height="14" rx="2" /><path d="M3 8h14M7 3v3M13 3v3" strokeLinecap="round" /></svg>),
   },
   {
+    label: 'Newsletter',
+    href: '/admin/newsletters',
+    icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 5l7 5 7-5" strokeLinecap="round" strokeLinejoin="round" /><rect x="3" y="4" width="14" height="12" rx="1.5" /></svg>),
+  },
+  {
     label: 'Reports',
     href: '/admin/reports',
     icon: (<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 15V8M9 15V5M14 15v-4" strokeLinecap="round" /><path d="M3 18h15" strokeLinecap="round" /></svg>),

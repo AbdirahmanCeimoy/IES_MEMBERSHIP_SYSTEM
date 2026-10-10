@@ -23,6 +23,7 @@ class Event extends Model
         'title',
         'type',
         'date',
+        'time',
         'location',
         'cpdHours',
         'description',

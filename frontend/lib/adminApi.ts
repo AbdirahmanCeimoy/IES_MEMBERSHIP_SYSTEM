@@ -246,8 +246,8 @@ export const createEvent = async (payload: {
   title: string;
   type: string;
   date: string;
+  time?: string;
   location?: string;
-  cpdHours?: number;
   description?: string;
   notifyMembers?: boolean;
 }): Promise<{ ok: boolean; notified?: number }> => {

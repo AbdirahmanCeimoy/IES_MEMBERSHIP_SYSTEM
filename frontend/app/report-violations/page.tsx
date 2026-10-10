@@ -5,6 +5,7 @@ import { Section } from '@/components/layout/Section';
 import { SiteContainer } from '@/components/layout/SiteContainer';
 import { site } from '@/config/site';
 import { cn } from '@/lib/cn';
+import { API_BASE_URL } from '@/lib/apiClient';
 
 const violationCategories = [
   'Professional Misconduct',
@@ -58,22 +59,16 @@ const PhoneIcon = () => (
   </svg>
 );
 
-const ShieldIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-  </svg>
-);
-
-const reportingChannels = [
+const departments = [
   {
-    title: 'Ethics Committee',
-    email: 'ethics@iesomalia.org.so',
-    phone: '+252 612267178',
+    title: 'Membership & Registration',
+    email: 'membershipcommittee@iesomalia.org.so',
+    phone: '+252 612267137',
   },
   {
-    title: 'Confidential Hotline',
-    email: 'report@iesomalia.org.so',
-    phone: '+252 612267137',
+    title: 'Finance & Payments',
+    email: 'finance@iesomalia.org.so',
+    phone: '+252 614240602',
   },
   {
     title: 'General Inquiries',
@@ -85,7 +80,6 @@ const reportingChannels = [
 export default function ReportViolationsPage() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [isMember, setIsMember] = useState(false);
-  const [anonymous, setAnonymous] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -93,19 +87,18 @@ export default function ReportViolationsPage() {
 
     const formData = new FormData(e.currentTarget);
     const data = {
-      name: anonymous ? 'Anonymous' : (formData.get('name') as string),
-      email: anonymous ? '' : (formData.get('email') as string),
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
       category: formData.get('category') as string,
       subject: formData.get('subject') as string,
       message: formData.get('message') as string,
       regNumber: isMember ? (formData.get('regNumber') as string) : undefined,
       isMember,
-      anonymous,
       type: 'report',
     };
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${API_BASE_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -115,7 +108,6 @@ export default function ReportViolationsPage() {
         setStatus('sent');
         e.currentTarget.reset();
         setIsMember(false);
-        setAnonymous(false);
       } else {
         setStatus('error');
       }
@@ -128,42 +120,41 @@ export default function ReportViolationsPage() {
     <>
       <section className="bg-gradient-to-b from-[#035CB3] to-[#024A8F] py-14 text-center text-white">
         <SiteContainer>
-          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur">
-            <ShieldIcon />
-            Confidential Reporting Channel
-          </div>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
             Report Violations
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-blue-100">
-            Help us uphold the highest standards of engineering practice. Report any professional misconduct, ethical violations, or unprofessional practices confidentially.
+          <p className="mt-2 text-sm font-semibold uppercase tracking-widest text-white/80">
+            Confidential Reporting Channel
+          </p>
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-blue-100">
+            Help us uphold the highest standards of engineering professionalism and ethics. Report professional misconduct, ethical violations, or other unprofessional practices through our confidential reporting channel.
           </p>
         </SiteContainer>
       </section>
 
       <Section tone="default" spacing="relaxed">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-8">
-          {/* COLUMN 1 - Reporting channels + address + hours (merged into one card) */}
+          {/* COLUMN 1 - Get in Touch + address + hours (merged into one card) */}
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm sm:p-8">
-            <h2 className="text-xl font-bold text-slate-800">Confidential Reporting Channels</h2>
+            <h2 className="text-xl font-bold text-slate-800">Get in Touch</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
-              Reports can be submitted directly to the Ethics Committee or anonymously through the form. All reports are reviewed with the strictest confidentiality.
+              Reach out to us directly or fill out the form, and we&apos;ll get back to you as soon as possible.
             </p>
 
             <div className="mt-6 space-y-6 border-t border-slate-200 pt-6">
-              {reportingChannels.map((ch) => (
-                <div key={ch.title}>
-                  <h3 className="text-sm font-bold text-[#022D5A]">{ch.title}</h3>
+              {departments.map((dept) => (
+                <div key={dept.title}>
+                  <h3 className="text-sm font-bold text-[#022D5A]">{dept.title}</h3>
                   <div className="mt-2 flex flex-col gap-1.5">
                     <div className="flex items-center gap-2.5">
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#035CB3]/8">
                         <EmailIcon />
                       </div>
                       <a
-                        href={`mailto:${ch.email}`}
+                        href={`mailto:${dept.email}`}
                         className="text-sm text-slate-500 transition-colors hover:text-[#035CB3]"
                       >
-                        {ch.email}
+                        {dept.email}
                       </a>
                     </div>
                     <div className="flex items-center gap-2.5">
@@ -171,10 +162,10 @@ export default function ReportViolationsPage() {
                         <PhoneIcon />
                       </div>
                       <a
-                        href={`tel:${ch.phone.replace(/\s/g, '')}`}
+                        href={`tel:${dept.phone.replace(/\s/g, '')}`}
                         className="text-sm text-slate-500 transition-colors hover:text-[#035CB3]"
                       >
-                        {ch.phone}
+                        {dept.phone}
                       </a>
                     </div>
                   </div>
@@ -237,33 +228,17 @@ export default function ReportViolationsPage() {
                 </p>
 
                 <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                  {/* Checkboxes row */}
-                  <div className="flex flex-col gap-2.5 sm:flex-row sm:gap-5">
-                    <label className="flex cursor-pointer items-center gap-2.5">
-                      <input
-                        type="checkbox"
-                        checked={isMember}
-                        onChange={(e) => setIsMember(e.target.checked)}
-                        disabled={anonymous}
-                        className="h-4 w-4 rounded border-slate-300 text-[#035CB3] focus:ring-[#035CB3]/30 disabled:opacity-50"
-                      />
-                      <span className="text-sm font-medium text-slate-700">I am an IES Member</span>
-                    </label>
-                    <label className="flex cursor-pointer items-center gap-2.5">
-                      <input
-                        type="checkbox"
-                        checked={anonymous}
-                        onChange={(e) => {
-                          setAnonymous(e.target.checked);
-                          if (e.target.checked) setIsMember(false);
-                        }}
-                        className="h-4 w-4 rounded border-slate-300 text-[#035CB3] focus:ring-[#035CB3]/30"
-                      />
-                      <span className="text-sm font-medium text-slate-700">Submit Anonymously</span>
-                    </label>
-                  </div>
+                  <label className="flex cursor-pointer items-center gap-2.5">
+                    <input
+                      type="checkbox"
+                      checked={isMember}
+                      onChange={(e) => setIsMember(e.target.checked)}
+                      className="h-4 w-4 rounded border-slate-300 text-[#035CB3] focus:ring-[#035CB3]/30"
+                    />
+                    <span className="text-sm font-medium text-slate-700">I am an IES Member</span>
+                  </label>
 
-                  {isMember && !anonymous && (
+                  {isMember && (
                     <input
                       name="regNumber"
                       type="text"
@@ -273,24 +248,22 @@ export default function ReportViolationsPage() {
                     />
                   )}
 
-                  {!anonymous && (
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <input
-                        name="name"
-                        type="text"
-                        required
-                        placeholder="Your Name"
-                        className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
-                      />
-                      <input
-                        name="email"
-                        type="email"
-                        required
-                        placeholder="Your Email Address"
-                        className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
-                      />
-                    </div>
-                  )}
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <input
+                      name="name"
+                      type="text"
+                      required
+                      placeholder="Your Name"
+                      className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
+                    />
+                    <input
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="Your Email Address"
+                      className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#035CB3] focus:ring-2 focus:ring-[#035CB3]/20"
+                    />
+                  </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="relative">

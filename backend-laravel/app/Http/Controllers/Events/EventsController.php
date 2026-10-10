@@ -56,10 +56,10 @@ class EventsController extends Controller
     {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'string', 'in:WORKSHOP,SEMINAR,CONFERENCE,AGM,TRAINING'],
+            'type' => ['required', 'string', 'in:SEMINAR,WEBINAR,WORKSHOP,TRAINING_PROGRAM,PANEL_DISCUSSION,CONFERENCE,CPD_COURSE,AGM,NETWORKING_EVENT'],
             'date' => ['required', 'date'],
+            'time' => ['nullable', 'string', 'max:32'],
             'location' => ['nullable', 'string', 'max:255'],
-            'cpdHours' => ['nullable', 'numeric', 'min:0'],
             'description' => ['nullable', 'string'],
             'notifyMembers' => ['nullable', 'boolean'],
         ]);
@@ -69,15 +69,31 @@ class EventsController extends Controller
         $event->title = $validated['title'];
         $event->type = $validated['type'];
         $event->date = $validated['date'];
+        $event->time = $validated['time'] ?? null;
         $event->location = $validated['location'] ?? null;
-        $event->cpdHours = $validated['cpdHours'] ?? 0;
+        $event->cpdHours = 0;
         $event->description = $validated['description'] ?? null;
         $event->status = 'PUBLISHED';
         $event->save();
 
+        // Count eligible recipients up front so we can tell the admin how many
+        // emails will be sent, but dispatch the actual send AFTER the response
+        // reaches the browser. SMTP is slow — doing it inline makes "Publish"
+        // spin for 20-40s.
         $notified = 0;
         if (! empty($validated['notifyMembers'])) {
-            $notified = $this->notifyMembersOfEvent($event);
+            $notified = (int) User::query()
+                ->where('role', 'MEMBER')
+                ->whereNotNull('email')
+                ->count();
+
+            $eventId = $event->id;
+            dispatch(function () use ($eventId): void {
+                $fresh = Event::query()->find($eventId);
+                if ($fresh) {
+                    self::broadcastEventToMembers($fresh);
+                }
+            })->afterResponse();
         }
 
         return response()->json([
@@ -116,7 +132,43 @@ class EventsController extends Controller
         $reg->userId = $userId;
         $reg->save();
 
+        // Send registration confirmation email asynchronously - do not block the response.
+        $member = User::query()->find($userId);
+        if ($member && $member->email) {
+            $payload = [
+                'memberName' => $member->fullName ?: $member->username,
+                'memberEmail' => $member->email,
+                'eventTitle' => $event->title,
+                'eventType' => $this->formatType($event->type),
+                'date' => optional($event->date)->format('d M Y'),
+                'time' => $event->time ?? '-',
+                'location' => $event->location ?? '-',
+            ];
+            dispatch(function () use ($payload): void {
+                try {
+                    app(\App\Services\Memberships\EventRegistrationConfirmationService::class)
+                        ->send($payload);
+                } catch (Throwable $e) {
+                    Log::warning('Registration confirmation email failed: ' . $e->getMessage());
+                }
+            })->afterResponse();
+        }
+
         return response()->json(['registered' => true, 'event' => $this->serializeEvent($event)]);
+    }
+
+    /** Human-readable label for the stored type enum. */
+    private function formatType(?string $raw): string
+    {
+        if (! $raw) return '-';
+        return match ($raw) {
+            'TRAINING_PROGRAM' => 'Training Program',
+            'PANEL_DISCUSSION' => 'Panel Discussion',
+            'CPD_COURSE' => 'CPD Course',
+            'AGM' => 'AGM',
+            'NETWORKING_EVENT' => 'Networking Event',
+            default => ucwords(strtolower(str_replace('_', ' ', $raw))),
+        };
     }
 
     private function serializeEvent(Event $e): array
@@ -126,6 +178,7 @@ class EventsController extends Controller
             'title' => $e->title,
             'type' => $e->type,
             'date' => optional($e->date)->toDateString(),
+            'time' => $e->time,
             'location' => $e->location,
             'cpdHours' => (float) $e->cpdHours,
             'description' => $e->description,
@@ -139,7 +192,11 @@ class EventsController extends Controller
      * know a new event has been published. Fire-and-forget (does not
      * throw so event creation always succeeds).
      */
-    private function notifyMembersOfEvent(Event $event): int
+    /**
+     * Public static helper so it can be called from a dispatchAfterResponse
+     * closure without needing to re-instantiate a controller.
+     */
+    public static function broadcastEventToMembers(Event $event): int
     {
         $members = User::query()
             ->where('role', 'MEMBER')
@@ -154,9 +211,10 @@ class EventsController extends Controller
             $svc = app(\App\Services\Memberships\EventBroadcastService::class);
             return $svc->broadcastNewEvent($members, [
                 'title' => $event->title,
-                'type' => $event->type,
+                'type' => self::formatTypeLabel($event->type),
                 'date' => optional($event->date)->format('d M Y'),
-                'location' => $event->location ?? '',
+                'time' => $event->time ?? '-',
+                'location' => $event->location ?? '-',
                 'cpdHours' => (float) $event->cpdHours,
                 'description' => $event->description ?? '',
             ]);
@@ -164,5 +222,18 @@ class EventsController extends Controller
             Log::warning('Event broadcast failed: ' . $exception->getMessage());
             return 0;
         }
+    }
+
+    private static function formatTypeLabel(?string $raw): string
+    {
+        if (! $raw) return '-';
+        return match ($raw) {
+            'TRAINING_PROGRAM' => 'Training Program',
+            'PANEL_DISCUSSION' => 'Panel Discussion',
+            'CPD_COURSE' => 'CPD Course',
+            'AGM' => 'AGM',
+            'NETWORKING_EVENT' => 'Networking Event',
+            default => ucwords(strtolower(str_replace('_', ' ', $raw))),
+        };
     }
 }

@@ -23,9 +23,9 @@ export const PublicHeader = () => (
             <span className="whitespace-nowrap text-[11px] font-extrabold uppercase leading-tight tracking-[0.04em] text-[#035CB3]">Engineers Somalia (IES)</span>
           </div>
           <div className="hidden shrink-0 flex-col xl:flex">
-            <span className="whitespace-nowrap text-[9.5px] font-extrabold uppercase leading-[1.25] tracking-[0.03em] text-[#035CB3]">The Institution of</span>
-            <span className="whitespace-nowrap text-[9.5px] font-extrabold uppercase leading-[1.25] tracking-[0.03em] text-[#035CB3]">Engineers Somalia</span>
-            <span className="whitespace-nowrap text-[9.5px] font-extrabold uppercase leading-[1.25] tracking-[0.03em] text-[#035CB3]">(IES)</span>
+            <span className="whitespace-nowrap text-[9.5px] font-extrabold uppercase leading-[1.25] tracking-[0.03em] text-[#035CB3]">The Institution</span>
+            <span className="whitespace-nowrap text-[9.5px] font-extrabold uppercase leading-[1.25] tracking-[0.03em] text-[#035CB3]">of Engineers</span>
+            <span className="whitespace-nowrap text-[9.5px] font-extrabold uppercase leading-[1.25] tracking-[0.03em] text-[#035CB3]">Somalia (IES)</span>
           </div>
         </Link>
 

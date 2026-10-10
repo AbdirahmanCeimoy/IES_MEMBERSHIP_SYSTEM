@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { site } from '@/config/site';
 import { routes } from '@/config/routes';
 import { SiteContainer } from './SiteContainer';
+import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import {
   FacebookIcon,
   InstagramIcon,
@@ -183,7 +184,13 @@ export const Footer = ({ hideCta }: { hideCta?: boolean }) => (
       </SiteContainer>
 
       <div className="border-t border-slate-300/50">
-        <SiteContainer className="flex flex-col items-center justify-between gap-1.5 py-2.5 sm:flex-row">
+        <SiteContainer className="py-3.5">
+          <NewsletterForm />
+        </SiteContainer>
+      </div>
+
+      <div className="border-t border-slate-300/50">
+        <SiteContainer className="flex flex-col items-center gap-0.5 py-2.5 text-center">
           <p className="text-[11px] text-slate-400">
             Copyright &copy; {new Date().getFullYear()} by The Institution of Engineers Somalia (IES). All Rights Reserved.
           </p>

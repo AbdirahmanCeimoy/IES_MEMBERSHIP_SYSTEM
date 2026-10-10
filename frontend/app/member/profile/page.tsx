@@ -859,7 +859,7 @@ export default function MyProfilePage() {
       setUser(merged);
       setForm(emptyBio(merged));
       setContactsForm(emptyContacts(merged));
-      patchStoredUser(merged);
+      patchStoredUser(merged as unknown as Record<string, unknown>);
     })().catch(() => {});
   }, []);
 

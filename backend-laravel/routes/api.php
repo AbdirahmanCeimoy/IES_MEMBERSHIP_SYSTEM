@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Assistant\AssistantController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Announcements\AnnouncementsController;
 use App\Http\Controllers\Contacts\ContactsController;
@@ -8,6 +9,9 @@ use App\Http\Controllers\Events\EventsController;
 use App\Http\Controllers\Health\HealthController;
 use App\Http\Controllers\Memberships\MembershipsController;
 use App\Http\Controllers\Memberships\MembershipsPublicController;
+use App\Http\Controllers\Newsletters\AdminNewslettersController;
+use App\Http\Controllers\Newsletters\SubscriptionsController;
+use App\Http\Controllers\Newsletters\WebhookController;
 use App\Http\Controllers\Organizations\OrganizationsController;
 use App\Http\Controllers\Users\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -119,3 +123,45 @@ Route::prefix('admin/contacts')
         Route::patch('{id}', [ContactsController::class, 'update']);
         Route::delete('{id}', [ContactsController::class, 'remove']);
     });
+
+/*
+ * Newsletter — public subscription + confirmation + unsubscribe + Resend webhook.
+ * Admin endpoints are JWT-protected and scoped to the ADMIN role.
+ */
+Route::prefix('newsletters')->group(function (): void {
+    Route::post('subscribe', [SubscriptionsController::class, 'subscribe']);
+    Route::post('confirm/{token}', [SubscriptionsController::class, 'confirm']);
+    Route::get('confirm/{token}', [SubscriptionsController::class, 'confirm']);
+    Route::post('unsubscribe/{token}', [SubscriptionsController::class, 'unsubscribe']);
+    Route::get('unsubscribe/{token}', [SubscriptionsController::class, 'unsubscribe']);
+    Route::post('webhooks/resend', [WebhookController::class, 'resend']);
+});
+
+Route::prefix('admin/newsletters')
+    ->middleware(['jwt.auth', 'role:ADMIN'])
+    ->group(function (): void {
+        Route::get('dashboard', [AdminNewslettersController::class, 'dashboard']);
+        Route::get('eligible-count', [AdminNewslettersController::class, 'eligibleRecipientCount']);
+
+        Route::get('subscribers', [AdminNewslettersController::class, 'listSubscribers']);
+        Route::patch('subscribers/{id}/suppress', [AdminNewslettersController::class, 'suppressSubscriber']);
+
+        Route::get('campaigns', [AdminNewslettersController::class, 'listCampaigns']);
+        Route::post('campaigns', [AdminNewslettersController::class, 'createCampaign']);
+        Route::get('campaigns/{id}', [AdminNewslettersController::class, 'getCampaign']);
+        Route::patch('campaigns/{id}', [AdminNewslettersController::class, 'updateCampaign']);
+        Route::delete('campaigns/{id}', [AdminNewslettersController::class, 'deleteCampaign']);
+        Route::post('campaigns/{id}/test', [AdminNewslettersController::class, 'sendTest']);
+        Route::post('campaigns/{id}/send', [AdminNewslettersController::class, 'send']);
+        Route::get('campaigns/{id}/deliveries', [AdminNewslettersController::class, 'campaignDeliveries']);
+        Route::post('campaigns/{id}/retry-failed', [AdminNewslettersController::class, 'retryFailed']);
+    });
+
+/*
+ * IES AI Assistant — public floating widget endpoint.
+ * Rate-limited per IP; grounded in config('ies_knowledge') + OpenAI.
+ */
+Route::prefix('assistant')->group(function (): void {
+    Route::get('health', [AssistantController::class, 'health']);
+    Route::post('chat', [AssistantController::class, 'chat']);
+});
